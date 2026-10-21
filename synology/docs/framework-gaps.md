@@ -1,41 +1,48 @@
 # Framework boundaries
 
-These are requirements left for the SDK or for a separately scoped upstream
-account adapter. They must not be bypassed by a package-owned root hook.
+Private named volumes plus `storage_init` are the supported platform storage
+model, not a framework gap. The package uses that model for PostgreSQL, Redis,
+media, export and OCR models. Consume is the one install-selected read/write
+Shared Folder; the native wizard currently supports one folder, so export stays
+private. Shared Folder selection and ACL grants are separate operations.
 
-1. **Package-directory bind data:** SDK 0.21.0 rejects private package bind data
-   during a DSM build (`COMPOSE_PRIVATE_BIND_TIMING_UNSUPPORTED`). DSM's worker
-   acquires the project before postinst, while pkgvar may not exist in preinst.
-   This candidate uses supported package-namespaced named volumes. It does not
-   claim the requested package-directory data layout.
-2. **Shared consume/export folders:** the current Compose contract accepts
-   `admin-after-install` or draft intent, not a working `select: install` picker.
-   Activation is blocked pending protected ACL and project-control support
-   (`COMPOSE_PROJECT_CONTROL_UNAVAILABLE`). No automatic broad filesystem grant
-   or root-mounted shared folder is included.
-3. **Mobile API:** native Paperless API tokens are supported upstream, but
-   `/api` remains protected by DSM admission here. Optional passthrough needs a
-   supported Compose administrator control surface and a verified endpoint
-   inventory that excludes native password/token login. No permanent bypass is
-   declared. Token-only mobile access is unavailable.
-4. **Account deletion:** deleting an upstream Paperless user can set document
-   owners to NULL and change visibility. No automatic delete adapter is shipped.
-   DSM denial does not revoke a native Paperless token or erase documents.
-   A safe native account-disable/token-revoke/ownership policy needs its own
-   contract and tests. App data remains retained.
-5. **Uninstall data:** SDK named volumes are retained on both keep and
-   delete-data. The latter cannot honestly promise PostgreSQL/media deletion.
-   No root volume purge hook is installed.
-6. **DSM YAML argv types:** the native worker's generated admin Compose model
-   interpreted a numeric Redis command argument as a number and rejected it
-   (`services.broker.command.2 must be a string`). Redis is configured through
-   its native config-file interface instead. CLI check/build/inspect alone did
-   not detect this DSM compatibility failure.
-7. **Registry diagnosis:** SDK direct registry preflight can report denial even
-   when Container Manager successfully downloads the same official digest using
-   its existing registry transport configuration. Treat preflight diagnosis as
-   advisory; record the native worker's actual result separately.
+## Account deletion and revocation
 
-The package supplies no ctl API, Tika or Gotenberg. It makes no claim of
-cross-user filesystem ACL inheritance, immediate revocation of upstream native
-sessions, or mobile-client acceptance.
+Do not delete the Paperless user when a DSM user disappears: document ownership
+can become NULL and change visibility. Upstream v3.3.3 exposes
+`PATCH /api/users/{id}/` with `is_active: false` (`src/paperless/serialisers.py`,
+`UserSerializer`, and `src/paperless/views.py`, `UserViewSet`). That alone is not
+a complete token/session deletion adapter.
+
+The native `GenerateAuthTokenView` only regenerates the **requesting** user's
+API token and requires that user's authenticated session. The release URL
+registry (`src/paperless/urls.py`) has no administrator API to delete a selected
+user's tokens or sessions, nor an API mapping the verified OIDC social `sub`
+to a user for the account bridge. The existing SDK bridge supplies DSM UID/name
+and executes a nonroot command; it cannot safely turn a username guess into
+that mapping. No complete safe native deactivate + token/session revoke method
+was found, so no partial automatic adapter is shipped. There are no direct DB
+writes, password changes, Docker-socket or root hooks to emulate one.
+
+Provider-only OIDC checks DSM App privileges when issuing a new login. It does
+not revoke existing native Paperless sessions/API tokens when a DSM user is
+denied or deleted. Administrators must separately manage native access until a
+supported account adapter exists. Document owners and retained data stay intact.
+
+## Uninstall data
+
+SDK named volumes are retained on both keep and delete-data. Delete-data cannot
+promise PostgreSQL/media deletion. The selected consume Shared Folder and its
+administrator-managed ACL are also retained. No root volume purge is installed.
+
+## Device compatibility observations
+
+- Numeric native worker argv values must remain strings. Redis uses its native
+  configuration file and health checks use fixed CMD-SHELL, avoiding the DSM
+  worker's numeric-argument parsing failure.
+- Registry preflight diagnosis can differ from Container Manager's actual
+  download result. Record the native worker result separately.
+
+The package supplies no ctl API, Tika or Gotenberg. ARM, reboot recovery, trusted
+first-open TLS, two-user document isolation and physical mobile clients remain
+unverified. HTTP token API acceptance does not establish mobile App acceptance.

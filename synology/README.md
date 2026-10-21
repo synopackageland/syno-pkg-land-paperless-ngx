@@ -1,7 +1,7 @@
 # Paperless-ngx for DSM
 
 This fork keeps the upstream source and UI unchanged. DSM integration lives only
-in `synology/`. Version `3.3.3-0002` references the official Paperless-ngx 3.3.3
+in `synology/`. Version `3.3.3-0003` references the official Paperless-ngx 3.3.3
 Docker Hub image; its immutable index is identical to the upstream GHCR index.
 The release tag is already an ancestor of this fork's development-history base.
 The fork also retains later upstream development commits; the container executes
@@ -20,16 +20,21 @@ because the SDK's OIDC issuer is NAS loopback; its only HTTP listener is forced
 to `127.0.0.1:28992`. The SDK exposes HTTPS on port 28993 and the loopback OIDC
 issuer on 28991. No app-owned root helper or Docker socket is installed.
 
-The named volume stores `paperless/{data,media,consume,export,tessdata}`, the
+The named volume stores `paperless/{data,media,export,tessdata}`, the
 Django signing key, PostgreSQL data, Redis data and private sockets under
 `/var/tmp` inside the containers. All services use the same package identity.
 Containers do not inherit a signed-in user's DSM filesystem ACL. Back up the
 entire volume with the package stopped, including PostgreSQL and media together.
 
-Package-directory bind data and existing DSM shared-folder selection remain
-SDK blockers. This candidate uses the supported named-volume route; it does not
-claim to satisfy the requested package-directory or install-time shared-folder
-layout. See [framework gaps](docs/framework-gaps.md).
+Private named volumes plus `storage_init` are the supported platform model.
+At installation, select one existing DSM Shared Folder for **consume**. Then grant
+**Read/Write** to `SynoPkgPaperlessNgx` in **Control Panel > Shared Folder > Edit >
+Permissions > System internal user**. Selecting a folder does not grant access.
+The nonroot container mounts it at `/consume`; the native consumer polls every
+five seconds for reliable host-folder changes. Imported files are removed, so
+use a dedicated inbox and keep backups. Files must grant the package account
+read/write access too. Export remains in the private volume: the current native
+install contract supports one selected share. No broad filesystem grant is used.
 
 ## DSM sign-in
 
@@ -46,9 +51,12 @@ and document ownership remain upstream behavior: ownerless documents may be
 shared, and DSM identity does not imply per-user filesystem isolation.
 
 DSM App admission and Paperless's own session are separate. The package declares
-`entry: app-privilege` plus gateway `access: dsm-users`; an administrator grants
+`entry: app-privilege`, issuer `access: dsm-users`, and
+`upstream_access: public`; an administrator grants
 ordinary users access through DSM Application Privileges. Roles and native login
-are covered in the validation record.
+are covered in the validation record. The gateway delegates all upstream routes
+to Paperless authentication; DSM admission protects OIDC issuance. Paperless
+maintains its own sessions, API authorization, CSRF and WebSocket policy.
 Deleting a DSM account must not delete its Paperless account automatically:
 Paperless can make ownerless documents visible after account deletion. Account
 cleanup/revocation remains a documented gap pending a safe native adapter.
@@ -69,18 +77,17 @@ Tika and Gotenberg are optional future extensions and are not included.
 
 In the upstream Web UI, open **My Profile** and generate/copy the API token.
 Keep that token private and revoke/regenerate it in Paperless when needed.
-This package currently keeps `/api` behind DSM admission. A native mobile app
-that supplies only a Paperless token will not receive a DSM gateway session,
-so token-only mobile access is **not enabled** in this candidate.
-
-The SDK has fixed optional passthrough routes, but a Compose consumer currently
-has no verified administrator settings surface for turning them on. No broad
-permanent `/api` bypass is added: it would also expose native password/token
-login endpoints, and DSM logout/deletion would not revoke those app tokens.
+Use the package HTTPS base URL and `Authorization: Token <token>` for native
+API access. Provider-only OIDC preserves the native token header without a DSM
+cookie; protected `/api` resources return 401 when neither a Paperless session
+nor a token is supplied. Local browser login/signup remain disabled; new Web UI
+sessions redirect through the DSM issuer. Native sessions/tokens remain valid
+independently of DSM logout/deletion; see [account limitations](docs/framework-gaps.md).
+Physical mobile clients are unverified.
 
 ## Build and tests
 
-Pinned released tools: CLI/templates/SDK/App 0.21.0, executor/v0.20.0, and the
+Released dependency pins remain CLI/templates/SDK/App 0.21.0, executor/v0.20.0, and the
 corresponding templates UI 0.12.5. The app serves upstream Angular UI; it adds
 no Vue UI dependency. See `toolchain.json` and `package-lock.json`.
 
@@ -88,9 +95,21 @@ no Vue UI dependency. See `toolchain.json` and `package-lock.json`.
 cd synology
 npm ci --ignore-scripts
 npm test
-npm run check
+
 ```
 
+**Development-only candidate:** provider-only OIDC is not in released 0.21.0.
+Acceptance uses SDK main `fcbbf485ee5cd6565ce9ab491cd8b19a6ca34075` and CLI main
+`7ef4fcea441f5ff5057196b40f607298f2b47d4b`, with templates 0.21.0. It must not be
+published. Build the CLI source, set `SYNOPKGLAND_SDK_DIR` to that SDK snapshot,
+`SYNOPKGLAND_TEMPLATES_DIR` to the pinned installed templates package, and
+`PAPERLESS_TEST_CLI` to the built CLI `dist/bin.js`; run `npm test`, then invoke
+that CLI's check/build/inspect commands. All builds/tests run on Linux.
+The installed released CLI rejects this new manifest field as expected.
+After a compatible release is announced, update all four framework pins
+together, regenerate the lockfile and rebuild before publication.
+
+The production build command deliberately rejects source overrides.
 Use `python3 synology/scripts/build.py` with `SPL_BUILD_SSH`,
 `SPL_BUILDER_IMAGE`, and an isolated `SPL_BUILD_DIR`. The Linux tool image needs
 Node 24, the CLI's required Go toolchain, Python 3 and Git, plus access to the

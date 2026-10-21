@@ -38,3 +38,22 @@ success response alone is insufficient. Missing scenarios remain unverified.
 A typed command, an install success response, a screenshot, or a queued OCR task
 is not proof that the complete workflow passed. Archive raw screenshots and
 reports privately; public validation includes only sanitized results and hashes.
+
+## Provider-only candidate acceptance
+
+Install build 0003 through the native DSM wizard, select a dedicated consume
+Shared Folder, and grant only the package account Read/Write using **System
+internal user** permissions. Read back the saved share name, container bind and
+kernel writability before copying a distinct raster PDF into that host folder.
+`PAPERLESS_E2E_CONTROL` must implement `consume` by copying to the selected share,
+not by writing into a private container volume. Keep the fixture private.
+
+`16-native-api.e2e.ts` obtains a native token through the logged-in profile API
+and checks independent no-cookie requests: token 200, missing/invalid token 401.
+Only status results are persisted. A fresh browser must traverse the native OIDC
+login and reserved SSO routes with no local password form. The App-privilege
+suite checks a fresh identity's **issuer** denial and restores the exact rule.
+This does not assert that existing native sessions/tokens are revoked.
+Use the DSM's actual configured HTTPS port in the tunnel: the OIDC issuer
+redirects to that port. A different local DSM port does not redefine the issuer.
+Development source commits and nonpublication status belong in every report.

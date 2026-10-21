@@ -4,5 +4,12 @@
   "sdk": "0.21.0",
   "app": "0.21.0",
   "ui": "0.12.5",
-  "executorTag": "executor/v0.20.0"
+  "executorTag": "executor/v0.20.0",
+  "publishable": false,
+  "developmentOverrides": {
+    "sdkCommit": "fcbbf485ee5cd6565ce9ab491cd8b19a6ca34075",
+    "cliCommit": "7ef4fcea441f5ff5057196b40f607298f2b47d4b",
+    "templates": "0.21.0",
+    "notice": "Source override acceptance only; executor/lifecycle digest verification is bypassed. Released pins above are not the effective SDK/CLI sources."
+  }
 }
