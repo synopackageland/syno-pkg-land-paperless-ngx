@@ -1,0 +1,18 @@
+Paperless-ngx remains licensed under GPL-3.0; see ../LICENSE.
+Integration code in this directory is distributed under the same licence.
+The SPK references official container images, downloaded by Container Manager;
+it does not redistribute their image layers.
+
+Paperless-ngx official images:
+https://github.com/paperless-ngx/paperless-ngx
+https://hub.docker.com/r/paperlessngx/paperless-ngx
+PostgreSQL official image: https://hub.docker.com/_/postgres
+Redis official image: https://hub.docker.com/_/redis
+
+Chinese OCR models are obtained from the unmodified official tessdata_fast
+revision recorded in container/bootstrap.py, under Apache-2.0:
+https://github.com/tesseract-ocr/tessdata_fast/blob/main/LICENSE
+
+The released SDK/CLI bundle their own notices in the SPK. The templates UI
+version is recorded for the toolchain; this integration serves the unmodified
+upstream Angular application and does not add a separate Vue UI.
