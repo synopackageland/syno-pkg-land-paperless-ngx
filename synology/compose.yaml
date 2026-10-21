@@ -1,0 +1,100 @@
+services:
+  webserver:
+    image: docker.io/paperlessngx/paperless-ngx:3.3.3@sha256:dba0242c1df1843643df4eb50ce5639f3a7900f414879088fd5bed8eaf2d456d
+    entrypoint:
+      - /usr/local/bin/python3
+      - /var/tmp/paperless/bootstrap.py
+    environment:
+      PAPERLESS_PORT: "28992"
+      PAPERLESS_DATA_DIR: /var/tmp/paperless/data
+      PAPERLESS_MEDIA_ROOT: /var/tmp/paperless/media
+      PAPERLESS_CONSUMPTION_DIR: /consume
+      PAPERLESS_CONSUMER_POLLING: "5"
+      PAPERLESS_REDIS: unix:///var/tmp/ipc/redis.sock
+      PAPERLESS_DBHOST: /var/tmp/ipc/postgres
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBUSER: paperless
+      PAPERLESS_DBENGINE: postgresql
+      PAPERLESS_OCR_LANGUAGE: eng+chi_tra+chi_sim
+      PAPERLESS_TASK_WORKERS: "1"
+      PAPERLESS_THREADS_PER_WORKER: "1"
+      PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
+      PAPERLESS_ACCOUNT_ALLOW_SIGNUPS: "false"
+      PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: "true"
+      PAPERLESS_SOCIAL_AUTO_SIGNUP: "true"
+      PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
+      PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"
+      PAPERLESS_SOCIAL_ACCOUNT_SYNC_SUPERUSER_GROUP: admin
+      PAPERLESS_SOCIAL_ACCOUNT_SYNC_STAFF_GROUP: admin
+      PAPERLESS_ACCOUNT_EMAIL_VERIFICATION: none
+      PAPERLESS_TRUSTED_PROXIES: 127.0.0.1
+      PAPERLESS_USE_X_FORWARD_HOST: "true"
+      PAPERLESS_USE_X_FORWARD_PORT: "true"
+      PAPERLESS_PROXY_SSL_HEADER: '["HTTP_X_FORWARDED_PROTO", "https"]'
+      PAPERLESS_TIME_ZONE: UTC
+      HOME: /var/tmp/paperless
+      USER: paperless
+    volumes:
+      - state:/var/tmp
+    tmpfs:
+      - /run:mode=1777,exec
+      - /tmp:mode=1777
+      - /usr/src/paperless/data:mode=1777
+      - /usr/src/paperless/media:mode=1777
+      - /usr/src/paperless/consume:mode=1777
+      - /usr/src/paperless/export:mode=1777
+    depends_on:
+      - db
+      - broker
+    restart: unless-stopped
+    stop_grace_period: 60s
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -fsS --max-time 2 http://127.0.0.1:28992/favicon.ico
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 180s
+  db:
+    image: docker.io/library/postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382
+    entrypoint:
+      - /usr/local/bin/docker-entrypoint.sh
+    command:
+      - postgres
+      - -c
+      - listen_addresses=
+      - -c
+      - unix_socket_directories=/var/tmp/ipc/postgres,/var/run/postgresql
+      - -c
+      - unix_socket_permissions=0700
+    environment:
+      PGDATA: /var/tmp/postgres/data
+      POSTGRES_USER: paperless
+      POSTGRES_DB: paperless
+      POSTGRES_HOST_AUTH_METHOD: reject
+      POSTGRES_INITDB_ARGS: --auth-local=trust --auth-host=reject
+    volumes:
+      - state:/var/tmp
+    tmpfs:
+      - /tmp:mode=1777
+      - /var/run/postgresql:mode=1777
+      - /var/lib/postgresql:mode=1777
+    read_only: true
+    restart: unless-stopped
+    stop_grace_period: 60s
+  broker:
+    image: docker.io/library/redis:8.2.2-alpine3.22@sha256:59b6e694653476de2c992937ebe1c64182af4728e54bb49e9b7a6c26614d8933
+    entrypoint:
+      - /usr/local/bin/docker-entrypoint.sh
+    command:
+      - redis-server
+      - /var/tmp/redis/redis.conf
+    volumes:
+      - state:/var/tmp
+    tmpfs:
+      - /tmp:mode=1777
+    read_only: true
+    restart: unless-stopped
+volumes:
+  state: {}

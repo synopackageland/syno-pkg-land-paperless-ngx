@@ -1,0 +1,7 @@
+node_modules/
+dist/
+evidence/
+.artifacts/
+.synopkgland/
+.e2e/
+__pycache__/
