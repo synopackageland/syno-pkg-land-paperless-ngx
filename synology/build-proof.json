@@ -5,7 +5,7 @@
     "source": "https://github.com/paperless-ngx/paperless-ngx"
   },
   "spk": "SynoPkgPaperlessNgx-3.3.3-0003-x86_64.spk",
-  "spk_sha256": "3375ae70a3f14dfad69dcc4bb0b1d576227f923209cc3a7a343cae713f89a638",
+  "spk_sha256": "f653a84333a7098669109ed0aea6a52a69e3f76002a546b2cddc406a00092986",
   "images": [
     {
       "source": "docker.io/library/postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382",
@@ -27,18 +27,12 @@
     }
   ],
   "toolchain": {
-    "cli": "0.21.0",
-    "templates": "0.21.0",
-    "sdk": "0.21.0",
-    "app": "0.21.0",
+    "cli": "0.22.0",
+    "templates": "0.22.0",
+    "sdk": "0.22.0",
+    "app": "0.22.0",
     "ui": "0.12.5",
     "executorTag": "executor/v0.20.0",
-    "publishable": false,
-    "developmentOverrides": {
-      "sdkCommit": "fcbbf485ee5cd6565ce9ab491cd8b19a6ca34075",
-      "cliCommit": "7ef4fcea441f5ff5057196b40f607298f2b47d4b",
-      "templates": "0.21.0",
-      "notice": "Source override acceptance only; executor/lifecycle digest verification is bypassed. Released pins above are not the effective SDK/CLI sources."
-    }
+    "publishable": true
   }
 }

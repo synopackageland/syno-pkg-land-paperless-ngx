@@ -1,6 +1,6 @@
 # Validation record
 
-Development candidate `3.3.3-0003`; packaging is reviewable, with remaining limits listed
+Production candidate `3.3.3-0003`; packaging is reviewable, with remaining limits listed
 in [framework-gaps.md](framework-gaps.md). No Release or catalog publication.
 
 ## Provenance and local checks
@@ -8,13 +8,14 @@ in [framework-gaps.md](framework-gaps.md). No Release or catalog publication.
 - Source release v3.3.3, commit `31caf01ae54db185fd29190a9ab73105a4b1ee90`.
   The release tag is already an ancestor of the fork's development-history base.
   No upstream file was changed by this integration.
-- Released dependency pins remain CLI/templates/SDK/App 0.21.0 and templates UI
-  0.12.5. Build 0003 uses authorized **development source overrides**: SDK main
+- Historical build 0003 used CLI/templates/SDK/App 0.21.0 and templates UI
+  0.12.5 with authorized **development source overrides**: SDK main
   `fcbbf485ee5cd6565ce9ab491cd8b19a6ca34075`, CLI main
   `7ef4fcea441f5ff5057196b40f607298f2b47d4b`, and published templates 0.21.0.
-  This artifact is not publishable. Released executor/v0.20.0 describes the
+  That historical artifact is not publishable. Released executor/v0.20.0 describes the
   baseline only; source override builds use the snapshot's lifecycle payloads.
-  Re-pin all four packages together after a compatible release is announced.
+  The current candidate has been rebuilt with all four released packages at
+  0.22.0, UI 0.12.5 and executor/v0.20.0, without source overrides or Go replace.
 - Official Paperless index
   `sha256:dba0242c1df1843643df4eb50ce5639f3a7900f414879088fd5bed8eaf2d456d`.
   Official Docker Hub and GHCR indexes agree. Built image config labels match
@@ -115,3 +116,24 @@ Preflight messages and actual worker results are recorded separately.
 The development SPK is deliberately not released. Named volume retention and
 account-revocation limits remain documented in framework-gaps.md; ARM, reboot,
 trusted first-open TLS and physical mobile clients were not tested.
+
+## Released 0.22.0 candidate acceptance
+
+The production SPK uses published CLI/templates/SDK/App 0.22.0, templates UI
+0.12.5 and executor/v0.20.0. Check, build and inspect passed with no findings;
+no source override or Go replace was used. The current `build-proof.json`
+records this production artifact rather than the historical development SPK.
+
+A fresh native installation selected a disposable consume Shared Folder.
+Native start and DSM main-menu sign-in reached the upstream dashboard. One PNG
+document was uploaded, OCR completed, and the document appeared in the upstream
+document list. Native stop/start returned the package to running state.
+
+The registry diagnostic reported direct Docker Hub access denial while the
+unchanged configured mirror supplied the pinned image. This result does not
+establish direct registry access or support for every network configuration.
+
+Native uninstall was exercised with delete-data selected and displayed the
+retained-container-volume notice. After package and containers were absent,
+only the disposable acceptance volumes and consume share were removed
+separately. DSM package identity was retained.
