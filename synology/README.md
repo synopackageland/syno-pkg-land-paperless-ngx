@@ -87,7 +87,7 @@ Physical mobile clients are unverified.
 
 ## Build and tests
 
-Released dependency pins remain CLI/templates/SDK/App 0.21.0, executor/v0.20.0, and the
+Released dependency pins remain CLI/templates/SDK/App 0.22.0, executor/v0.20.0, and the
 corresponding templates UI 0.12.5. The app serves upstream Angular UI; it adds
 no Vue UI dependency. See `toolchain.json` and `package-lock.json`.
 
@@ -98,16 +98,7 @@ npm test
 
 ```
 
-**Development-only candidate:** provider-only OIDC is not in released 0.21.0.
-Acceptance uses SDK main `fcbbf485ee5cd6565ce9ab491cd8b19a6ca34075` and CLI main
-`7ef4fcea441f5ff5057196b40f607298f2b47d4b`, with templates 0.21.0. It must not be
-published. Build the CLI source, set `SYNOPKGLAND_SDK_DIR` to that SDK snapshot,
-`SYNOPKGLAND_TEMPLATES_DIR` to the pinned installed templates package, and
-`PAPERLESS_TEST_CLI` to the built CLI `dist/bin.js`; run `npm test`, then invoke
-that CLI's check/build/inspect commands. All builds/tests run on Linux.
-The installed released CLI rejects this new manifest field as expected.
-After a compatible release is announced, update all four framework pins
-together, regenerate the lockfile and rebuild before publication.
+Build with the released CLI/templates/SDK/App 0.22.0 dependencies. No source overrides are required. Run all checks and builds on Linux.
 
 The production build command deliberately rejects source overrides.
 Use `python3 synology/scripts/build.py` with `SPL_BUILD_SSH`,
