@@ -8,7 +8,8 @@ services:
       PAPERLESS_PORT: "28992"
       PAPERLESS_DATA_DIR: /var/tmp/paperless/data
       PAPERLESS_MEDIA_ROOT: /var/tmp/paperless/media
-      PAPERLESS_CONSUMPTION_DIR: /var/tmp/paperless/consume
+      PAPERLESS_CONSUMPTION_DIR: /consume
+      PAPERLESS_CONSUMER_POLLING: "5"
       PAPERLESS_REDIS: unix:///var/tmp/ipc/redis.sock
       PAPERLESS_DBHOST: /var/tmp/ipc/postgres
       PAPERLESS_DBNAME: paperless

@@ -4,7 +4,8 @@ import {dsmPage} from '@synopackageland/cli/e2e';
 import {desktop} from './desktop.ts';
 import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-for(const session of ['admin','nonadmin']) {
+// Member identity is covered under an explicit, restored allow rule in 14-admission.
+for(const session of ['admin']) {
  test(`OIDC ${session} creates a distinct native account without local password`,{session,timeout:180_000},async ({app})=>{
   await desktop(app);const dsm=dsmPage();const page=await dsm.context().newPage();
   if(process.env.PAPERLESS_E2E_TRUST_CERTIFICATE==='1'){const c=await page.context().newCDPSession(page);await c.send('Security.setIgnoreCertificateErrors',{ignore:true});}

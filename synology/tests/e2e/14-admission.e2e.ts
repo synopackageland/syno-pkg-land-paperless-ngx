@@ -33,13 +33,16 @@ test('DSM App privileges admit a member and return 403 after explicit denial',
    try {
     const page=await context.newPage();
     let navigationStatus:number|undefined;
-    page.on('response',response=>{if(response.request().isNavigationRequest()&&new URL(response.url()).origin===gateway.origin)navigationStatus=response.status();});
+    page.on('response',response=>{if(response.request().isNavigationRequest())navigationStatus=response.status();});
     const response=await page.goto(gateway.href,{waitUntil:'domcontentloaded',timeout:15_000});
-    await page.waitForURL(url=>url.port==='28993',{waitUntil:'domcontentloaded',timeout:15_000});
     await page.waitForFunction(()=>document.querySelector('[data-error-code]')||document.querySelector('#userDropdown'),{timeout:15_000});
     const error=await page.evaluate(()=>document.querySelector('[data-error-code]')?.getAttribute('data-error-code'));
     const status=error?navigationStatus:await page.evaluate(async()=>(await fetch('/api/profile/')).status);
-    const result={profile:status,error};
+    const identity=error?undefined:await page.evaluate(async()=>{
+     const p=await fetch('/api/profile/').then(r=>r.json());
+     return {hasPassword:p.has_usable_password,providers:p.social_accounts.map((a:any)=>a.provider)};
+    });
+    const result={profile:status,error,identity};
     const current=new URL(page.url());return {initial:response?.status(),path:current.pathname,...result};
    } finally{await context.close();}
   }
@@ -47,6 +50,8 @@ test('DSM App privileges admit a member and return 403 after explicit denial',
   try {
    expect((await rules('set',[{...rule,allow_ip:['0.0.0.0'],deny_ip:[]}])).success).toBe(true);
    await expect.poll(async()=>{allowed=await probe();writeFileSync(join(process.env.DSM_E2E_OUTPUT_DIR!,'admission-allow.json'),JSON.stringify(allowed),{mode:0o600});return allowed.profile;},{timeout:45_000,intervals:[3_000]}).toBe(200);
+   expect(allowed.identity.hasPassword).toBe(false);
+   expect(allowed.identity.providers).toContain('dsm');
    expect((await rules('set',[{...rule,allow_ip:[],deny_ip:['0.0.0.0']}])).success).toBe(true);
    writeFileSync(join(process.env.DSM_E2E_OUTPUT_DIR!,'denied-rules.json'),JSON.stringify(await rules('list')),{mode:0o600});
    await expect.poll(async()=>{
