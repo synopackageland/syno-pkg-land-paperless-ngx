@@ -1,7 +1,7 @@
 schema: 2
 package: SynoPkgPaperlessNgx
 version: 3.3.3
-build: 3
+build: 4
 displayname: Paperless-ngx
 description: Document management with OCR and DSM OpenID Connect sign-in.
 maintainer: synopackageland
@@ -16,7 +16,7 @@ install:
     key: consume
     permission: rw
 compose:
-  sdk: 0.22.0
+  sdk: 0.24.0
   shares:
     consume:
       select: install
@@ -202,7 +202,7 @@ compose:
   network:
     egress: internet
 identity_gateway:
-  sdk: 0.22.0
+  sdk: 0.24.0
   mode: oidc
   upstream_access: public
   access: dsm-users
