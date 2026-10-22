@@ -113,3 +113,7 @@ To upgrade, commit the current integration and run `python3 synology/scripts/upg
 Read [validation](docs/validation.md) for the actual verified boundary and
 [e2e](docs/e2e.md) for device acceptance. Valid manifests and successful builds
 are not proof of writable storage, OCR, SSO, lifecycle or cleanup.
+
+## Official package icon
+
+The DSM package uses the official project artwork, preserved unchanged and only resized/rasterized to the required icon sizes. See [assets/icon-source.json](assets/icon-source.json) for the source revision and original SHA-256, and [NOTICE](NOTICE) for attribution and the applicable image license. The package ID remains `SynoPkgPaperlessNgx` for upgrade continuity.
