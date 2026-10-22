@@ -29,8 +29,8 @@ test('CLI accepts the actual three-service plan and enforces nonroot/loopback',(
   }
   assert.equal(services.find(s=>s.service==='webserver').network,'host');
   assert.equal(manifest.identity_gateway.access,'dsm-users');
-  assert.equal(manifest.identity_gateway.sdk,'0.24.0');
-  assert.equal(manifest.compose.sdk,'0.24.0');
+  assert.equal(manifest.identity_gateway.sdk,'0.26.0');
+  assert.equal(manifest.compose.sdk,'0.26.0');
   assert.equal(manifest.identity_gateway.oidc.clients[0].pkce,true);
   for(const s of Object.values(compose.services)) assert.match(s.image,/@sha256:[0-9a-f]{64}$/);
 });
