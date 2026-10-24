@@ -1,7 +1,7 @@
 schema: 2
 package: SynoPkgPaperlessNgx
 version: 3.3.3
-build: 6
+build: 8
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Syno Package Land
@@ -16,7 +16,7 @@ install:
     key: consume
     permission: rw
 compose:
-  sdk: 0.28.0
+  sdk: 0.30.2
   shares:
     consume:
       select: install
@@ -202,7 +202,7 @@ compose:
   network:
     egress: internet
 identity_gateway:
-  sdk: 0.28.0
+  sdk: 0.30.2
   mode: oidc
   upstream_access: public
   access: dsm-users
