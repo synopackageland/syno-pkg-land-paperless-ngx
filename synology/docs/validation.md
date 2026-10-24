@@ -137,3 +137,14 @@ Native uninstall was exercised with delete-data selected and displayed the
 retained-container-volume notice. After package and containers were absent,
 only the disposable acceptance volumes and consume share were removed
 separately. DSM package identity was retained.
+
+## 3.3.3-0006 rebuild (SDK 0.28.0)
+
+Rebuilt with published CLI/templates/SDK/App 0.28.0, UI 0.14.4, executor/v0.27.0
+and Go 1.26.10; no source override or Go replace. Run on macOS with the published
+CLI: `npm test` (Python bootstrap tests and Node contract tests) passed,
+`synopkgland check --json` returned ok, `synopkgland build --arch x86_64 --json`
+produced the SPK, and `synopkgland inspect` reported no findings. Build approval
+retention was reported as unknown because no baseline SPK was supplied. No NAS
+or e2e test was run for this build; the Docker-backed acceptance above refers to
+earlier builds only.
