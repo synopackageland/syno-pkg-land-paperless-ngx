@@ -1,11 +1,11 @@
 {
   "package": "SynoPkgPaperlessNgx",
-  "version": "3.3.3-0006",
+  "version": "3.3.3-0008",
   "toolchain": {
-    "cli": "0.28.0",
-    "templates": "0.28.0",
-    "sdk": "0.28.0",
-    "app": "0.28.0",
+    "cli": "0.30.0",
+    "templates": "0.30.0",
+    "sdk": "0.30.2",
+    "app": "0.30.2",
     "ui": "0.14.4",
     "executorTag": "executor/v0.27.0",
     "publishable": true,
@@ -22,31 +22,32 @@
     "findings": []
   },
   "nas_tested": false,
-  "manifest_sha256": "d2fc726b9d91d338dbe07936429ebeb6bc447c69ef32f287242b97437533249b",
+  "embedded_compose_sdk": "0.30.2",
+  "manifest_sha256": "d6b75dfffc739cdc6c09cc7c20de73a1e7d2de3b4e543d71b1764a9bb40cecde",
   "lock_sha256": {
-    "package-lock.json": "50f866a3372d159d2219e79337a90e624dd3802aff2ba1651b317ac260e16203"
+    "package-lock.json": "a7150f66d6dba35e4ecfe19cdb4db3f381e0fadd4f2a6fa037661012153ea62b"
   },
   "outputs": [
     {
-      "file": "SynoPkgPaperlessNgx-3.3.3-0006-x86_64.spk",
-      "sha256": "674ab9f35b346029d582a347b9e732f3f2fadcb1d6c8d71eb763abf99f3308eb",
-      "size": 20032000,
-      "md5": "0a94ba54dd48c285067732288d2e46e9"
+      "file": "SynoPkgPaperlessNgx-3.3.3-0008-x86_64.spk",
+      "sha256": "8aa196756a9508ab5f99c1d8a3f30a703a8b954c6dd33ae69eb1e1b0b894f93f",
+      "size": 26651136,
+      "md5": "ce276340f554b3ed62aca9b0c24973e9"
     }
   ],
   "go_binaries": [
     {
       "arch": "x86_64",
-      "path": "compose/storage-init",
+      "path": "compose/control",
       "version": "go1.26.10",
-      "sha256": "38cc4d48cd89a48c3f028e5143e0fd9e2635248e7e4a0aa9f457c49d4ea2adbd",
+      "sha256": "5bea4711d0564c97e8a669077112c122e1f9c7c27d109e8cb0feb67d81abd70a",
       "upstream_unmodified": false
     },
     {
       "arch": "x86_64",
-      "path": "compose/control",
+      "path": "compose/storage-init",
       "version": "go1.26.10",
-      "sha256": "5c53368c7783b6f45b89981ffb2e54778f149e0e3934e3558db6810a31d173b7",
+      "sha256": "a8611d079df326de4e8a9f7574d6d1c78f087afd49e37f899f811d7a0c5c570c",
       "upstream_unmodified": false
     },
     {
@@ -60,21 +61,28 @@
       "arch": "x86_64",
       "path": "daemon/payload/_sso/gateway",
       "version": "go1.26.10",
-      "sha256": "479ead2a20549c790590fc66c2754798831d78eebf7a5f20751c8b29ca38e5eb",
-      "upstream_unmodified": false
-    },
-    {
-      "arch": "x86_64",
-      "path": "ui/sso/open.cgi",
-      "version": "go1.26.10",
-      "sha256": "479ead2a20549c790590fc66c2754798831d78eebf7a5f20751c8b29ca38e5eb",
+      "sha256": "54da16fef216d6026cd60724953ec49e895a0933d6d71d0027f9a2a9850246e9",
       "upstream_unmodified": false
     },
     {
       "arch": "x86_64",
       "path": "ui/sso/authorize.cgi",
       "version": "go1.26.10",
-      "sha256": "479ead2a20549c790590fc66c2754798831d78eebf7a5f20751c8b29ca38e5eb",
+      "sha256": "54da16fef216d6026cd60724953ec49e895a0933d6d71d0027f9a2a9850246e9",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "x86_64",
+      "path": "ui/sso/open.cgi",
+      "version": "go1.26.10",
+      "sha256": "54da16fef216d6026cd60724953ec49e895a0933d6d71d0027f9a2a9850246e9",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "x86_64",
+      "path": "ui/sso/settings.cgi",
+      "version": "go1.26.10",
+      "sha256": "54da16fef216d6026cd60724953ec49e895a0933d6d71d0027f9a2a9850246e9",
       "upstream_unmodified": false
     }
   ]
