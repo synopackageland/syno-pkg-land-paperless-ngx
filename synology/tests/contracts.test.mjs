@@ -29,13 +29,13 @@ test('CLI accepts the actual three-service plan and enforces nonroot/loopback',(
   }
   assert.equal(services.find(s=>s.service==='webserver').network,'host');
   assert.equal(manifest.identity_gateway.access,'dsm-users');
-  assert.equal(manifest.identity_gateway.sdk,'0.31.2');
-  assert.equal(manifest.compose.sdk,'0.31.2');
+  assert.equal(manifest.identity_gateway.sdk,'0.32.0');
+  assert.equal(manifest.compose.sdk,'0.32.0');
   assert.equal(manifest.identity_gateway.oidc.clients[0].pkce,true);
   for(const s of Object.values(compose.services)) assert.match(s.image,/@sha256:[0-9a-f]{64}$/);
 });
 
-test('bootstrap/config output is fresh and upstream authenticates public routes with OIDC or token',()=>{
+test('bootstrap/config output is fresh and only the API uses upstream authentication',()=>{
   const runtime=manifest.compose.services.webserver.storage_init.runtime;
   assert.equal(runtime.files[0].content,readFileSync(join(root,'container/bootstrap.py'),'utf8'));
   assert.equal(manifest.compose.services.broker.storage_init.runtime.files[0].content,readFileSync(join(root,'container/redis.conf'),'utf8'));
@@ -43,7 +43,8 @@ test('bootstrap/config output is fresh and upstream authenticates public routes 
   assert.equal(compose.services.webserver.environment.PAPERLESS_ACCOUNT_ALLOW_SIGNUPS,'false');
   assert.equal(compose.services.webserver.environment.PAPERLESS_OCR_LANGUAGE,'eng+chi_tra+chi_sim');
   assert.equal(manifest.identity_gateway.passthrough,undefined);
-  assert.equal(manifest.identity_gateway.upstream_access,'public');
+  assert.equal(manifest.identity_gateway.upstream_access,undefined);
+  assert.deepEqual(manifest.identity_gateway.upstream_auth_paths,['/api']);
 });
 
 test('consume uses the single install-selected rw share while export stays private',()=>{
