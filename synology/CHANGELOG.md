@@ -1,5 +1,13 @@
 # Changelog
 
+
+## 3.3.3-0011: SDK entry-gate migration
+
+Built with SDK/App/templates 0.32.0, CLI 0.34.0 and executor v0.32.0.
+Only `/api` use upstream authentication; all other browser paths retain the DSM entry gate.
+Protected executor payloads changed: administrator approval is required again after upgrading.
+No NAS installation or device acceptance was performed for this rebuild.
+
 ## 3.3.3-0008
 
 - Improve opening the App from the DSM menu and external access settings

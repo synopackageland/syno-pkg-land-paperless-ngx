@@ -1,5 +1,13 @@
 # Paperless-ngx for DSM
 
+
+## 3.3.3-0011: SDK entry-gate migration
+
+Built with SDK/App/templates 0.32.0, CLI 0.34.0 and executor v0.32.0.
+Only `/api` use upstream authentication; all other browser paths retain the DSM entry gate.
+Protected executor payloads changed: administrator approval is required again after upgrading.
+No NAS installation or device acceptance was performed for this rebuild.
+
 ## 3.3.3-0008
 
 Improve opening the App from the DSM menu and external access settings. Built with SDK/App 0.30.2 and CLI/templates 0.30.0. No NAS testing was performed for this toolchain rebuild.
@@ -58,10 +66,10 @@ shared, and DSM identity does not imply per-user filesystem isolation.
 
 DSM App admission and Paperless's own session are separate. The package declares
 `entry: app-privilege`, issuer `access: dsm-users`, and
-`upstream_access: public`; an administrator grants
+`upstream_auth_paths: [/api]`; an administrator grants
 ordinary users access through DSM Application Privileges. Roles and native login
-are covered in the validation record. The gateway delegates all upstream routes
-to Paperless authentication; DSM admission protects OIDC issuance. Paperless
+are covered in the validation record. Only `/api` delegates authentication to
+Paperless; browser routes and OIDC issuance require DSM admission. Paperless
 maintains its own sessions, API authorization, CSRF and WebSocket policy.
 Deleting a DSM account must not delete its Paperless account automatically:
 Paperless can make ownerless documents visible after account deletion. Account
@@ -84,7 +92,7 @@ Tika and Gotenberg are optional future extensions and are not included.
 In the upstream Web UI, open **My Profile** and generate/copy the API token.
 Keep that token private and revoke/regenerate it in Paperless when needed.
 Use the package HTTPS base URL and `Authorization: Token <token>` for native
-API access. Provider-only OIDC preserves the native token header without a DSM
+API access. The `/api` exception preserves the native token header without a DSM
 cookie; protected `/api` resources return 401 when neither a Paperless session
 nor a token is supplied. Local browser login/signup remain disabled; new Web UI
 sessions redirect through the DSM issuer. Native sessions/tokens remain valid
