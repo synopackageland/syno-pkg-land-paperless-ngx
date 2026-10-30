@@ -370,6 +370,15 @@ instead of being removed from the filesystem. Only the original version is kept.
 
     This setting was previously named PAPERLESS_TRASH_DIR.
 
+#### [`PAPERLESS_SCRATCH_DIR=<path>`](#PAPERLESS_SCRATCH_DIR) {#PAPERLESS_SCRATCH_DIR}
+
+: This folder is used as a temporary workspace for multiple paperless operations, including
+consuming documents, editing, and the document exporter.
+
+    This must be writeable by the user running paperless.
+
+    Defaults to "/tmp/paperless".
+
 #### [`PAPERLESS_MEDIA_ROOT=<path>`](#PAPERLESS_MEDIA_ROOT) {#PAPERLESS_MEDIA_ROOT}
 
 : This is where your documents and thumbnails are stored.
@@ -793,6 +802,17 @@ system. See the corresponding
         As with [`PAPERLESS_SOCIAL_ACCOUNT_SYNC_SUPERUSER_GROUP`](#PAPERLESS_SOCIAL_ACCOUNT_SYNC_SUPERUSER_GROUP), this is applied on every login unconditionally, including for the connecting user themselves.
 
     Defaults to None
+
+#### [`PAPERLESS_SOCIAL_ACCOUNT_MFA_TRUSTED_AMR=<comma-separated-list>`](#PAPERLESS_SOCIAL_ACCOUNT_MFA_TRUSTED_AMR) {#PAPERLESS_SOCIAL_ACCOUNT_MFA_TRUSTED_AMR}
+
+: A list of authentication method values which, if present in the `amr` claim of the ID token sent by an OpenID Connect provider, cause Paperless-ngx to skip its own two-factor authentication prompt for that login. This avoids users having to enter a second factor twice when the identity provider already performed multi-factor authentication. Logins with a username and password, or via a provider which does not send a matching `amr` value, still require the Paperless-ngx code.
+
+    Which values to trust depends entirely on your identity provider, e.g. Authelia sends `mfa` and Pocket ID sends `phr` for passkey logins (but `otp` for single-factor email codes, which should _not_ be trusted). Some providers, such as Keycloak, do not send an `amr` claim by default and need to be configured to do so. You can see what your provider sends from the Django admin as a superuser by checking `id_token` → `amr` in the "Extra data" of the social account.
+
+    !!! warning
+        Only list values that mean a second factor was actually used for the login.
+
+    Defaults to `mfa`, the standard value for multi-factor authentication ([RFC 8176](https://www.rfc-editor.org/rfc/rfc8176.html)).
 
 #### [`PAPERLESS_SOCIAL_ACCOUNT_DEFAULT_GROUPS=<comma-separated-list>`](#PAPERLESS_SOCIAL_ACCOUNT_DEFAULT_GROUPS) {#PAPERLESS_SOCIAL_ACCOUNT_DEFAULT_GROUPS}
 

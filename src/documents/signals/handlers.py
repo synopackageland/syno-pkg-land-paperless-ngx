@@ -52,7 +52,7 @@ from documents.models import Workflow
 from documents.models import WorkflowAction
 from documents.models import WorkflowRun
 from documents.models import WorkflowTrigger
-from documents.permissions import get_objects_for_user_owner_aware
+from documents.permissions import restrict_queryset_to_visible
 from documents.plugins.helpers import DocumentsStatusManager
 from documents.templating.utils import convert_format_str_to_template_format
 from documents.utils import compute_checksum
@@ -81,15 +81,11 @@ DRF_DATETIME_FIELD = serializers.DateTimeField()
 
 
 def add_inbox_tags(sender, document: Document, logging_group=None, **kwargs) -> None:
-    if document.owner is not None:
-        tags = get_objects_for_user_owner_aware(
-            document.owner,
-            "documents.view_tag",
-            Tag,
-        )
-    else:
-        tags = Tag.objects.all()
-    inbox_tags = tags.filter(is_inbox_tag=True)
+    inbox_tags = restrict_queryset_to_visible(
+        Tag.objects.filter(is_inbox_tag=True),
+        document.owner,
+        "view_tag",
+    )
     document.add_nested_tags(inbox_tags)
 
 
@@ -1385,9 +1381,17 @@ def task_revoked_handler(
         return
     try:
         close_old_connections()
+        reason = "Task revoked before completion."
+        if expired:
+            reason = "Task expired before execution."
+        elif terminated:
+            reason = "Task terminated during execution."
         PaperlessTask.objects.filter(task_id=task_id).update(
             status=PaperlessTask.Status.REVOKED,
             date_done=timezone.now(),
+            result_data={
+                "reason": (reason + " Check worker logs for details."),
+            },
         )
     except Exception:  # pragma: no cover
         logger.exception("Updating PaperlessTask on revocation failed")
