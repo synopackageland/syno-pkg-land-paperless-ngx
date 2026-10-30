@@ -1,5 +1,33 @@
 # Paperless-ngx for DSM
 
+## 3.4.0-0002: SDK and installation settings migration
+
+Pins SDK/App 0.38.2, CLI 0.41.9 and templates 0.35.5 from the public npm
+registry. The App serves the unchanged upstream Angular UI and does not use
+the SDK UI kit. Upstream image pins remain unchanged.
+
+Installation defaults to the dedicated `SynoPkgPaperlessNgx` read/write share.
+DSM creates the share and grants the package account access. The wizard also
+offers validated existing shares. Installer-selected gateway/OIDC ports use
+SDK-managed settings; Paperless's OIDC provider reads the selected issuer port.
+The internal Paperless listener remains on loopback.
+Existing installs retain their saved consume-folder selection on upgrade.
+If that folder no longer grants the package access, use the upgrade wizard's
+change-folder option to select the dedicated App share; this does not change
+the old folder's permissions or move its contents.
+
+`npm run e2e:smoke` uses the CLI's A/N/X helper with the upstream Angular
+dashboard header as its ready marker. The full existing E2E suite is retained.
+
+The x86_64 SPK builds and inspects cleanly with CLI 0.41.9, which fixes the
+installer-port definitions lost during image locking in CLI 0.41.6.
+An in-place upgrade on an x86_64 DSM test device and the A/N/X smoke passed.
+The existing test account was verified non-admin and granted only this App's
+Application Privilege. The full E2E/regression suites were not rerun.
+See `build-proof.json`
+for the current immutable image provenance; older validation/security-rebuild
+records describe their original versions, not this candidate.
+
 
 ## 3.3.3-0011: SDK entry-gate migration
 
@@ -41,9 +69,10 @@ Containers do not inherit a signed-in user's DSM filesystem ACL. Back up the
 entire volume with the package stopped, including PostgreSQL and media together.
 
 Private named volumes plus `storage_init` are the supported platform model.
-At installation, select one existing DSM Shared Folder for **consume**. Then grant
-**Read/Write** to `SynoPkgPaperlessNgx` in **Control Panel > Shared Folder > Edit >
-Permissions > System internal user**. Selecting a folder does not grant access.
+At installation, accept the dedicated **SynoPkgPaperlessNgx** Shared Folder for
+**consume**. DSM creates it with package-account **Read/Write** permission.
+An optional existing folder must already grant the required package access;
+the install wizard validates it before continuing.
 The nonroot container mounts it at `/consume`; the native consumer polls every
 five seconds for reliable host-folder changes. Imported files are removed, so
 use a dedicated inbox and keep backups. Files must grant the package account
@@ -101,9 +130,9 @@ Physical mobile clients are unverified.
 
 ## Build and tests
 
-Released dependency pins remain CLI/templates/SDK/App 0.22.0, executor/v0.20.0, and the
-corresponding templates UI 0.12.5. The app serves upstream Angular UI; it adds
-no Vue UI dependency. See `toolchain.json` and `package-lock.json`.
+Dependency pins are CLI 0.41.9, templates 0.35.5 and SDK/App 0.38.2.
+The app serves upstream Angular UI; it adds no Vue UI dependency.
+See `toolchain.json` and `package-lock.json`.
 
 ```sh
 cd synology
@@ -112,7 +141,8 @@ npm test
 
 ```
 
-Build with the released CLI/templates/SDK/App 0.22.0 dependencies. No source overrides are required. Run all checks and builds on Linux.
+Build with the pinned released dependencies. No source overrides are used.
+Run all checks and builds on Linux. The final artifact passed the A/N/X smoke after installation.
 
 The production build command deliberately rejects source overrides.
 Use `python3 synology/scripts/build.py` with `SPL_BUILD_SSH`,

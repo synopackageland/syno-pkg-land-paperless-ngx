@@ -1,11 +1,11 @@
 {
   "upstream": {
-    "tag": "v3.3.3",
-    "commit": "31caf01ae54db185fd29190a9ab73105a4b1ee90",
+    "tag": "v3.4.0",
+    "commit": "ced3cf9303e08648e6fa80d35b9307d97e32cfd1",
     "source": "https://github.com/paperless-ngx/paperless-ngx"
   },
-  "spk": "SynoPkgPaperlessNgx-3.3.3-0003-x86_64.spk",
-  "spk_sha256": "f653a84333a7098669109ed0aea6a52a69e3f76002a546b2cddc406a00092986",
+  "spk": "SynoPkgPaperlessNgx-3.4.0-0002-x86_64.spk",
+  "spk_sha256": "6cb5690759fa1dba259609af04dbfa633d44e2775f15ef40182fe85f8ec0dc9f",
   "images": [
     {
       "source": "docker.io/library/postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382",
@@ -20,19 +20,20 @@
       "config_digest": "sha256:5d79a9ce29f8b3fe50fd5c07ee1bf654b5cec557b895835825bf6825d525e4f2"
     },
     {
-      "source": "docker.io/paperlessngx/paperless-ngx:3.3.3@sha256:dba0242c1df1843643df4eb50ce5639f3a7900f414879088fd5bed8eaf2d456d",
-      "reference": "docker.io/paperlessngx/paperless-ngx@sha256:4097c7925229c1fd6c2a5230d50ba0e056fb9dde076a08654f5c19ae88dff7db",
+      "source": "docker.io/paperlessngx/paperless-ngx:3.4.0@sha256:7c1d98afd200def9e2bad3a377d30829e8d486554b3c818995af5860114ea17f",
+      "reference": "docker.io/paperlessngx/paperless-ngx@sha256:39fd4fac06dc928b0bea22bc85abcd724f0f6a83ab33653aa17fc31d3cc522ce",
       "architecture": "amd64",
-      "config_digest": "sha256:a210cc4ffbe97bb382426413327d43cd0cd1936d787ad3baa1356c7f78f1023d"
+      "config_digest": "sha256:6323c97edc74bfa80fc1cc30d08460394db60de8c9f6863f396501650fbe3e72"
     }
   ],
   "toolchain": {
-    "cli": "0.22.0",
-    "templates": "0.22.0",
-    "sdk": "0.22.0",
-    "app": "0.22.0",
-    "ui": "0.12.5",
-    "executorTag": "executor/v0.20.0",
-    "publishable": true
+    "cli": "0.41.9",
+    "templates": "0.35.5",
+    "sdk": "0.38.2",
+    "app": "0.38.2",
+    "ui": null,
+    "executorTag": "executor/v0.38.2",
+    "publishable": true,
+    "goToolchain": "go1.26.10"
   }
 }

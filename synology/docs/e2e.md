@@ -1,5 +1,36 @@
 # Device acceptance
 
+## Minimal App-open smoke
+
+Set private mode-600 `DSM_E2E_ACCOUNT_ADMIN` and `DSM_E2E_ACCOUNT_NORMAL` files
+containing `{username,password}`, a private `DSM_E2E_PROFILE_DIR`, an ignored
+`DSM_E2E_OUTPUT_DIR`, and `DSM_E2E_URL` for the caller's authorized NAS tunnel.
+Grant the normal account this App's Application Privilege before running.
+
+CLI 0.41.9 accepts self-signed DSM and gateway certificates for A/N/X.
+Set the reachable DSM HTTPS URL privately; no App-side certificate bypass is
+required. The script uses `DSM_E2E_URL` directly and never opens another tunnel.
+
+```sh
+cd synology
+npm run e2e:smoke
+```
+
+If connectivity requires SSH forwarding, forward both the NAS's actual DSM
+HTTPS port and its selected gateway HTTPS port. Preserve those port numbers on
+an isolated loopback hostname: native OIDC redirects use the NAS's DSM port.
+Point `DSM_E2E_URL` at that HTTPS origin, and close the caller-owned tunnel when
+the run finishes. A random local DSM port alone does not cover those redirects.
+Keep the smoke test and CLI helper unchanged.
+
+The CLI helper checks administrator (A), permitted normal user (N), and a fresh
+signed-out context (X). The ready marker is the upstream Angular dashboard's
+`pngx-dashboard pngx-page-header`. A skipped N is incomplete acceptance.
+The smoke does not install packages or change privileges. Run against the final
+installed SPK; test discovery alone is not device acceptance.
+
+The full suite below is retained independently.
+
 The suite uses released `e2e` and the CLI's DSM login/session helpers. It reuses
 mode-600 profiles, checks the live DSM session, and opens the actual DSM menu.
 Credentials, session profiles and outputs must stay outside public Git history.
