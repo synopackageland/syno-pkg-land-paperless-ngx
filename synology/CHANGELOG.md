@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.4.0-0002
+
+- Pin SDK/App 0.38.2, CLI 0.41.9 and templates 0.35.5
+- Default to an App-named dedicated read/write consume share
+- Enable installer-selected ports and bind upstream OIDC configuration to the selected issuer port
+- Add the CLI A/N/X smoke using the native Paperless dashboard ready marker
+- Build, inspection, in-place device upgrade and A/N/X App-open smoke pass
+
 
 ## 3.3.3-0011: SDK entry-gate migration
 
