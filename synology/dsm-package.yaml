@@ -1,7 +1,7 @@
 schema: 2
 package: SynoPkgPaperlessNgx
-version: 3.3.3
-build: 11
+version: 3.4.0
+build: 1
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Paperless-ngx
