@@ -7,26 +7,21 @@ containing `{username,password}`, a private `DSM_E2E_PROFILE_DIR`, an ignored
 `DSM_E2E_OUTPUT_DIR`, and `DSM_E2E_URL` for the caller's authorized NAS tunnel.
 Grant the normal account this App's Application Privilege before running.
 
-When the browser does not trust the DSM certificate, open an SSH tunnel from
-the Linux test runner to the NAS's HTTP port 5000. Select a free loopback port
-as `DSM_E2E_TUNNEL_PORT` and configure the authorized SSH destination privately
-as `DSM_E2E_SSH`. Keep this command running in a separate terminal:
-
-```sh
-ssh -N -o ExitOnForwardFailure=yes \
-  -L "127.0.0.1:${DSM_E2E_TUNNEL_PORT}:127.0.0.1:5000" "$DSM_E2E_SSH"
-```
-
-After the tunnel is ready, run the smoke with that same loopback port:
+CLI 0.41.9 accepts self-signed DSM and gateway certificates for A/N/X.
+Set the reachable DSM HTTPS URL privately; no App-side certificate bypass is
+required. The script uses `DSM_E2E_URL` directly and never opens another tunnel.
 
 ```sh
 cd synology
-DSM_E2E_URL="http://127.0.0.1:${DSM_E2E_TUNNEL_PORT}/" npm run e2e:smoke
+npm run e2e:smoke
 ```
 
-Close the SSH tunnel when the run finishes. The smoke script uses the supplied
-URL directly; it does not open another tunnel or replace the URL. Keep the
-smoke test and CLI helper unchanged; do not add certificate bypasses.
+If connectivity requires SSH forwarding, forward both the NAS's actual DSM
+HTTPS port and its selected gateway HTTPS port. Preserve those port numbers on
+an isolated loopback hostname: native OIDC redirects use the NAS's DSM port.
+Point `DSM_E2E_URL` at that HTTPS origin, and close the caller-owned tunnel when
+the run finishes. A random local DSM port alone does not cover those redirects.
+Keep the smoke test and CLI helper unchanged.
 
 The CLI helper checks administrator (A), permitted normal user (N), and a fresh
 signed-out context (X). The ready marker is the upstream Angular dashboard's

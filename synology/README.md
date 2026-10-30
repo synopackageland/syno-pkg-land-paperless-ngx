@@ -1,8 +1,8 @@
 # Paperless-ngx for DSM
 
-## 3.4.0-0002: SDK and installation settings migration (pending)
+## 3.4.0-0002: SDK and installation settings migration
 
-Pins SDK/App 0.38.2, CLI 0.41.6 and templates 0.35.5 from the public npm
+Pins SDK/App 0.38.2, CLI 0.41.9 and templates 0.35.5 from the public npm
 registry. The App serves the unchanged upstream Angular UI and does not use
 the SDK UI kit. Upstream image pins remain unchanged.
 
@@ -11,16 +11,22 @@ DSM creates the share and grants the package account access. The wizard also
 offers validated existing shares. Installer-selected gateway/OIDC ports use
 SDK-managed settings; Paperless's OIDC provider reads the selected issuer port.
 The internal Paperless listener remains on loopback.
+Existing installs retain their saved consume-folder selection on upgrade.
+If that folder no longer grants the package access, use the upgrade wizard's
+change-folder option to select the dedicated App share; this does not change
+the old folder's permissions or move its contents.
 
 `npm run e2e:smoke` uses the CLI's A/N/X helper with the upstream Angular
 dashboard header as its ready marker. The full existing E2E suite is retained.
 
-Build and NAS acceptance are pending: CLI 0.41.6 accepts this manifest in
-`check`, but its `lockComposeImages` omits `installPorts` when replanning.
-SDK 0.38.2 then rejects the runtime issuer-port binding with
-`COMPOSE_STORAGE_INIT_INVALID: runtime port must reference install.ports`.
-No App-side workaround is included. Older build/validation records below
-describe their original versions, not this candidate.
+The x86_64 SPK builds and inspects cleanly with CLI 0.41.9, which fixes the
+installer-port definitions lost during image locking in CLI 0.41.6.
+An in-place upgrade on an x86_64 DSM test device and the A/N/X smoke passed.
+The existing test account was verified non-admin and granted only this App's
+Application Privilege. The full E2E/regression suites were not rerun.
+See `build-proof.json`
+for the current immutable image provenance; older validation/security-rebuild
+records describe their original versions, not this candidate.
 
 
 ## 3.3.3-0011: SDK entry-gate migration
@@ -124,7 +130,7 @@ Physical mobile clients are unverified.
 
 ## Build and tests
 
-Dependency pins are CLI 0.41.6, templates 0.35.5 and SDK/App 0.38.2.
+Dependency pins are CLI 0.41.9, templates 0.35.5 and SDK/App 0.38.2.
 The app serves upstream Angular UI; it adds no Vue UI dependency.
 See `toolchain.json` and `package-lock.json`.
 
@@ -136,8 +142,7 @@ npm test
 ```
 
 Build with the pinned released dependencies. No source overrides are used.
-Run all checks and builds on Linux. The CLI build blocker above must be fixed
-before this candidate can be installed or accepted.
+Run all checks and builds on Linux. The final artifact passed the A/N/X smoke after installation.
 
 The production build command deliberately rejects source overrides.
 Use `python3 synology/scripts/build.py` with `SPL_BUILD_SSH`,
