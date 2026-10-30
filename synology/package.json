@@ -10,7 +10,7 @@
     "test": "python3 tests/bootstrap_test.py && node --test tests/*.test.mjs",
     "render": "node scripts/render.mjs",
     "e2e:nas": "node tests/e2e/nas.ts",
-    "e2e:smoke": "node --env-file-if-exists=.env node_modules/@synopackageland/cli/dist/e2e/dsm.js tunnel -- e2e run tests/e2e/smoke.e2e.ts"
+    "e2e:smoke": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/e2e/smoke.e2e.ts"
   },
   "devDependencies": {
     "@ai-sdk/openai": "4.0.91",
