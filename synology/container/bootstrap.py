@@ -14,7 +14,7 @@ MODELS = {
 }
 
 
-def provider_config(secret):
+def provider_config(secret, issuer_port):
     return {'openid_connect': {
         'OAUTH_PKCE_ENABLED': True,
         'SCOPE': ['openid', 'profile', 'email', 'groups'],
@@ -22,7 +22,7 @@ def provider_config(secret):
             'provider_id': 'dsm', 'name': 'DSM', 'client_id': 'paperless',
             'secret': secret,
             'settings': {
-                'server_url': 'http://127.0.0.1:28991',
+                'server_url': f'http://127.0.0.1:{issuer_port}',
                 'token_auth_method': 'client_secret_basic',
                 'uid_field': 'sub', 'fetch_userinfo': True,
             },
@@ -84,7 +84,8 @@ def main():
     os.umask(0o077)
     root = Path('/var/tmp/paperless')  # SDK storage_init owns creation and validation.
     os.environ['PAPERLESS_SECRET_KEY'] = retained_key(root / 'secret-key', os.environ.pop('DJANGO_KEY_SEED'))
-    os.environ['PAPERLESS_SOCIALACCOUNT_PROVIDERS'] = json.dumps(provider_config(os.environ.pop('OIDC_CLIENT_SECRET')))
+    os.environ['PAPERLESS_SOCIALACCOUNT_PROVIDERS'] = json.dumps(provider_config(
+        os.environ.pop('OIDC_CLIENT_SECRET'), os.environ.pop('OIDC_ISSUER_PORT')))
     tessdata = root / 'tessdata'
     # Retain the official image's English/orientation models and config files.
     original = Path('/usr/share/tesseract-ocr/5/tessdata')

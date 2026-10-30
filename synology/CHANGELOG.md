@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.4.0-0002 (pending)
+
+- Pin SDK/App 0.38.2, CLI 0.41.6 and templates 0.35.5
+- Default to an App-named dedicated read/write consume share
+- Enable installer-selected ports and bind upstream OIDC configuration to the selected issuer port
+- Add the CLI A/N/X smoke using the native Paperless dashboard ready marker
+- Build and device acceptance remain blocked by CLI 0.41.6 dropping install port definitions during image locking
+
 
 ## 3.3.3-0011: SDK entry-gate migration
 
