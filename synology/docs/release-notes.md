@@ -1,5 +1,13 @@
 # Release notes
 
+## 3.4.0-0003: CLI and SDK rebuild candidate
+
+Built with CLI 0.42.2, SDK/App 0.42.0 and templates 0.37.0; the published SDK
+uses executor/v0.39.0. Upstream remains 3.4.0. Local x86_64 checks and an
+in-place upgrade pass. DSM administrator access through the generated menu
+entry works; the requested daemon-ingress path returns 404 for this Compose
+package and needs coordinator review before release. No release was published.
+
 
 ## 3.3.3-0011: SDK entry-gate migration
 

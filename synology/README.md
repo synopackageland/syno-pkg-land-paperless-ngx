@@ -1,5 +1,29 @@
 # Paperless-ngx for DSM
 
+## 3.4.0-0003: CLI and SDK rebuild
+
+Pins CLI 0.42.2, templates 0.37.0 and SDK/App 0.42.0. The SDK's published
+executor inventory remains executor/v0.39.0. This package uses the unchanged
+upstream Angular UI, so it has no SDK UI dependency to upgrade. All lockfile
+resolved URLs use the public npm registry. Upstream version and image pins stay
+unchanged.
+
+The declared x86_64 architecture passes CLI check, build and inspect with no
+inspection findings. The existing five Python and four Node tests pass. An
+in-place upgrade from 3.4.0-0002 reaches running, retains the consume-share
+selection, selected ports and existing container volume identities, and opens
+the Paperless dashboard for a DSM administrator through the generated menu entry
+`/webman/3rdparty/SynoPkgPaperlessNgx/sso/open.cgi`.
+
+The requested `/synopkgland/SynoPkgPaperlessNgx/` path returns HTTP 404. CLI
+0.42.2 reserves that namespace for `daemon.ingress`; this Compose/OIDC package
+does not declare a daemon ingress, and check requests no entry migration. A
+coordinator must resolve that acceptance mismatch before release. No proxy or
+upstream workaround is included. No full gate or full E2E suite was run.
+Persistent volume identities were compared before and after the upgrade; no
+pre-upgrade document-count baseline was captured.
+
+
 ## 3.4.0-0002: SDK and installation settings migration
 
 Pins SDK/App 0.38.2, CLI 0.41.9 and templates 0.35.5 from the public npm
@@ -130,7 +154,7 @@ Physical mobile clients are unverified.
 
 ## Build and tests
 
-Dependency pins are CLI 0.41.9, templates 0.35.5 and SDK/App 0.38.2.
+Dependency pins are CLI 0.42.2, templates 0.37.0 and SDK/App 0.42.0.
 The app serves upstream Angular UI; it adds no Vue UI dependency.
 See `toolchain.json` and `package-lock.json`.
 
