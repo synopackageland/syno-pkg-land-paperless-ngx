@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.4.0-0003
+
+- Rebuild with CLI 0.42.2, SDK/App 0.42.0 and templates 0.37.0
+- Retain upstream 3.4.0 and all immutable container image references
+- Pass x86_64 check/build/inspect and the existing nine local tests
+- Verify an in-place upgrade, retained settings/volumes and administrator dashboard access
+- Record the unresolved daemon-ingress path acceptance mismatch in README.md
+
 ## 3.4.0-0002
 
 - Pin SDK/App 0.38.2, CLI 0.41.9 and templates 0.35.5
