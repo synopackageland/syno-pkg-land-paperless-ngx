@@ -1,6 +1,6 @@
 # Paperless-ngx for DSM
 
-## 3.4.0-0004: fixed DSM path ingress
+## 3.4.0-0005: fixed DSM path ingress
 
 The App declares `/synopkgland/SynoPkgPaperlessNgx/` on DSM's HTTPS origin.
 OIDC, `app-privilege`, role mappings, native API authentication and the dedicated
@@ -13,7 +13,7 @@ Health checks use the prefixed favicon path and allow time for database startup.
 Gateway callback and API exception declarations remain relative to the namespace.
 No upstream source or container image is modified.
 
-CLI 0.43.0, templates 0.38.0 and SDK/App 0.43.1 are pinned to published
+CLI 0.47.1, templates 0.38.0 and SDK/App 0.46.1 are pinned to published
 releases. The x86_64 package passes local tests, check, build and inspect.
 Device acceptance for this candidate is recorded in [validation](docs/validation.md).
 Results in the older sections below apply to their original builds.
@@ -204,3 +204,5 @@ are not proof of writable storage, OCR, SSO, lifecycle or cleanup.
 ## Official package icon
 
 The DSM package uses the official project artwork, preserved unchanged and only resized/rasterized to the required icon sizes. See [assets/icon-source.json](assets/icon-source.json) for the source revision and original SHA-256, and [NOTICE](NOTICE) for attribution and the applicable image license. The package ID remains `SynoPkgPaperlessNgx` for upgrade continuity.
+
+Current release checks and acceptance boundaries: [shared-folder release](shared-folder-release.json).

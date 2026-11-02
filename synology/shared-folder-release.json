@@ -1,0 +1,33 @@
+{
+  "version": "3.4.0-0005",
+  "toolchain": {
+    "cli": "0.47.1",
+    "templates": "0.38.0",
+    "sdk": "0.46.1",
+    "app": "0.46.1",
+    "ui": null,
+    "executorTag": "executor/v0.39.0",
+    "publishable": true,
+    "goToolchain": "go1.26.10"
+  },
+  "checks": {
+    "unit_tests": true,
+    "build": true,
+    "inspect": true
+  },
+  "artifact": {
+    "file": "SynoPkgPaperlessNgx-3.4.0-0005-x86_64.spk",
+    "sha256": "48efad7ded7455650fa8150022e3d03d800ee86efff652e3bf6b0dc7d4906c8c",
+    "md5": "9857463a267f199026c442a420b5c3a6",
+    "size": 38871040,
+    "inspect_findings": [],
+    "dsm_errors": [],
+    "public_scan": {
+      "source_files": 42,
+      "spk_files": 103,
+      "findings": []
+    }
+  },
+  "validation_scope": "Dependency bump; upstream sources/images and entry policy unchanged. Scoped source/SPK scan only.",
+  "device_acceptance": "Not run for this version; this release uses local unit/build/inspect gates"
+}
