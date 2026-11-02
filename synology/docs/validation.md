@@ -202,3 +202,11 @@ external-provider, trusted first-open TLS, mobile, ARM or complete lifecycle
 acceptance. Destructive reinstall/uninstall scenarios were excluded. Existing
 ordinary-user document permissions remain upstream-controlled. No release or
 catalog publication was performed.
+
+## 3.4.0-0005 dependency release
+
+CLI 0.47.1 and SDK/App 0.46.1; local unit tests, release build, inspect
+with no findings, official npm registry verification and scoped source/SPK scans passed.
+No NAS upgrade or browser acceptance was repeated for this version.
+See `shared-folder-release.json` for exact SPK hashes and bounded evidence.
+Uninstall retains shared-folder data and the package-account ACL by DSM design.
