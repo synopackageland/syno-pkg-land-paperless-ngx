@@ -29,8 +29,8 @@ test('CLI accepts the actual three-service plan and enforces nonroot/loopback',(
   }
   assert.equal(services.find(s=>s.service==='webserver').network,'host');
   assert.equal(manifest.identity_gateway.access,'dsm-users');
-  assert.equal(manifest.identity_gateway.sdk,'0.42.0');
-  assert.equal(manifest.compose.sdk,'0.42.0');
+  assert.equal(manifest.identity_gateway.sdk,'0.43.1');
+  assert.equal(manifest.compose.sdk,'0.43.1');
   assert.equal(manifest.identity_gateway.oidc.clients[0].pkce,true);
   for(const s of Object.values(compose.services)) assert.match(s.image,/@sha256:[0-9a-f]{64}$/);
 });
@@ -83,4 +83,21 @@ test('SDK refuses bridge-only access to the loopback OIDC issuer',()=>{
     assert.equal(reply.ok,false);
     assert.equal(reply.code,'COMPOSE_OIDC_TOPOLOGY_UNSUPPORTED');
   } finally {rmSync(directory,{recursive:true,force:true});}
+});
+
+
+test('DSM ingress and native hosting agree without exposing a gateway port',()=>{
+  const prefix='/synopkgland/SynoPkgPaperlessNgx';
+  assert.deepEqual(manifest.identity_gateway.ingress,{path:prefix+'/'});
+  assert.equal(manifest.identity_gateway.listen,undefined);
+  assert.equal(manifest.entry,'app-privilege');
+  assert.equal(manifest.identity_gateway.mode,'oidc');
+  assert.deepEqual(manifest.identity_gateway.oidc.clients[0].redirect_paths,['/accounts/oidc/dsm/login/callback/']);
+  const env=compose.services.webserver.environment;
+  assert.equal(env.PAPERLESS_FORCE_SCRIPT_NAME,prefix);
+  assert.equal(env.PAPERLESS_STATIC_URL,prefix+'/static/');
+  assert.equal(env.GRANIAN_URL_PATH_PREFIX,prefix);
+  assert.equal(manifest.compose.web.health.path,prefix+'/favicon.ico');
+  assert.ok(compose.services.webserver.healthcheck.test[1].endsWith(prefix+'/favicon.ico'));
+  assert.ok(compose.services.webserver.healthcheck.start_period);
 });
