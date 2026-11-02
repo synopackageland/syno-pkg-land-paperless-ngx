@@ -13,11 +13,10 @@ Health checks use the prefixed favicon path and allow time for database startup.
 Gateway callback and API exception declarations remain relative to the namespace.
 No upstream source or container image is modified.
 
-CLI 0.43.0 and templates 0.38.0 are pinned. The requested latest npm SDK 0.43.1
-has no matching Go module tag at validation time, so CLI check/build cannot fetch
-it. This candidate is not installable or accepted until that dependency is
-available or a supported SDK version is chosen. Device results below describe
-older builds only.
+CLI 0.43.0, templates 0.38.0 and SDK/App 0.43.1 are pinned to published
+releases. The x86_64 package passes local tests, check, build and inspect.
+Device acceptance for this candidate is recorded in [validation](docs/validation.md).
+Results in the older sections below apply to their original builds.
 
 ## 3.4.0-0003: CLI and SDK rebuild
 

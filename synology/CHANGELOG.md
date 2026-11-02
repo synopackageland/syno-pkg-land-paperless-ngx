@@ -6,7 +6,8 @@
 - Configure native Paperless static, script-name and Granian path prefixes
 - Preserve OIDC, App privileges, native API authentication and retained storage
 - Update existing browser scenarios to the namespace and add assets/API/WebSocket coverage
-- Pin CLI 0.43.0, templates 0.38.0 and SDK/App 0.43.1; matching Go tag is pending
+- Pin CLI 0.43.0, templates 0.38.0 and SDK/App 0.43.1
+- Validate in-place upgrade, retained document content and focused browser scenarios
 
 ## 3.4.0-0003
 
