@@ -113,8 +113,8 @@ entire volume with the package stopped, including PostgreSQL and media together.
 Private named volumes plus `storage_init` are the supported platform model.
 At installation, accept the dedicated **SynoPkgPaperlessNgx** Shared Folder for
 **consume**. DSM creates it with package-account **Read/Write** permission.
-An optional existing folder must already grant the required package access;
-the install wizard validates it before continuing.
+The wizard validates an optional existing folder for supported local storage;
+DSM grants the declared package-account Read/Write access without a prior grant.
 The nonroot container mounts it at `/consume`; the native consumer polls every
 five seconds for reliable host-folder changes. Imported files are removed, so
 use a dedicated inbox and keep backups. Files must grant the package account
