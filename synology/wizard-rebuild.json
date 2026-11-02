@@ -1,0 +1,46 @@
+{
+  "package": "SynoPkgPaperlessNgx",
+  "previousVersion": "3.4.0-0005",
+  "version": "3.4.0-0006",
+  "cli": "0.47.4",
+  "sdk": "0.46.1",
+  "sdkChanged": false,
+  "uiChanged": false,
+  "templates": "0.38.0",
+  "architectures": [
+    "x86_64"
+  ],
+  "artifacts": [
+    {
+      "name": "SynoPkgPaperlessNgx-3.4.0-0006-x86_64.spk",
+      "sha256": "86c8c808f379002f95de5009cbafc07ccbcca286c3c8d444efa97d2e06b0b258",
+      "size": 38910976
+    }
+  ],
+  "validation": {
+    "check": "passed",
+    "build": "passed",
+    "inspect": {
+      "passed": true,
+      "findings": [],
+      "dsmOk": true
+    },
+    "publicScan": {
+      "status": "passed",
+      "scope": [
+        "synology/",
+        "decoded SPK members"
+      ],
+      "externalDenylist": true,
+      "npmRegistry": "https://registry.npmjs.org/"
+    },
+    "tests": "not run as requested",
+    "nasInstalls": "not run",
+    "liveChecks": "not run"
+  },
+  "approvalRetention": {
+    "status": "unknown",
+    "baselineInspectCode": "APPROVAL_BASELINE_INVALID",
+    "reason": "Previous released SPK was rejected by the current inspector for its legacy install_uifile declaration; no runtime approval retention is claimed"
+  }
+}
