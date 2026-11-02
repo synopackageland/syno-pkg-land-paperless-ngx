@@ -24,12 +24,12 @@ for(const step of ['restart','upgrade','reinstall-keep'] as const) {
       if(process.env.PAPERLESS_E2E_TRUST_CERTIFICATE==='1') {
         const cdp=await paperless.context().newCDPSession(paperless);
         await cdp.send('Security.setIgnoreCertificateErrors',{ignore:true});
-        const gateway=new URL(page.url());gateway.port='28993';gateway.pathname='/';gateway.search='';
+        const gateway=new URL(page.url());gateway.pathname='/synopkgland/SynoPkgPaperlessNgx/';gateway.search='';
         await paperless.goto(gateway.href,{waitUntil:'domcontentloaded'});
       }
-      await expect.poll(()=>paperless.evaluate(async()=>(await fetch('/api/profile/')).status),{timeout:90_000}).toBe(200);
+      await expect.poll(()=>paperless.evaluate(async()=>(await fetch('/synopkgland/SynoPkgPaperlessNgx/api/profile/')).status),{timeout:90_000}).toBe(200);
       const actual=await paperless.evaluate(async()=>{
-        const r=await fetch('/api/documents/?ordering=id');
+        const r=await fetch('/synopkgland/SynoPkgPaperlessNgx/api/documents/?ordering=id');
         if(!r.ok) throw new Error('Document inventory request failed');
         return (await r.json()).results.map((d:any)=>({id:d.id,content:d.content}));
       });

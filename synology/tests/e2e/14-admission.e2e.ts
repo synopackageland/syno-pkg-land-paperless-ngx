@@ -27,7 +27,7 @@ test('DSM App privileges admit a member and return 403 after explicit denial',
   if(!profile)throw new Error('Run the member identity setup first to save a live shared DSM profile');
   profile.cookies=profile.cookies.filter((c:any)=>['id','did','_SSID','stay_login'].includes(c.name));
   profile.origins=[];
-  const gateway=new URL(url);gateway.port='28993';gateway.pathname='/';gateway.search='';
+  const gateway=new URL(url);gateway.pathname='/synopkgland/SynoPkgPaperlessNgx/';gateway.search='';
   async function probe() {
    const context=await admin.context().browser()!.newContext({storageState:profile,ignoreHTTPSErrors:process.env.PAPERLESS_E2E_TRUST_CERTIFICATE==='1'});
    try {
@@ -37,9 +37,9 @@ test('DSM App privileges admit a member and return 403 after explicit denial',
     const response=await page.goto(gateway.href,{waitUntil:'domcontentloaded',timeout:15_000});
     await page.waitForFunction(()=>document.querySelector('[data-error-code]')||document.querySelector('#userDropdown'),{timeout:15_000});
     const error=await page.evaluate(()=>document.querySelector('[data-error-code]')?.getAttribute('data-error-code'));
-    const status=error?navigationStatus:await page.evaluate(async()=>(await fetch('/api/profile/')).status);
+    const status=error?navigationStatus:await page.evaluate(async()=>(await fetch('/synopkgland/SynoPkgPaperlessNgx/api/profile/')).status);
     const identity=error?undefined:await page.evaluate(async()=>{
-     const p=await fetch('/api/profile/').then(r=>r.json());
+     const p=await fetch('/synopkgland/SynoPkgPaperlessNgx/api/profile/').then(r=>r.json());
      return {hasPassword:p.has_usable_password,providers:p.social_accounts.map((a:any)=>a.provider)};
     });
     const result={profile:status,error,identity};
