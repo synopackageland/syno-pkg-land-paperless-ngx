@@ -4,8 +4,8 @@
     "commit": "ced3cf9303e08648e6fa80d35b9307d97e32cfd1",
     "source": "https://github.com/paperless-ngx/paperless-ngx"
   },
-  "spk": "SynoPkgPaperlessNgx-3.4.0-0003-x86_64.spk",
-  "spk_sha256": "8a31d5b35d8216e1534be59373d482a97c443c62e24c7ab79f1a3ee69baddff6",
+  "spk": "SynoPkgPaperlessNgx-3.4.0-0004-x86_64.spk",
+  "spk_sha256": "15ff26d9b1ff7d4927b835487e8e2f1d673553431d26bd6da4260a4c3376d4a2",
   "images": [
     {
       "source": "docker.io/library/postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382",
@@ -27,10 +27,10 @@
     }
   ],
   "toolchain": {
-    "cli": "0.42.2",
-    "templates": "0.37.0",
-    "sdk": "0.42.0",
-    "app": "0.42.0",
+    "cli": "0.43.0",
+    "templates": "0.38.0",
+    "sdk": "0.43.1",
+    "app": "0.43.1",
     "ui": null,
     "executorTag": "executor/v0.39.0",
     "publishable": true,

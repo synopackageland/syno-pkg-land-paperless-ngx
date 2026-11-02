@@ -5,6 +5,9 @@ services:
       - /usr/local/bin/python3
       - /var/tmp/paperless/bootstrap.py
     environment:
+      PAPERLESS_FORCE_SCRIPT_NAME: /synopkgland/SynoPkgPaperlessNgx
+      PAPERLESS_STATIC_URL: /synopkgland/SynoPkgPaperlessNgx/static/
+      GRANIAN_URL_PATH_PREFIX: /synopkgland/SynoPkgPaperlessNgx
       PAPERLESS_PORT: "28992"
       PAPERLESS_DATA_DIR: /var/tmp/paperless/data
       PAPERLESS_MEDIA_ROOT: /var/tmp/paperless/media
@@ -51,9 +54,10 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
-        - curl -fsS http://127.0.0.1:28992/favicon.ico
+        - curl -fsS http://127.0.0.1:28992/synopkgland/SynoPkgPaperlessNgx/favicon.ico
       interval: 30s
-      retries: 5
+      retries: 10
+      start_period: 180s
   db:
     image: docker.io/library/postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382
     entrypoint:
