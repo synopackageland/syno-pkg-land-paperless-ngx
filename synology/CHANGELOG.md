@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.4.0-0005
+
+- Use CLI 0.47.1 and SDK/App 0.46.1 for existing shared-folder grants through DSM data-share and Package Center upgrade dispatch
+- Retain the upstream application, data layout and entry policy
+- Shared folders, files and package-account ACLs are retained on uninstall by DSM
+
 ## 3.4.0-0004
 
 - Declare the fixed DSM path and remove the public gateway port
