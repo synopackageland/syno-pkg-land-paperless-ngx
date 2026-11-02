@@ -9,13 +9,13 @@ for(const session of ['admin']) {
  test(`OIDC ${session} creates a distinct native account without local password`,{session,timeout:180_000},async ({app})=>{
   await desktop(app);const dsm=dsmPage();const page=await dsm.context().newPage();
   if(process.env.PAPERLESS_E2E_TRUST_CERTIFICATE==='1'){const c=await page.context().newCDPSession(page);await c.send('Security.setIgnoreCertificateErrors',{ignore:true});}
-  const origin=new URL(dsm.url());origin.port='28993';origin.pathname='/';origin.search='';
+  const origin=new URL(dsm.url());origin.pathname='/synopkgland/SynoPkgPaperlessNgx/';origin.search='';
   try{
    await page.goto(origin.href,{waitUntil:'domcontentloaded'});
-   await expect.poll(()=>page.evaluate(async()=>(await fetch('/api/profile/')).status),{timeout:90_000}).toBe(200);
+   await expect.poll(()=>page.evaluate(async()=>(await fetch('/synopkgland/SynoPkgPaperlessNgx/api/profile/')).status),{timeout:90_000}).toBe(200);
    const result=await page.evaluate(async()=>{
-    const p=await fetch('/api/profile/').then(r=>r.json());
-    const ui=await fetch('/api/ui_settings/').then(r=>r.json());
+    const p=await fetch('/synopkgland/SynoPkgPaperlessNgx/api/profile/').then(r=>r.json());
+    const ui=await fetch('/synopkgland/SynoPkgPaperlessNgx/api/ui_settings/').then(r=>r.json());
     return {hasPassword:p.has_usable_password,providers:p.social_accounts.map((a:any)=>a.provider),ui};
    });
    expect(result.hasPassword).toBe(false);

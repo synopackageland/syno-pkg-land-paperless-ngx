@@ -1,5 +1,24 @@
 # Paperless-ngx for DSM
 
+## 3.4.0-0004: fixed DSM path ingress
+
+The App declares `/synopkgland/SynoPkgPaperlessNgx/` on DSM's HTTPS origin.
+OIDC, `app-privilege`, role mappings, native API authentication and the dedicated
+consume share remain in place. Only the loopback OIDC issuer port is configurable;
+the public gateway port is removed. The upstream listener stays private.
+
+Paperless uses native `PAPERLESS_FORCE_SCRIPT_NAME` and `PAPERLESS_STATIC_URL`
+settings, with `GRANIAN_URL_PATH_PREFIX` explicitly set to the same namespace.
+Health checks use the prefixed favicon path and allow time for database startup.
+Gateway callback and API exception declarations remain relative to the namespace.
+No upstream source or container image is modified.
+
+CLI 0.43.0 and templates 0.38.0 are pinned. The requested latest npm SDK 0.43.1
+has no matching Go module tag at validation time, so CLI check/build cannot fetch
+it. This candidate is not installable or accepted until that dependency is
+available or a supported SDK version is chosen. Device results below describe
+older builds only.
+
 ## 3.4.0-0003: CLI and SDK rebuild
 
 Pins CLI 0.42.2, templates 0.37.0 and SDK/App 0.42.0. The SDK's published
@@ -83,8 +102,8 @@ entrypoint, migrations, consumer, task queue, scheduler and web server.
 PostgreSQL and Redis use private Unix sockets on a package-namespaced named
 volume. Both TCP listeners are disabled. Paperless has explicit host networking
 because the SDK's OIDC issuer is NAS loopback; its only HTTP listener is forced
-to `127.0.0.1:28992`. The SDK exposes HTTPS on port 28993 and the loopback OIDC
-issuer on 28991. No app-owned root helper or Docker socket is installed.
+to `127.0.0.1:28992`. DSM serves the fixed App path over its own HTTPS listener; the OIDC issuer
+uses loopback port 28991 by default. No app-owned root helper or Docker socket is installed.
 
 The named volume stores `paperless/{data,media,export,tessdata}`, the
 Django signing key, PostgreSQL data, Redis data and private sockets under
@@ -154,7 +173,7 @@ Physical mobile clients are unverified.
 
 ## Build and tests
 
-Dependency pins are CLI 0.42.2, templates 0.37.0 and SDK/App 0.42.0.
+Dependency pins are CLI 0.43.0, templates 0.38.0 and SDK/App 0.43.1.
 The app serves upstream Angular UI; it adds no Vue UI dependency.
 See `toolchain.json` and `package-lock.json`.
 
@@ -166,7 +185,8 @@ npm test
 ```
 
 Build with the pinned released dependencies. No source overrides are used.
-Run all checks and builds on Linux. The final artifact passed the A/N/X smoke after installation.
+Run all checks and builds on Linux. Record A/N/X acceptance against the final
+installed artifact; older-build results do not validate this migration.
 
 The production build command deliberately rejects source overrides.
 Use `python3 synology/scripts/build.py` with `SPL_BUILD_SSH`,

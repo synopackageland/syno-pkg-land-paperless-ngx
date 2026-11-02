@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.4.0-0004
+
+- Declare the fixed DSM path and remove the public gateway port
+- Configure native Paperless static, script-name and Granian path prefixes
+- Preserve OIDC, App privileges, native API authentication and retained storage
+- Update existing browser scenarios to the namespace and add assets/API/WebSocket coverage
+- Pin CLI 0.43.0, templates 0.38.0 and SDK/App 0.43.1; matching Go tag is pending
+
 ## 3.4.0-0003
 
 - Rebuild with CLI 0.42.2, SDK/App 0.42.0 and templates 0.37.0

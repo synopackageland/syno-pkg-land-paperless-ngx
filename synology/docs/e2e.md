@@ -7,7 +7,7 @@ containing `{username,password}`, a private `DSM_E2E_PROFILE_DIR`, an ignored
 `DSM_E2E_OUTPUT_DIR`, and `DSM_E2E_URL` for the caller's authorized NAS tunnel.
 Grant the normal account this App's Application Privilege before running.
 
-CLI 0.41.9 accepts self-signed DSM and gateway certificates for A/N/X.
+CLI 0.43.0 accepts self-signed DSM certificates for A/N/X.
 Set the reachable DSM HTTPS URL privately; no App-side certificate bypass is
 required. The script uses `DSM_E2E_URL` directly and never opens another tunnel.
 
@@ -16,18 +16,24 @@ cd synology
 npm run e2e:smoke
 ```
 
-If connectivity requires SSH forwarding, forward both the NAS's actual DSM
-HTTPS port and its selected gateway HTTPS port. Preserve those port numbers on
-an isolated loopback hostname: native OIDC redirects use the NAS's DSM port.
-Point `DSM_E2E_URL` at that HTTPS origin, and close the caller-owned tunnel when
-the run finishes. A random local DSM port alone does not cover those redirects.
-Keep the smoke test and CLI helper unchanged.
+If connectivity requires SSH forwarding, forward the NAS's configured DSM
+HTTPS port to the same port on an isolated loopback address. Native OIDC redirects
+use that DSM port. The fixed path uses the DSM origin and needs no gateway port
+forwarding. Point `DSM_E2E_URL` at that HTTPS origin and close the caller-owned
+tunnel after the run.
 
 The CLI helper checks administrator (A), permitted normal user (N), and a fresh
 signed-out context (X). The ready marker is the upstream Angular dashboard's
 `pngx-dashboard pngx-page-header`. A skipped N is incomplete acceptance.
 The smoke does not install packages or change privileges. Run against the final
 installed SPK; test discovery alone is not device acceptance.
+
+The existing scenarios use the fixed path for browser navigation and native API
+requests. `11-ingress.e2e.ts` checks the Angular base URL, scripts, profile API,
+main pages and a native WebSocket handshake. Select relevant scenarios for an
+in-place migration: uninstall and reinstall scenarios remain explicitly excluded
+when the caller prohibits removal. A missing SDK build is a blocker, not device
+acceptance.
 
 The full suite below is retained independently.
 
