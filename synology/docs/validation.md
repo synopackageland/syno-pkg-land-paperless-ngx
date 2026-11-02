@@ -148,3 +148,57 @@ produced the SPK, and `synopkgland inspect` reported no findings. Build approval
 retention was reported as unknown because no baseline SPK was supplied. No NAS
 or e2e test was run for this build; the Docker-backed acceptance above refers to
 earlier builds only.
+
+
+## 3.4.0-0004 fixed DSM path acceptance
+
+The x86_64 candidate uses published CLI 0.43.0, SDK/App 0.43.1 and templates
+0.38.0, with the same upstream version and immutable image references. The SDK
+Go tag resolves to `6f405971f6bb35ffc02004990fdcbfc370fb1ac3`. No source override
+or upstream patch was used. The current SPK hash and image proofs are in
+`build-proof.json`.
+
+Five Python and five Node tests, render freshness, check, build and inspect pass.
+Inspect reports no findings. Source, commit and SPK leak scans pass. The build
+uses the build host's CA trust and configured registry metadata mirror; locked
+image references remain the official repositories and their pinned digests.
+
+A DSM 7.3.2 x86_64 device was upgraded in place from 3.4.0-0003. Native install
+readback reports action `upgrade`, version 3.4.0-0004 and status `running`.
+The active nginx configuration contains the fixed package location. The old
+public gateway port no longer listens; the issuer and native upstream remain
+loopback-only. Installer port definitions contain only the OIDC issuer.
+
+A scanned document was uploaded and OCR-completed on the old build before
+upgrade. Its exact ID, title and OCR content are unchanged afterward. The retained
+state volume and selected consume mount are unchanged. No uninstall, data
+removal, account change or Container Manager restart was performed.
+
+Candidate browser evidence covers:
+
+- A/N/X smoke: administrator and permitted ordinary user reach the fixed-path
+  dashboard, while a fresh signed-out browser reaches DSM sign-in
+- Fresh DSM-only cookies traverse native OIDC login and callback under the package
+  prefix without a second password; native identities retain no usable password
+- Angular base URL, JavaScript, documents/tags/settings pages, profile API and a
+  native WebSocket handshake work under the prefix
+- Cookie/CSRF-protected scanned-PDF upload, OCR search and UI PDF download work
+- The selected host consume share imports a distinct raster PDF
+- Native token API requests without DSM cookies return 200 for a valid token and
+  401 for missing/invalid tokens
+- Explicit App allow/deny produces admission/403 and restores the exact prior rule
+- Native logout returns 302 and reopening rotates the session without a password
+
+The related existing scenarios have passing records across focused runs. An
+initial API scenario incorrectly expected an anonymous browser to reach upstream
+OIDC before DSM admission; it now checks DSM sign-in and separately checks a
+fresh admitted native OIDC callback. An initial consume fixture transfer failed
+because the NAS requires legacy SCP; the private fixture driver was corrected.
+These failed runs remain in private evidence and are not presented as a single
+all-green initial batch.
+
+Browser evidence accepts the test device's self-signed certificate. This is not
+external-provider, trusted first-open TLS, mobile, ARM or complete lifecycle
+acceptance. Destructive reinstall/uninstall scenarios were excluded. Existing
+ordinary-user document permissions remain upstream-controlled. No release or
+catalog publication was performed.

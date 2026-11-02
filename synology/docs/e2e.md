@@ -35,6 +35,10 @@ in-place migration: uninstall and reinstall scenarios remain explicitly excluded
 when the caller prohibits removal. A missing SDK build is a blocker, not device
 acceptance.
 
+The native API scenario checks API tokens without DSM cookies, anonymous DSM
+admission and a fresh admitted OIDC callback independently. Anonymous navigation
+must not be treated as already admitted by DSM.
+
 The full suite below is retained independently.
 
 The suite uses released `e2e` and the CLI's DSM login/session helpers. It reuses
