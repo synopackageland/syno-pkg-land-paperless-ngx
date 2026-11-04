@@ -210,7 +210,7 @@ with no findings, official npm registry verification and scoped source/SPK scans
 No NAS upgrade or browser acceptance was repeated for this version.
 See `shared-folder-release.json` for exact SPK hashes and bounded evidence.
 Uninstall retains shared-folder data and the package-account ACL by DSM design.
-# 3.4.0-0009 OIDC scheme acceptance
+## 3.4.0-0009 OIDC scheme acceptance
 
 Upstream remains 3.4.0. The published CLI 0.48.13, templates 0.40.1 and SDK/App
 0.50.7 produce the x86_64 release SPK recorded in `build-proof.json`. The pinned
@@ -238,4 +238,3 @@ three-pass run. No upstream fix or privileged diagnostic workaround was added.
 No data, accounts or system settings were modified by the acceptance driver.
 No full lifecycle suite, reboot or additional architecture was tested.
 Release publication remains separate from this candidate validation.
-
