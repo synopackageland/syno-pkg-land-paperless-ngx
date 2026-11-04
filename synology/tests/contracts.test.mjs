@@ -101,3 +101,15 @@ test('DSM ingress and native hosting agree without exposing a gateway port',()=>
   assert.ok(compose.services.webserver.healthcheck.test[1].endsWith(prefix+'/favicon.ico'));
   assert.ok(compose.services.webserver.healthcheck.start_period);
 });
+
+test('OIDC preserves the gateway request scheme instead of forcing HTTPS',()=>{
+  const env=compose.services.webserver.environment;
+  assert.equal(env.PAPERLESS_ACCOUNT_DEFAULT_HTTP_PROTOCOL,'http');
+  assert.deepEqual(JSON.parse(env.PAPERLESS_PROXY_SSL_HEADER),['HTTP_X_FORWARDED_PROTO','https']);
+  assert.equal(env.PAPERLESS_TRUSTED_PROXIES,'127.0.0.1');
+  assert.equal(env.PAPERLESS_USE_X_FORWARD_HOST,'true');
+  assert.equal(env.PAPERLESS_USE_X_FORWARD_PORT,'true');
+  assert.equal(env.PAPERLESS_URL,undefined);
+  assert.equal(env.PAPERLESS_ACCOUNT_COOKIE_SECURE,undefined);
+  assert.equal(env.PAPERLESS_SESSION_COOKIE_SECURE,undefined);
+});

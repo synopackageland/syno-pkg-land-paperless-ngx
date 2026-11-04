@@ -30,6 +30,9 @@ services:
       PAPERLESS_SOCIAL_ACCOUNT_SYNC_SUPERUSER_GROUP: admin
       PAPERLESS_SOCIAL_ACCOUNT_SYNC_STAFF_GROUP: admin
       PAPERLESS_ACCOUNT_EMAIL_VERIFICATION: none
+      # allauth only forces a scheme when this is https. With http it preserves
+      # request.is_secure(), including the gateway's trusted forwarded protocol.
+      PAPERLESS_ACCOUNT_DEFAULT_HTTP_PROTOCOL: http
       PAPERLESS_TRUSTED_PROXIES: 127.0.0.1
       PAPERLESS_USE_X_FORWARD_HOST: "true"
       PAPERLESS_USE_X_FORWARD_PORT: "true"

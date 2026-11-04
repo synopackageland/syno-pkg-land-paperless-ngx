@@ -1,5 +1,18 @@
 # Paperless-ngx for DSM
 
+## 3.4.0-0009: request-aware OIDC callbacks
+
+Open the App over either HTTP or HTTPS on DSM's fixed package path. HTTP retains
+the SDK security warning and remains available without a forced HTTPS redirect.
+The loopback identity gateway supplies the forwarded protocol, host and port.
+`PAPERLESS_ACCOUNT_DEFAULT_HTTP_PROTOCOL=http` disables allauth's implicit HTTPS
+override while preserving HTTPS requests through `PAPERLESS_PROXY_SSL_HEADER`.
+Removing the protocol setting would restore upstream's forced HTTPS default.
+
+Upstream remains 3.4.0 with the same official images, SDK 0.50.7 and nonroot
+execution. See [scheme regression checks](docs/e2e.md#oidc-request-scheme-regression)
+and [validation](docs/validation.md) for the bounded acceptance evidence.
+
 ## 3.4.0-0005: fixed DSM path ingress
 
 The App declares `/synopkgland/SynoPkgPaperlessNgx/` on DSM's HTTPS origin.
