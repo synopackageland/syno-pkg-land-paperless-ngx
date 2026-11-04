@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.4.0-0009
+
+- en: Preserve HTTP and HTTPS in OIDC sign-in callbacks
+- zh-TW: OIDC 登入回呼依照開啟時的 HTTP 或 HTTPS 協定
+- zh-CN: OIDC 登录回调遵循打开时的 HTTP 或 HTTPS 协议
+- ja: OIDC ログインのコールバックで HTTP と HTTPS を維持
+- ko: OIDC 로그인 콜백에서 HTTP 및 HTTPS 유지
+- de: HTTP und HTTPS bei OIDC-Anmelderückrufen beibehalten
+- fr: Conserver HTTP et HTTPS dans les rappels de connexion OIDC
+
 ## 3.4.0-0008
 
 - en: Fix DSM sign-in when opening over HTTP
