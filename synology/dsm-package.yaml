@@ -1,19 +1,19 @@
 schema: 2
 package: SynoPkgPaperlessNgx
 version: 3.4.0
-build: 7
+build: 8
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Paperless-ngx
 metadata:
   changelog:
-    en: Update DSM sign-in redirects and localized gateway error pages
-    zh-TW: 更新 DSM 登入導向與在地化閘道錯誤頁面
-    zh-CN: 更新 DSM 登录跳转与本地化网关错误页面
-    ja: DSM サインインへのリダイレクトとローカライズされたゲートウェイエラーページを更新
-    ko: DSM 로그인 리디렉션 및 현지화된 게이트웨이 오류 페이지 업데이트
-    de: DSM-Anmeldeweiterleitungen und lokalisierte Gateway-Fehlerseiten aktualisieren
-    fr: Mettre à jour les redirections de connexion DSM et les pages d’erreur localisées de la passerelle
+    en: Fix DSM sign-in when opening over HTTP
+    zh-TW: 修正以 HTTP 開啟時的 DSM 登入
+    zh-CN: 修复通过 HTTP 打开时的 DSM 登录
+    ja: HTTP で開いた場合の DSM ログインを修正
+    ko: HTTP로 열 때 DSM 로그인 수정
+    de: DSM-Anmeldung beim Öffnen über HTTP korrigiert
+    fr: Corriger la connexion DSM lors de l’ouverture via HTTP
   maintainer_url: https://github.com/paperless-ngx/paperless-ngx
   distributor: Syno Package Land
   distributor_url: https://synopkgland.com/
@@ -30,7 +30,7 @@ install:
     key: consume
     permission: rw
 compose:
-  sdk: 0.49.3
+  sdk: 0.50.7
   shares:
     consume:
       select: install
@@ -221,7 +221,7 @@ compose:
 identity_gateway:
   upstream_auth_paths:
     - /api
-  sdk: 0.49.3
+  sdk: 0.50.7
   mode: oidc
   access: dsm-users
   ingress:
