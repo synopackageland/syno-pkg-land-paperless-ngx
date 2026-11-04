@@ -1,5 +1,22 @@
 # Device acceptance
 
+## OIDC request scheme regression
+
+Install `tests/requirements-oidc.txt` in an isolated Python environment, then run
+`python tests/oidc_scheme_test.py`. This exercises Django and allauth's actual
+absolute-URI builder with the wrapper's Compose environment. It checks HTTP,
+HTTPS and HTTP again, including forwarded host/port, and reproduces the forced
+HTTPS failure with the upstream default. The dependencies match the upstream
+lockfile. Run `npm test` separately for the bootstrap and package contracts.
+
+On an authorized device, stop/start only this package, then open its fixed DSM
+path in fresh browser contexts over HTTP, HTTPS and HTTP in that order. Sign in
+to DSM, acknowledge any HTTP warning, and require the native dashboard and a
+successful OIDC callback using the opening scheme on every pass. Record the
+callback scheme and status without query strings, authorization codes or cookies.
+Save screenshots privately. HTTP must remain available without a forced HTTPS
+redirect. Self-signed certificate acceptance belongs only in the test browser.
+
 ## Minimal App-open smoke
 
 Set private mode-600 `DSM_E2E_ACCOUNT_ADMIN` and `DSM_E2E_ACCOUNT_NORMAL` files

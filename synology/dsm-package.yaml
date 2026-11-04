@@ -1,19 +1,19 @@
 schema: 2
 package: SynoPkgPaperlessNgx
 version: 3.4.0
-build: 8
+build: 9
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Paperless-ngx
 metadata:
   changelog:
-    en: Fix DSM sign-in when opening over HTTP
-    zh-TW: 修正以 HTTP 開啟時的 DSM 登入
-    zh-CN: 修复通过 HTTP 打开时的 DSM 登录
-    ja: HTTP で開いた場合の DSM ログインを修正
-    ko: HTTP로 열 때 DSM 로그인 수정
-    de: DSM-Anmeldung beim Öffnen über HTTP korrigiert
-    fr: Corriger la connexion DSM lors de l’ouverture via HTTP
+    en: Preserve HTTP and HTTPS in OIDC sign-in callbacks
+    zh-TW: OIDC 登入回呼依照開啟時的 HTTP 或 HTTPS 協定
+    zh-CN: OIDC 登录回调遵循打开时的 HTTP 或 HTTPS 协议
+    ja: OIDC ログインのコールバックで HTTP と HTTPS を維持
+    ko: OIDC 로그인 콜백에서 HTTP 및 HTTPS 유지
+    de: HTTP und HTTPS bei OIDC-Anmelderückrufen beibehalten
+    fr: Conserver HTTP et HTTPS dans les rappels de connexion OIDC
   maintainer_url: https://github.com/paperless-ngx/paperless-ngx
   distributor: Syno Package Land
   distributor_url: https://synopkgland.com/

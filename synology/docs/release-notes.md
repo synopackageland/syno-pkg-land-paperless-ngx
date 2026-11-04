@@ -7,6 +7,13 @@ Approval retention is unknown because the current inspector rejects the previous
 
 # Release notes
 
+## 3.4.0-0009
+
+OIDC sign-in callbacks preserve the HTTP or HTTPS scheme used to open the App.
+The loopback identity gateway supplies the trusted forwarded protocol.
+HTTP remains available with the existing security warning; no HTTPS redirect is forced.
+Upstream remains 3.4.0, with the same pinned official images and nonroot execution.
+
 ## 3.4.0-0003: CLI and SDK rebuild candidate
 
 Built with CLI 0.42.2, SDK/App 0.42.0 and templates 0.37.0; the published SDK
