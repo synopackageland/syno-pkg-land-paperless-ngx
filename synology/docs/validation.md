@@ -210,3 +210,31 @@ with no findings, official npm registry verification and scoped source/SPK scans
 No NAS upgrade or browser acceptance was repeated for this version.
 See `shared-folder-release.json` for exact SPK hashes and bounded evidence.
 Uninstall retains shared-folder data and the package-account ACL by DSM design.
+## 3.4.0-0009 OIDC scheme acceptance
+
+Upstream remains 3.4.0. The published CLI 0.48.13, templates 0.40.1 and SDK/App
+0.50.7 produce the x86_64 release SPK recorded in `build-proof.json`. The pinned
+official images, entry policy and nonroot execution are unchanged. Bootstrap
+tests (5), package contracts (6), actual Django/allauth scheme tests (2), render
+freshness, check, build and inspect pass. Inspect reports no findings. Scoped
+source and SPK privacy scans pass.
+
+An in-place DSM upgrade from 3.4.0-0008 to 3.4.0-0009 reaches running with
+status code 0. Three fresh browser contexts open the fixed package path over
+HTTP, HTTPS and HTTP, in that order. Each follows native OIDC, receives a 302
+callback with the opening scheme and port, and reaches the upstream dashboard.
+The HTTP bootstrap warning is present; JavaScript was disabled only in a
+separate warning capture to hold the transient page before its automatic handoff.
+Browser-only acceptance of the test certificate does not establish trusted TLS.
+
+Additional lifecycle probing found initial start failures (DSM 4580/status 272)
+after a native stop. Read-only container inspection later showed the web service
+healthy; a subsequent native start succeeded with status 0 before browser
+acceptance. The precise cause is unknown because private daemon logs were
+inaccessible to the nonroot account. This is not a clean first-attempt restart
+pass. Initial browser-driver navigation races were corrected before the final
+three-pass run. No upstream fix or privileged diagnostic workaround was added.
+
+No data, accounts or system settings were modified by the acceptance driver.
+No full lifecycle suite, reboot or additional architecture was tested.
+Release publication remains separate from this candidate validation.
