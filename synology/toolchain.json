@@ -5,6 +5,11 @@
   "app": "0.50.7",
   "ui": null,
   "executorTag": "executor/v0.49.5",
-  "publishable": true,
-  "goToolchain": "go1.26.10"
+  "publishable": false,
+  "goToolchain": "go1.26.10",
+  "nativeHttp": {
+    "status": "requires matching SDK and CLI releases",
+    "registryVersion": 3,
+    "fileFlows": "requires CLI file flow integration"
+  }
 }

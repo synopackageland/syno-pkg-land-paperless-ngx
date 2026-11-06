@@ -1,0 +1,961 @@
+{
+  "tools": [
+    {
+      "name": "correspondents.get",
+      "description": "Get correspondent; native permissions apply",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "name": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 128
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "invoke",
+        "method": "correspondents.get"
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "correspondents.list",
+      "description": "List correspondent; native permissions apply",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "items",
+          "incomplete"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name"
+              ],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 128
+                }
+              }
+            }
+          },
+          "incomplete": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "continuation": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "paginate-http",
+        "method": "correspondents.list",
+        "pagination": {
+          "mode": "page",
+          "pageParam": "page",
+          "sizeParam": "page_size",
+          "items": "/results",
+          "next": "/next",
+          "pageSize": 25,
+          "maxPages": 40,
+          "maxItems": 1000,
+          "maxBytes": 16777216
+        }
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "document_types.get",
+      "description": "Get document type; native permissions apply",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "name": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 128
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "invoke",
+        "method": "document_types.get"
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "document_types.list",
+      "description": "List document type; native permissions apply",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "items",
+          "incomplete"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name"
+              ],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 128
+                }
+              }
+            }
+          },
+          "incomplete": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "continuation": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "paginate-http",
+        "method": "document_types.list",
+        "pagination": {
+          "mode": "page",
+          "pageParam": "page",
+          "sizeParam": "page_size",
+          "items": "/results",
+          "next": "/next",
+          "pageSize": 25,
+          "maxPages": 40,
+          "maxItems": 1000,
+          "maxBytes": 16777216
+        }
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "documents.get",
+      "description": "Read document metadata without OCR or notes",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "title": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 256
+          },
+          "correspondent": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "document_type": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "maxItems": 1000
+          },
+          "owner": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "correspondent",
+          "document_type",
+          "tags",
+          "owner"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "invoke",
+        "method": "documents.get"
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "documents.list",
+      "description": "List accessible documents",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024,
+            "writeOnly": true
+          },
+          "tags": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "correspondent": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "documentType": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": []
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "items",
+          "incomplete"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "title"
+              ],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 256
+                },
+                "content": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 8000
+                },
+                "notes": {
+                  "type": "array",
+                  "maxItems": 50
+                }
+              }
+            }
+          },
+          "incomplete": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "continuation": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "paginate-http",
+        "method": "documents.list",
+        "pagination": {
+          "mode": "page",
+          "pageParam": "page",
+          "sizeParam": "page_size",
+          "items": "/results",
+          "next": "/next",
+          "pageSize": 25,
+          "maxPages": 40,
+          "maxItems": 1000,
+          "maxBytes": 16777216
+        }
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "documents.metadata",
+      "description": "Read bounded original and archive file metadata",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "outputSchema": {
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "invoke",
+        "method": "documents.metadata"
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "documents.search",
+      "description": "Search documents by native full-text query and classification",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024,
+            "writeOnly": true
+          },
+          "tags": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "correspondent": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "documentType": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "items",
+          "incomplete"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "title"
+              ],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 256
+                },
+                "content": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 8000
+                },
+                "notes": {
+                  "type": "array",
+                  "maxItems": 50
+                }
+              }
+            }
+          },
+          "incomplete": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "continuation": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "paginate-http",
+        "method": "documents.search",
+        "pagination": {
+          "mode": "page",
+          "pageParam": "page",
+          "sizeParam": "page_size",
+          "items": "/results",
+          "next": "/next",
+          "pageSize": 25,
+          "maxPages": 40,
+          "maxItems": 1000,
+          "maxBytes": 16777216
+        }
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "documents.text",
+      "description": "Read complete OCR text up to 8000 characters; reject larger text",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "outputSchema": {
+        "type": "string",
+        "minLength": 0,
+        "maxLength": 8000
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "invoke",
+        "method": "documents.text"
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "notes.list",
+      "description": "Read notes; reject over 50 notes or 16000 response bytes",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "outputSchema": {
+        "type": "array",
+        "maxItems": 50,
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "note"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "note": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 16000
+            }
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "invoke",
+        "method": "notes.list"
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "tags.get",
+      "description": "Get tag; native permissions apply",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "name": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 128
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "invoke",
+        "method": "tags.get"
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "tags.list",
+      "description": "List tag; native permissions apply",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "items",
+          "incomplete"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name"
+              ],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 128
+                }
+              }
+            }
+          },
+          "incomplete": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "continuation": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "paginate-http",
+        "method": "tags.list",
+        "pagination": {
+          "mode": "page",
+          "pageParam": "page",
+          "sizeParam": "page_size",
+          "items": "/results",
+          "next": "/next",
+          "pageSize": 25,
+          "maxPages": 40,
+          "maxItems": 1000,
+          "maxBytes": 16777216
+        }
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "tasks.get",
+      "description": "Find the original upload task UUID and related document IDs",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+          }
+        },
+        "required": [
+          "taskId"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "items",
+          "incomplete"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "task_id",
+                "status",
+                "related_document_ids"
+              ],
+              "properties": {
+                "task_id": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 128
+                },
+                "status": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 64
+                },
+                "related_document_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "maxItems": 25
+                }
+              }
+            }
+          },
+          "incomplete": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "continuation": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "paginate-http",
+        "method": "tasks.get",
+        "pagination": {
+          "mode": "page",
+          "pageParam": "page",
+          "sizeParam": "page_size",
+          "items": "/results",
+          "next": "/next",
+          "pageSize": 25,
+          "maxPages": 40,
+          "maxItems": 1000,
+          "maxBytes": 16777216
+        }
+      },
+      "execution": "flow"
+    },
+    {
+      "name": "tasks.list",
+      "description": "List native tasks",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "items",
+          "incomplete"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "required": [
+                "task_id",
+                "status",
+                "related_document_ids"
+              ],
+              "properties": {
+                "task_id": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 128
+                },
+                "status": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 64
+                },
+                "related_document_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "maxItems": 25
+                }
+              }
+            }
+          },
+          "incomplete": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "continuation": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "ai": "read",
+      "flow": {
+        "type": "paginate-http",
+        "method": "tasks.list",
+        "pagination": {
+          "mode": "page",
+          "pageParam": "page",
+          "sizeParam": "page_size",
+          "items": "/results",
+          "next": "/next",
+          "pageSize": 25,
+          "maxPages": 40,
+          "maxItems": 1000,
+          "maxBytes": 16777216
+        }
+      },
+      "execution": "flow"
+    }
+  ]
+}

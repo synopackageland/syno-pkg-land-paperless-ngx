@@ -1,240 +1,46 @@
-# Validation record
+# Validation record: 3.4.0-0010
 
-Production candidate `3.3.3-0003`; packaging is reviewable, with remaining limits listed
-in [framework-gaps.md](framework-gaps.md). No Release or catalog publication.
+This native-token ctl candidate has local packaging validation only. It has not
+been installed on a NAS. No release or catalog publication is included.
+[Machine-readable evidence](../ctl-validation.json) records the artifact hash,
+exact development SDK/CLI source revisions, upstream image references and checks.
 
-## Provenance and local checks
+## Local evidence
 
-- Source release v3.3.3, commit `31caf01ae54db185fd29190a9ab73105a4b1ee90`.
-  The release tag is already an ancestor of the fork's development-history base.
-  No upstream file was changed by this integration.
-- Historical build 0003 used CLI/templates/SDK/App 0.21.0 and templates UI
-  0.12.5 with authorized **development source overrides**: SDK main
-  `fcbbf485ee5cd6565ce9ab491cd8b19a6ca34075`, CLI main
-  `7ef4fcea441f5ff5057196b40f607298f2b47d4b`, and published templates 0.21.0.
-  That historical artifact is not publishable. Released executor/v0.20.0 describes the
-  baseline only; source override builds use the snapshot's lifecycle payloads.
-  The current candidate has been rebuilt with all four released packages at
-  0.22.0, UI 0.12.5 and executor/v0.20.0, without source overrides or Go replace.
-- Official Paperless index
-  `sha256:dba0242c1df1843643df4eb50ce5639f3a7900f414879088fd5bed8eaf2d456d`.
-  Official Docker Hub and GHCR indexes agree. Built image config labels match
-  the exact release/version/source commit. `build-proof.json` records all three
-  official image references, platform config hashes and the SPK SHA-256.
-- Snapshot CLI check/build/inspect passed for build 0003; inspect has no findings
-  and explicitly reports `upstreamProtected: false`, issuer `dsm-users` and
-  issuer entry `app-privilege`. Released CLI acceptance applies only to 0002.
-- Linux focused gate: five bootstrap tests and four contract tests passed,
-  render freshness passed, Python compilation passed. The negative bridge/OIDC
-  control fails with `COMPOSE_OIDC_TOPOLOGY_UNSUPPORTED` as expected.
-- Public integration files and commit content are scanned before commit/push;
-  credentials, raw device logs, browser profiles and screenshots remain private.
+- Official Paperless 3.4.0 image and upstream source revision match
+  `ced3cf9303e08648e6fa80d35b9307d97e32cfd1`. The upstream source/UI, Compose image
+  pins, bootstrap, native OIDC and entry policy are unchanged.
+- 5 Python bootstrap tests, 6 packaging contract tests and 10 native ctl tests
+  pass. Coverage drift checks account for 144 UI/API surfaces.
+- Renderer freshness, v3 generation/check, manifest check and x86_64 build pass.
+  SPK inspect returns no findings. Packaged descriptor/inventory match generated
+  metadata, and packaged gateway retains OIDC, `app-privilege` and `/api`.
+- Native tests exercise the actual matching CLI executor/client with local
+  source-shaped fixtures: selected request bindings and readbacks, redacted
+  dry-runs, confirmation, bounded pagination/OCR/notes, original task UUID,
+  selected profile identity, separate DSM profiles, entry denial and non-replay.
+  These fixtures are not live native permission or browser acceptance.
+- Published dependency pins remain unchanged. Local validation uses matching
+  merged SDK/CLI sources with overrides. The candidate is non-publishable until
+  matching versions are actually released and selected.
 
-## Device behavior
+## Blocked and pending
 
-The original lifecycle rows below describe build 0002 unless superseded by the
-provider-only acceptance addendum. Build 0003 changes admission and storage;
-0002 results are not relabelled as new-candidate tests.
+- Real multipart upload and original download need CLI file-flow integration;
+  declarations are present and fail closed without that module.
+- Native empty-204 document/classification DELETE cannot currently satisfy the
+  CLI MIME contract. A regression fixture confirms rejection; those mutations
+  are not exposed. Notes DELETE returns 200 JSON and is covered locally.
+- Final merged-artifact verification must cover real profile modal/token UI,
+  native identity/permission isolation, original upload/task/OCR/download and
+  SHA-256/MIME, mutation readbacks, interrupted transfer and retained upgrade.
+- No final lifecycle, rootless runtime, storage, reboot, browser, object-isolation
+  or retained-upgrade result is claimed for this candidate. Older acceptance
+  remains in Git history and applies only to its original artifacts.
+- No baseline SPK was supplied to this development build; approval retention is
+  reported unknown. Resolve the final published artifact's approval comparison
+  during integration/release validation.
 
-Verified on DSM 7.3.2 with Container Manager 24.0.2, x86_64:
-
-| Scenario | Result and evidence boundary |
-| --- | --- |
-| Clean install | Native package installation succeeded; all three containers use the package UID/GID. |
-| Rootless | Main Paperless process has package UID/GID and zero effective capabilities; SDK plan drops all capabilities for all services. PostgreSQL and Redis rootfs are read-only. Paperless uses its official rootless s6 runtime with executable `/run` tmpfs. |
-| Network | Issuer 28991 and Paperless 28992 listen on 127.0.0.1; only native HTTPS gateway 28993 is public. PostgreSQL and Redis have no TCP listeners. |
-| Main menu OIDC | Actual DSM menu launch reaches upstream UI with no second password; authenticated profile API returns 200. |
-| Identity and roles | Administrator and ordinary account each have native OIDC provider `dsm`, numeric social subject, and no usable local password. SQL readback shows administrator superuser/staff true and ordinary account false. No database writes are used. |
-| OCR upload/search | Upload of a raster-only PDF, with independently verified empty text extraction, completes OCR; native search and UI cards find the expected text. |
-| Download | Native UI download link returns HTTP 200 `application/pdf`, attachment disposition and a saved file beginning `%PDF-`; separate native API download probe passes. |
-| Consume | A distinct raster PDF written into the install-selected rw consume Shared Folder is automatically queued, OCR-completed, searchable and removed from consume after import. |
-| OCR models | Runtime with the declared TESSDATA_PREFIX lists English, Traditional Chinese and Simplified Chinese. Both additional official data files match their pinned SHA-256. |
-| Stop/start | Native stop/start succeeded and the browser/API retained every baseline document ID and OCR content. |
-| Upgrade | A clean native 0001 to 0002 upgrade completed as `action: upgrade`, `success: true`, `installed_and_started`; browser inventory matches the exact baseline. |
-| Keep/reinstall | Uninstall followed by reinstall of build 0001 succeeded and retained the same documents/content, then the clean upgrade to 0002 passed again. |
-| App privileges | Fresh member browser contexts pass with an explicit native App allow rule, and receive actual HTTP 403 `dsm_app_privilege_denied` with a native deny rule. The exact previous rule is restored and read back. |
-| Delete-data uninstall | Native API forwards the wizard delete-data answer; package removal succeeds and package data/config/home contents are empty. All seven named container volumes remain, matching the explicit SDK limitation. |
-| Cleanup | Test administrator subsequently removes only this disposable project's labelled, unused volumes and empty package roots. Native package/containers/volumes/listeners are read back absent; shared image caches and machine configuration are retained. This external fixture cleanup is not an App data-deletion feature. |
-| Logout/reopen | Native upstream GET logout returns 302; reopening automatically uses DSM OIDC, rotates Paperless session and requires no password. |
-
-Browser functional tests explicitly accepted the fixture's self-signed
-certificate in disposable test contexts. They do not prove trusted first-open
-TLS, a real mobile client's flow, ARM behavior, reboot recovery or two-user
-object-level document isolation.
-
-## Compatibility discoveries
-
-The native DSM worker parsed numeric argv elements as YAML numbers despite CLI
-check/build/inspect success. Redis now uses a native config file; the container
-health check uses native CMD-SHELL form with a fixed literal command. This is
-configuration through supported upstream interfaces, not a source/image patch.
-
-Initial rootless s6 startup required an executable `/run` tmpfs. PostgreSQL's
-first-run bootstrap also needed its default Unix socket directory alongside
-the private shared socket. Failed disposable database volumes were removed
-before the successful clean-install test; no installed-data hotfix was used.
-
-SDK registry preflight reported direct registry denial while native Container
-Manager downloaded and ran the same official immutable images successfully.
-Preflight messages and actual worker results are recorded separately.
-
-## Provider-only / selected consume acceptance (build 0003)
-
-- Native Package Center wizard visibly selected a dedicated existing consume
-  Shared Folder. Saved package config readback matched it. A separate native
-  Shared Folder permission change granted only the package account rw; readback
-  changed from no explicit grant to writable. Container inspection showed that
-  exact host folder bound rw at `/consume`; package UID runtime checks found it
-  readable and writable. Selection did not silently grant an ACL.
-- Actual DSM menu OIDC reached Paperless without a second password. Raster PDF
-  upload, OCR search and native PDF download passed. A second raster PDF copied
-  into the selected host share was imported and searchable; both host/container
-  views confirmed source removal after import. No private-volume consume write
-  was substituted. Runtime SQL readback showed distinct admin/member social
-  identities, no usable passwords, admin staff/superuser true and member false.
-- Fresh contexts with a temporary native App allow rule could sign in; explicit
-  deny returned actual issuer HTTP 403 `dsm_app_privilege_denied` at
-  `/_sso/dsm-return`. Previous rules were restored and read back.
-- Native API requests with no DSM cookies: valid Paperless token 200, missing
-  token 401 and invalid token 401. Fresh browser navigation traversed upstream
-  `/accounts/oidc/dsm/login/` and SDK reserved SSO routes; no native password
-  login form appeared. The test retains only status evidence, never token bytes.
-- Native logout returned 302, reopening used DSM OIDC without a second password
-  and rotated the native session. Native stop/start retained exact baseline
-  document IDs/content and the saved consume-share selection.
-- Native delete-data uninstall also passed for 0003; readback found the package
-  absent and all seven named volumes retained. The selected consume share also
-  remained, as designed. This is the documented retention limit, not full deletion.
-- Final focused OIDC/admission/API/logout run passed all five selected tests
-  (including DSM setup). Restart passed separately. The upload/consume scenario
-  passed in its earlier scenario run. Broader lifecycle history stays under 0002.
-- Acceptance used test-only self-signed certificate trust, an isolated loopback
-  hostname and DSM's actual configured HTTPS port. Initial wrong local-port,
-  certificate and missing-member-admission fixtures failed and remain in private
-  evidence; successful scenario runs are not claimed as a single green batch.
-
-The development SPK is deliberately not released. Named volume retention and
-account-revocation limits remain documented in framework-gaps.md; ARM, reboot,
-trusted first-open TLS and physical mobile clients were not tested.
-
-## Released 0.22.0 candidate acceptance
-
-The production SPK uses published CLI/templates/SDK/App 0.22.0, templates UI
-0.12.5 and executor/v0.20.0. Check, build and inspect passed with no findings;
-no source override or Go replace was used. The current `build-proof.json`
-records this production artifact rather than the historical development SPK.
-
-A fresh native installation selected a disposable consume Shared Folder.
-Native start and DSM main-menu sign-in reached the upstream dashboard. One PNG
-document was uploaded, OCR completed, and the document appeared in the upstream
-document list. Native stop/start returned the package to running state.
-
-The registry diagnostic reported direct Docker Hub access denial while the
-unchanged configured mirror supplied the pinned image. This result does not
-establish direct registry access or support for every network configuration.
-
-Native uninstall was exercised with delete-data selected and displayed the
-retained-container-volume notice. After package and containers were absent,
-only the disposable acceptance volumes and consume share were removed
-separately. DSM package identity was retained.
-
-## 3.3.3-0006 rebuild (SDK 0.28.0)
-
-Rebuilt with published CLI/templates/SDK/App 0.28.0, UI 0.14.4, executor/v0.27.0
-and Go 1.26.10; no source override or Go replace. Run on macOS with the published
-CLI: `npm test` (Python bootstrap tests and Node contract tests) passed,
-`synopkgland check --json` returned ok, `synopkgland build --arch x86_64 --json`
-produced the SPK, and `synopkgland inspect` reported no findings. Build approval
-retention was reported as unknown because no baseline SPK was supplied. No NAS
-or e2e test was run for this build; the Docker-backed acceptance above refers to
-earlier builds only.
-
-
-## 3.4.0-0004 fixed DSM path acceptance
-
-The x86_64 candidate uses published CLI 0.43.0, SDK/App 0.43.1 and templates
-0.38.0, with the same upstream version and immutable image references. The SDK
-Go tag resolves to `6f405971f6bb35ffc02004990fdcbfc370fb1ac3`. No source override
-or upstream patch was used. The current SPK hash and image proofs are in
-`build-proof.json`.
-
-Five Python and five Node tests, render freshness, check, build and inspect pass.
-Inspect reports no findings. Source, commit and SPK leak scans pass. The build
-uses the build host's CA trust and configured registry metadata mirror; locked
-image references remain the official repositories and their pinned digests.
-
-A DSM 7.3.2 x86_64 device was upgraded in place from 3.4.0-0003. Native install
-readback reports action `upgrade`, version 3.4.0-0004 and status `running`.
-The active nginx configuration contains the fixed package location. The old
-public gateway port no longer listens; the issuer and native upstream remain
-loopback-only. Installer port definitions contain only the OIDC issuer.
-
-A scanned document was uploaded and OCR-completed on the old build before
-upgrade. Its exact ID, title and OCR content are unchanged afterward. The retained
-state volume and selected consume mount are unchanged. No uninstall, data
-removal, account change or Container Manager restart was performed.
-
-Candidate browser evidence covers:
-
-- A/N/X smoke: administrator and permitted ordinary user reach the fixed-path
-  dashboard, while a fresh signed-out browser reaches DSM sign-in
-- Fresh DSM-only cookies traverse native OIDC login and callback under the package
-  prefix without a second password; native identities retain no usable password
-- Angular base URL, JavaScript, documents/tags/settings pages, profile API and a
-  native WebSocket handshake work under the prefix
-- Cookie/CSRF-protected scanned-PDF upload, OCR search and UI PDF download work
-- The selected host consume share imports a distinct raster PDF
-- Native token API requests without DSM cookies return 200 for a valid token and
-  401 for missing/invalid tokens
-- Explicit App allow/deny produces admission/403 and restores the exact prior rule
-- Native logout returns 302 and reopening rotates the session without a password
-
-The related existing scenarios have passing records across focused runs. An
-initial API scenario incorrectly expected an anonymous browser to reach upstream
-OIDC before DSM admission; it now checks DSM sign-in and separately checks a
-fresh admitted native OIDC callback. An initial consume fixture transfer failed
-because the NAS requires legacy SCP; the private fixture driver was corrected.
-These failed runs remain in private evidence and are not presented as a single
-all-green initial batch.
-
-Browser evidence accepts the test device's self-signed certificate. This is not
-external-provider, trusted first-open TLS, mobile, ARM or complete lifecycle
-acceptance. Destructive reinstall/uninstall scenarios were excluded. Existing
-ordinary-user document permissions remain upstream-controlled. No release or
-catalog publication was performed.
-
-## 3.4.0-0005 dependency release
-
-CLI 0.47.1 and SDK/App 0.46.1; local unit tests, release build, inspect
-with no findings, official npm registry verification and scoped source/SPK scans passed.
-No NAS upgrade or browser acceptance was repeated for this version.
-See `shared-folder-release.json` for exact SPK hashes and bounded evidence.
-Uninstall retains shared-folder data and the package-account ACL by DSM design.
-## 3.4.0-0009 OIDC scheme acceptance
-
-Upstream remains 3.4.0. The published CLI 0.48.13, templates 0.40.1 and SDK/App
-0.50.7 produce the x86_64 release SPK recorded in `build-proof.json`. The pinned
-official images, entry policy and nonroot execution are unchanged. Bootstrap
-tests (5), package contracts (6), actual Django/allauth scheme tests (2), render
-freshness, check, build and inspect pass. Inspect reports no findings. Scoped
-source and SPK privacy scans pass.
-
-An in-place DSM upgrade from 3.4.0-0008 to 3.4.0-0009 reaches running with
-status code 0. Three fresh browser contexts open the fixed package path over
-HTTP, HTTPS and HTTP, in that order. Each follows native OIDC, receives a 302
-callback with the opening scheme and port, and reaches the upstream dashboard.
-The HTTP bootstrap warning is present; JavaScript was disabled only in a
-separate warning capture to hold the transient page before its automatic handoff.
-Browser-only acceptance of the test certificate does not establish trusted TLS.
-
-Additional lifecycle probing found initial start failures (DSM 4580/status 272)
-after a native stop. Read-only container inspection later showed the web service
-healthy; a subsequent native start succeeded with status 0 before browser
-acceptance. The precise cause is unknown because private daemon logs were
-inaccessible to the nonroot account. This is not a clean first-attempt restart
-pass. Initial browser-driver navigation races were corrected before the final
-three-pass run. No upstream fix or privileged diagnostic workaround was added.
-
-No data, accounts or system settings were modified by the acceptance driver.
-No full lifecycle suite, reboot or additional architecture was tested.
-Release publication remains separate from this candidate validation.
+See [ctl plan](ctl-plan.md) for command-level scope and exclusions, and
+[token setup](ctl.md) for the user-operated enrollment flow. Do not regenerate
+an existing token as a test or refresh step: that invalidates other clients.

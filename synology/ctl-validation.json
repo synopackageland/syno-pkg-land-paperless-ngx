@@ -1,0 +1,47 @@
+{
+  "package": "SynoPkgPaperlessNgx",
+  "version": "3.4.0-0010",
+  "publishable": false,
+  "validation": "local source-override development build; no device acceptance",
+  "sources": {
+    "upstream": "ced3cf9303e08648e6fa80d35b9307d97e32cfd1",
+    "sdk": "0d74b4e52f533c3ca8168c60931cd1769594c3c5",
+    "cli": "79ab9c622747d9015ce39d27e2c4a7b58a4ada46"
+  },
+  "spk": "SynoPkgPaperlessNgx-3.4.0-0010-x86_64.spk",
+  "spkSha256": "d377af3a4550511d42ad1af18d7888431a5d68761859d22a9fecf92c5df8232a",
+  "images": [
+    {
+      "source": "docker.io/library/postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382",
+      "reference": "docker.io/library/postgres@sha256:7e6103cf85f88f7a0eddb3ec0b1ba8940eba098ed118ade25a729ca9daee5568",
+      "architecture": "amd64"
+    },
+    {
+      "source": "docker.io/library/redis:8.2.2-alpine3.22@sha256:59b6e694653476de2c992937ebe1c64182af4728e54bb49e9b7a6c26614d8933",
+      "reference": "docker.io/library/redis@sha256:3f835dae62fe5012baf5a768293967c93bc09cf9e848d415351dfba04ee87537",
+      "architecture": "amd64"
+    },
+    {
+      "source": "docker.io/paperlessngx/paperless-ngx:3.4.0@sha256:7c1d98afd200def9e2bad3a377d30829e8d486554b3c818995af5860114ea17f",
+      "reference": "docker.io/paperlessngx/paperless-ngx@sha256:39fd4fac06dc928b0bea22bc85abcd724f0f6a83ab33653aa17fc31d3cc522ce",
+      "architecture": "amd64"
+    }
+  ],
+  "descriptorSha256": "0aa82f6bb0727c7a1f80af4c18092fc9a790b4ad4de80a787e0d3eadaecb4c2b",
+  "checks": {
+    "generateCheck": true,
+    "check": true,
+    "build": "x86_64",
+    "inspectFindings": [],
+    "bootstrapTests": 5,
+    "packagingContractTests": 6,
+    "nativeCtlTests": 10,
+    "inventorySurfaces": 144
+  },
+  "pending": [
+    "Published matching SDK and CLI dependencies",
+    "CLI file-flow integration for actual upload/download",
+    "CLI empty-204 response support before resource delete exposure",
+    "Final merged-artifact device acceptance and retained upgrade"
+  ]
+}
