@@ -1,19 +1,19 @@
 schema: 2
 package: SynoPkgPaperlessNgx
 version: 3.4.0
-build: 9
+build: 10
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Paperless-ngx
 metadata:
   changelog:
-    en: Preserve HTTP and HTTPS in OIDC sign-in callbacks
-    zh-TW: OIDC 登入回呼依照開啟時的 HTTP 或 HTTPS 協定
-    zh-CN: OIDC 登录回调遵循打开时的 HTTP 或 HTTPS 协议
-    ja: OIDC ログインのコールバックで HTTP と HTTPS を維持
-    ko: OIDC 로그인 콜백에서 HTTP 및 HTTPS 유지
-    de: HTTP und HTTPS bei OIDC-Anmelderückrufen beibehalten
-    fr: Conserver HTTP et HTTPS dans les rappels de connexion OIDC
+    en: Add native-token ctl for documents, classification, notes and import tracking
+    zh-TW: 新增原生 token ctl，支援文件、分類、筆記與匯入追蹤
+    zh-CN: 新增原生 token ctl，支持文档、分类、笔记与导入跟踪
+    ja: ネイティブトークン ctl で文書、分類、メモ、インポートを操作
+    ko: 기본 토큰 ctl로 문서, 분류, 메모 및 가져오기 추적 지원
+    de: Native-Token-ctl für Dokumente, Klassifizierung, Notizen und Importstatus
+    fr: ctl avec jeton natif pour documents, classement, notes et suivi des imports
   maintainer_url: https://github.com/paperless-ngx/paperless-ngx
   distributor: Syno Package Land
   distributor_url: https://synopkgland.com/
@@ -247,3 +247,10 @@ i18n:
   info:
     zh-TW:
       description: 透過自動文字辨識掃描、整理與搜尋你的文件
+ctl:
+  enabled: true
+  transport: native-http
+  registry: operations.json
+  aliases:
+    - paperless
+  developedBy: synopkgland

@@ -1,0 +1,1107 @@
+{
+  "upstream": {
+    "version": "3.4.0",
+    "commit": "ced3cf9303e08648e6fa80d35b9307d97e32cfd1"
+  },
+  "surfaces": [
+    {
+      "surface": "router:correspondents",
+      "source": "src/paperless/urls.py:75",
+      "commands": [
+        "correspondents.list",
+        "correspondents.get",
+        "correspondents.create",
+        "correspondents.update"
+      ],
+      "status": "mapped",
+      "reason": "Selected bounded resource operations; PUT and empty-204 DELETE are excluded"
+    },
+    {
+      "surface": "router:document_types",
+      "source": "src/paperless/urls.py:76",
+      "commands": [
+        "document_types.list",
+        "document_types.get",
+        "document_types.create",
+        "document_types.update"
+      ],
+      "status": "mapped",
+      "reason": "Selected bounded resource operations; PUT and empty-204 DELETE are excluded"
+    },
+    {
+      "surface": "router:documents",
+      "source": "src/paperless/urls.py:77",
+      "commands": [
+        "documents.list",
+        "documents.search",
+        "documents.get",
+        "documents.text",
+        "documents.metadata",
+        "documents.update",
+        "documents.upload",
+        "documents.download"
+      ],
+      "status": "mapped",
+      "reason": "Selected bounded resource operations; PUT and empty-204 DELETE are excluded"
+    },
+    {
+      "surface": "action:documents.next_asn",
+      "source": "src/documents/views.py:2740",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.root",
+      "source": "src/documents/views.py:1225",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.metadata",
+      "source": "src/documents/views.py:1469",
+      "commands": [
+        "documents.metadata"
+      ],
+      "status": "mapped",
+      "reason": "Native action with bounded declared contract"
+    },
+    {
+      "surface": "action:documents.suggestions",
+      "source": "src/documents/views.py:1534",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.ai_suggestions",
+      "source": "src/documents/views.py:1597",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.preview",
+      "source": "src/documents/views.py:1784",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.thumb",
+      "source": "src/documents/views.py:1813",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.download",
+      "source": "src/documents/views.py:1831",
+      "commands": [
+        "documents.download"
+      ],
+      "status": "mapped",
+      "reason": "Native action with bounded declared contract"
+    },
+    {
+      "surface": "action:documents.notes",
+      "source": "src/documents/views.py:1844",
+      "commands": [
+        "notes.list",
+        "notes.add",
+        "notes.delete"
+      ],
+      "status": "mapped",
+      "reason": "Native action with bounded declared contract"
+    },
+    {
+      "surface": "action:documents.share_links",
+      "source": "src/documents/views.py:1967",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.history",
+      "source": "src/documents/views.py:2003",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.email_document",
+      "source": "src/documents/views.py:2075",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.email_documents",
+      "source": "src/documents/views.py:2087",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.update_version",
+      "source": "src/documents/views.py:2149",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:documents.delete_version",
+      "source": "src/documents/views.py:2261",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "router:logs",
+      "source": "src/paperless/urls.py:78",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Diagnostic content and limits require separate review"
+    },
+    {
+      "surface": "router:tags",
+      "source": "src/paperless/urls.py:79",
+      "commands": [
+        "tags.list",
+        "tags.get",
+        "tags.create",
+        "tags.update"
+      ],
+      "status": "mapped",
+      "reason": "Selected bounded resource operations; PUT and empty-204 DELETE are excluded"
+    },
+    {
+      "surface": "router:saved_views",
+      "source": "src/paperless/urls.py:80",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Saved filter composition deferred; use documents search"
+    },
+    {
+      "surface": "router:storage_paths",
+      "source": "src/paperless/urls.py:81",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Storage grants and file placement require separate review"
+    },
+    {
+      "surface": "action:storage_paths.test",
+      "source": "src/documents/views.py:4209",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "router:tasks",
+      "source": "src/paperless/urls.py:82",
+      "commands": [
+        "tasks.list",
+        "tasks.get"
+      ],
+      "status": "mapped",
+      "reason": "Selected bounded resource operations; PUT and empty-204 DELETE are excluded"
+    },
+    {
+      "surface": "action:tasks.acknowledge",
+      "source": "src/documents/views.py:4562",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:tasks.summary",
+      "source": "src/documents/views.py:4585",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:tasks.status_counts",
+      "source": "src/documents/views.py:4627",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:tasks.active",
+      "source": "src/documents/views.py:4655",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:tasks.run",
+      "source": "src/documents/views.py:4668",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "router:users",
+      "source": "src/paperless/urls.py:83",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Identity and grants require separate review"
+    },
+    {
+      "surface": "action:users.deactivate_totp",
+      "source": "src/paperless/views.py:213",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "router:groups",
+      "source": "src/paperless/urls.py:84",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Identity and grants require separate review"
+    },
+    {
+      "surface": "router:mail_accounts",
+      "source": "src/paperless/urls.py:85",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Private mail credentials excluded"
+    },
+    {
+      "surface": "action:mail_accounts.test",
+      "source": "src/paperless_mail/views.py:98",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "action:mail_accounts.process",
+      "source": "src/paperless_mail/views.py:171",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "router:mail_rules",
+      "source": "src/paperless/urls.py:86",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Mail automation deferred"
+    },
+    {
+      "surface": "router:share_link_bundles",
+      "source": "src/paperless/urls.py:87",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Bundle reachability and long archive transfer unverified"
+    },
+    {
+      "surface": "action:share_link_bundles.rebuild",
+      "source": "src/documents/views.py:4839",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "router:share_links",
+      "source": "src/paperless/urls.py:88",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Public-link gateway reachability unverified"
+    },
+    {
+      "surface": "router:workflow_triggers",
+      "source": "src/paperless/urls.py:89",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Automation configuration deferred"
+    },
+    {
+      "surface": "router:workflow_actions",
+      "source": "src/paperless/urls.py:90",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Automation and webhook secrets excluded"
+    },
+    {
+      "surface": "router:workflows",
+      "source": "src/paperless/urls.py:91",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Automation and webhooks require separate review"
+    },
+    {
+      "surface": "router:custom_fields",
+      "source": "src/paperless/urls.py:92",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Arbitrary typed field values deferred from initial classification set"
+    },
+    {
+      "surface": "router:config",
+      "source": "src/paperless/urls.py:93",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Global configuration and secrets require separate review"
+    },
+    {
+      "surface": "router:processed_mail",
+      "source": "src/paperless/urls.py:94",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Mail processing history deferred"
+    },
+    {
+      "surface": "action:processed_mail.bulk_delete",
+      "source": "src/paperless_mail/views.py:224",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Not selected: distinct permissions, transport, version/PDF manipulation or task mutation requires review"
+    },
+    {
+      "surface": "url:98:^api/",
+      "source": "src/paperless/urls.py:98",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:301:^share/(?P<slug>\\w+)/?$",
+      "source": "src/paperless/urls.py:301",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:302:^favicon.ico$",
+      "source": "src/paperless/urls.py:302",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:303:^admin/",
+      "source": "src/paperless/urls.py:303",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:304:^fetch/",
+      "source": "src/paperless/urls.py:304",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:330:assets/<path:path>",
+      "source": "src/paperless/urls.py:330",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:338:^logo(?:/(?P<filename>.+))?/?$",
+      "source": "src/paperless/urls.py:338",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:340:accounts/",
+      "source": "src/paperless/urls.py:340",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:421:.*",
+      "source": "src/paperless/urls.py:421",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:430:ws/status/",
+      "source": "src/paperless/urls.py:430",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:102:^auth/",
+      "source": "src/paperless/urls.py:102",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:123:^search/",
+      "source": "src/paperless/urls.py:123",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:140:^statistics/",
+      "source": "src/paperless/urls.py:140",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:145:^documents/",
+      "source": "src/paperless/urls.py:145",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:212:^bulk_edit_objects/",
+      "source": "src/paperless/urls.py:212",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Synchronous batch operations deferred; no native compatible async receipt; future explicit IDs capped at 25"
+    },
+    {
+      "surface": "url:217:^remote_version/",
+      "source": "src/paperless/urls.py:217",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:222:^ui_settings/",
+      "source": "src/paperless/urls.py:222",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:227:token/",
+      "source": "src/paperless/urls.py:227",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:231:^profile/",
+      "source": "src/paperless/urls.py:231",
+      "commands": [],
+      "status": "excluded",
+      "reason": "GET profile is enrollment verification only; never a business command or token export"
+    },
+    {
+      "surface": "url:260:^status/",
+      "source": "src/paperless/urls.py:260",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:265:^trash/",
+      "source": "src/paperless/urls.py:265",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:270:^oauth/callback/",
+      "source": "src/paperless/urls.py:270",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:275:^schema/",
+      "source": "src/paperless/urls.py:275",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:292:^auth/headless/",
+      "source": "src/paperless/urls.py:292",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:293:^$",
+      "source": "src/paperless/urls.py:293",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:308:^doc/(?P<pk>\\d+)$",
+      "source": "src/paperless/urls.py:308",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:314:^thumb/(?P<pk>\\d+)$",
+      "source": "src/paperless/urls.py:314",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:320:^preview/(?P<pk>\\d+)$",
+      "source": "src/paperless/urls.py:320",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:346:login/",
+      "source": "src/paperless/urls.py:346",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:347:logout/",
+      "source": "src/paperless/urls.py:347",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:348:signup/",
+      "source": "src/paperless/urls.py:348",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:349:account_inactive/",
+      "source": "src/paperless/urls.py:349",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:355:password/",
+      "source": "src/paperless/urls.py:355",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:377:^confirm-email/(?P<key>[-:\\w]+)/$",
+      "source": "src/paperless/urls.py:377",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:382:^password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",
+      "source": "src/paperless/urls.py:382",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:388:3rdparty/",
+      "source": "src/paperless/urls.py:388",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:412:2fa/authenticate/",
+      "source": "src/paperless/urls.py:412",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:127:^$",
+      "source": "src/paperless/urls.py:127",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:132:^autocomplete/",
+      "source": "src/paperless/urls.py:132",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:149:^post_document/",
+      "source": "src/paperless/urls.py:149",
+      "commands": [
+        "documents.upload"
+      ],
+      "status": "mapped",
+      "reason": "Native upload declaration; file executor dependency remains"
+    },
+    {
+      "surface": "url:154:^bulk_edit/",
+      "source": "src/paperless/urls.py:154",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Synchronous batch operations deferred; no native compatible async receipt; future explicit IDs capped at 25"
+    },
+    {
+      "surface": "url:159:^delete/",
+      "source": "src/paperless/urls.py:159",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Synchronous batch operations deferred; no native compatible async receipt; future explicit IDs capped at 25"
+    },
+    {
+      "surface": "url:164:^reprocess/",
+      "source": "src/paperless/urls.py:164",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:169:^rotate/",
+      "source": "src/paperless/urls.py:169",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:174:^merge/",
+      "source": "src/paperless/urls.py:174",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:179:^merge_as_versions/",
+      "source": "src/paperless/urls.py:179",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:184:^edit_pdf/",
+      "source": "src/paperless/urls.py:184",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:189:^remove_password/",
+      "source": "src/paperless/urls.py:189",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:194:^bulk_download/",
+      "source": "src/paperless/urls.py:194",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:199:^selection_data/",
+      "source": "src/paperless/urls.py:199",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:204:^chat/",
+      "source": "src/paperless/urls.py:204",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:235:^$",
+      "source": "src/paperless/urls.py:235",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:240:generate_auth_token/",
+      "source": "src/paperless/urls.py:240",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Forbidden automatic token generation: rotates and invalidates other clients"
+    },
+    {
+      "surface": "url:244:disconnect_social_account/",
+      "source": "src/paperless/urls.py:244",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:248:social_account_providers/",
+      "source": "src/paperless/urls.py:248",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:252:totp/",
+      "source": "src/paperless/urls.py:252",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:279:^$",
+      "source": "src/paperless/urls.py:279",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:284:^view/",
+      "source": "src/paperless/urls.py:284",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:359:reset/",
+      "source": "src/paperless/urls.py:359",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:364:reset/done/",
+      "source": "src/paperless/urls.py:364",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:369:reset/key/done/",
+      "source": "src/paperless/urls.py:369",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:392:login/cancelled/",
+      "source": "src/paperless/urls.py:392",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:397:login/error/",
+      "source": "src/paperless/urls.py:397",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:402:signup/",
+      "source": "src/paperless/urls.py:402",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:107:login/",
+      "source": "src/paperless/urls.py:107",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "url:112:logout/",
+      "source": "src/paperless/urls.py:112",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser/auth/schema/redirect infrastructure or endpoint outside the selected bounded document operations"
+    },
+    {
+      "surface": "ui:",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:**",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:404",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:asn/:id",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:attributes",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:attributes/:section",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:config",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:correspondents",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [
+        "correspondents.list",
+        "correspondents.get",
+        "correspondents.create",
+        "correspondents.update"
+      ],
+      "status": "mapped",
+      "reason": "Selected common reads and mutations; see ctl-plan for excluded buttons"
+    },
+    {
+      "surface": "ui:customfields",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:dashboard",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [
+        "documents.list",
+        "documents.search",
+        "documents.get",
+        "documents.text",
+        "documents.metadata",
+        "documents.update",
+        "documents.upload",
+        "documents.download"
+      ],
+      "status": "mapped",
+      "reason": "Selected common reads and mutations; see ctl-plan for excluded buttons"
+    },
+    {
+      "surface": "ui:documentproperties",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:documentproperties/:section",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:documents",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [
+        "documents.list",
+        "documents.search",
+        "documents.get",
+        "documents.text",
+        "documents.metadata",
+        "documents.update",
+        "documents.upload",
+        "documents.download"
+      ],
+      "status": "mapped",
+      "reason": "Selected common reads and mutations; see ctl-plan for excluded buttons"
+    },
+    {
+      "surface": "ui:documents/:id",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [
+        "documents.list",
+        "documents.search",
+        "documents.get",
+        "documents.text",
+        "documents.metadata",
+        "documents.update",
+        "documents.upload",
+        "documents.download"
+      ],
+      "status": "mapped",
+      "reason": "Selected common reads and mutations; see ctl-plan for excluded buttons"
+    },
+    {
+      "surface": "ui:documents/:id/:section",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [
+        "documents.list",
+        "documents.search",
+        "documents.get",
+        "documents.text",
+        "documents.metadata",
+        "documents.update",
+        "documents.upload",
+        "documents.download"
+      ],
+      "status": "mapped",
+      "reason": "Selected common reads and mutations; see ctl-plan for excluded buttons"
+    },
+    {
+      "surface": "ui:documenttypes",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [
+        "document_types.list",
+        "document_types.get",
+        "document_types.create",
+        "document_types.update"
+      ],
+      "status": "mapped",
+      "reason": "Selected common reads and mutations; see ctl-plan for excluded buttons"
+    },
+    {
+      "surface": "ui:logs",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:mail",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:savedviews",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:settings",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:settings/:section",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:settings/mail",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:settings/savedviews",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:settings/usersgroups",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:share-links",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:storagepaths",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:tags",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [
+        "tags.list",
+        "tags.get",
+        "tags.create",
+        "tags.update"
+      ],
+      "status": "mapped",
+      "reason": "Selected common reads and mutations; see ctl-plan for excluded buttons"
+    },
+    {
+      "surface": "ui:tasks",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [
+        "tasks.list",
+        "tasks.get"
+      ],
+      "status": "mapped",
+      "reason": "Selected common reads and mutations; see ctl-plan for excluded buttons"
+    },
+    {
+      "surface": "ui:trash",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:usersgroups",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:view/:id",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    },
+    {
+      "surface": "ui:workflows",
+      "source": "src-ui/src/app/app-routing.module.ts",
+      "commands": [],
+      "status": "excluded",
+      "reason": "Browser navigation, redirect or feature outside initial document/classification workflow"
+    }
+  ]
+}

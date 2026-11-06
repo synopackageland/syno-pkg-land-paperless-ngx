@@ -1,0 +1,3426 @@
+{
+  "format": "synopkgland.api",
+  "version": 3,
+  "payload": {
+    "package": {
+      "id": "SynoPkgPaperlessNgx",
+      "version": "3.4.0-0010",
+      "displayName": "Paperless-ngx"
+    },
+    "aliases": [
+      "paperless"
+    ],
+    "provenance": {
+      "developedBy": "synopkgland",
+      "generator": "synopkgland-cli"
+    },
+    "entry": "app-privilege",
+    "transport": {
+      "path": "/webman/3rdparty/SynoPkgPaperlessNgx/cgi/api.cgi",
+      "auth": "dsm-session"
+    },
+    "execution": {
+      "type": "native-http",
+      "basePath": "/synopkgland/SynoPkgPaperlessNgx/",
+      "auth": {
+        "type": "header",
+        "header": "Authorization",
+        "prefix": "Token ",
+        "credentialPage": "dashboard",
+        "instructions": "Open the dashboard; user menu > My Profile > Edit Profile modal > API Auth Token > Copy. If no token exists, create one intentionally in this modal. Regenerating invalidates your other clients. The CLI never generates or regenerates a token. The selected native account is not proof of the DSM identity.",
+        "verify": {
+          "method": "GET",
+          "path": "/api/profile/",
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 65536,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "fields": {
+                "email": "/email",
+                "firstName": "/first_name",
+                "lastName": "/last_name"
+              }
+            }
+          }
+        }
+      },
+      "limits": {
+        "maxResponseBytes": 1048576,
+        "maxTransferBytes": 268435456
+      }
+    },
+    "features": [
+      "native-http-v1",
+      "auth-header-v1",
+      "auth-greader-client-login-v1",
+      "paginate-http-v1",
+      "ndjson-http-v1",
+      "upload-http-v1",
+      "download-file-v1"
+    ],
+    "entryPolicyDigest": "dd2dbaec012e98201e18dc5b8005fc38f8c90d205400b2cba5fef9abef0bdf3a",
+    "registrySha256": "11f966d87114c9a954027a85b43154214771dabe912e6755cb4912ef713378d1",
+    "inventorySha256": "cb1dac815323eaf21bfe36686fcc94401a95dd076aadbfc52426c4f57aa94134",
+    "authSha256": "96425b5de9efe17ca3dbd8ec2cb07a9d5806b91fd2a02d10188c77a13fd19db9",
+    "bindings": {
+      "correspondents.create": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "correspondents.create"
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/correspondents/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              201
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "correspondents.get": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "correspondents.get"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/correspondents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "correspondents.list": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "paginate-http",
+          "method": "correspondents.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/correspondents/",
+          "query": {
+            "ordering": {
+              "literal": "name"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "correspondents.update": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "correspondents.update"
+        },
+        "http": {
+          "method": "PATCH",
+          "path": "/api/correspondents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "document_types.create": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "document_types.create"
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/document_types/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              201
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "document_types.get": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "document_types.get"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/document_types/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "document_types.list": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "paginate-http",
+          "method": "document_types.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/document_types/",
+          "query": {
+            "ordering": {
+              "literal": "name"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "document_types.update": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "document_types.update"
+        },
+        "http": {
+          "method": "PATCH",
+          "path": "/api/document_types/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "documents.download": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "stream",
+        "flow": {
+          "type": "download-file",
+          "method": "documents.download",
+          "outputParam": "output",
+          "maxBytes": 268435456,
+          "contentTypes": [
+            "application/pdf",
+            "image/jpeg",
+            "image/png",
+            "application/octet-stream"
+          ]
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/download/",
+          "query": {
+            "original": {
+              "literal": "true"
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "binary",
+            "maxBytes": 268435456,
+            "contentTypes": [
+              "application/pdf",
+              "image/jpeg",
+              "image/png",
+              "application/octet-stream"
+            ]
+          }
+        }
+      },
+      "documents.get": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "documents.get"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "fields": {
+                "correspondent": "/correspondent",
+                "document_type": "/document_type",
+                "id": "/id",
+                "owner": "/owner",
+                "tags": "/tags",
+                "title": "/title"
+              }
+            }
+          }
+        }
+      },
+      "documents.list": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "paginate-http",
+          "method": "documents.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/",
+          "query": {
+            "correspondent__id": {
+              "param": "correspondent"
+            },
+            "document_type__id": {
+              "param": "documentType"
+            },
+            "ordering": {
+              "literal": "id"
+            },
+            "query": {
+              "param": "query"
+            },
+            "tags__id__all": {
+              "param": "tags"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "documents.metadata": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "documents.metadata"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/metadata/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "documents.search": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "paginate-http",
+          "method": "documents.search",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/",
+          "query": {
+            "correspondent__id": {
+              "param": "correspondent"
+            },
+            "document_type__id": {
+              "param": "documentType"
+            },
+            "ordering": {
+              "literal": "id"
+            },
+            "query": {
+              "param": "query"
+            },
+            "tags__id__all": {
+              "param": "tags"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "documents.text": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "documents.text"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "pointer": "/content"
+            }
+          }
+        }
+      },
+      "documents.update": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "documents.update"
+        },
+        "http": {
+          "method": "PATCH",
+          "path": "/api/documents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "correspondent": {
+                "param": "correspondent"
+              },
+              "document_type": {
+                "param": "documentType"
+              },
+              "tags": {
+                "param": "tags"
+              },
+              "title": {
+                "param": "title"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "fields": {
+                "correspondent": "/correspondent",
+                "document_type": "/document_type",
+                "id": "/id",
+                "owner": "/owner",
+                "tags": "/tags",
+                "title": "/title"
+              }
+            }
+          }
+        }
+      },
+      "documents.upload": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "stream",
+        "flow": {
+          "type": "upload-http",
+          "method": "documents.upload",
+          "fileParam": "file",
+          "encoding": "multipart",
+          "part": "document",
+          "maxBytes": 268435456,
+          "contentTypes": [
+            "application/pdf",
+            "image/jpeg",
+            "image/png"
+          ]
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/documents/post_document/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "form",
+            "fields": {
+              "title": {
+                "param": "title"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 65536,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "fields": {
+                "taskId": ""
+              }
+            }
+          }
+        }
+      },
+      "notes.add": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "notes.add"
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/documents/{id}/notes/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "note": {
+                "param": "note"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 16000,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "notes.delete": {
+        "effect": "destructive",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "notes.delete"
+        },
+        "http": {
+          "method": "DELETE",
+          "path": "/api/documents/{id}/notes/",
+          "query": {
+            "id": {
+              "param": "noteId"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 16000,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "notes.list": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "notes.list"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/notes/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 16000,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tags.create": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "tags.create"
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/tags/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "color": {
+                "param": "color"
+              },
+              "is_inbox_tag": {
+                "param": "isInboxTag"
+              },
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              201
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tags.get": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "tags.get"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/tags/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tags.list": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "paginate-http",
+          "method": "tags.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/tags/",
+          "query": {
+            "ordering": {
+              "literal": "name"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tags.update": {
+        "effect": "write",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "invoke",
+          "method": "tags.update"
+        },
+        "http": {
+          "method": "PATCH",
+          "path": "/api/tags/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "color": {
+                "param": "color"
+              },
+              "is_inbox_tag": {
+                "param": "isInboxTag"
+              },
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tasks.get": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "paginate-http",
+          "method": "tasks.get",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/tasks/",
+          "query": {
+            "ordering": {
+              "literal": "date_created"
+            },
+            "task_id": {
+              "param": "taskId"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tasks.list": {
+        "effect": "read",
+        "permission": "authenticated",
+        "kind": "rpc",
+        "flow": {
+          "type": "paginate-http",
+          "method": "tasks.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/tasks/",
+          "query": {
+            "ordering": {
+              "literal": "date_created"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      }
+    },
+    "commands": {
+      "correspondents.create": {
+        "summary": "Create correspondent; native permissions apply; read back with correspondents get",
+        "cli": [
+          "correspondents",
+          "create"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "writeOnly": true
+            },
+            "match": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 256,
+              "writeOnly": true
+            },
+            "matchingAlgorithm": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            },
+            "isInsensitive": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "correspondents.create"
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/correspondents/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              201
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "correspondents.get": {
+        "summary": "Get correspondent; native permissions apply",
+        "cli": [
+          "correspondents",
+          "get"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "correspondents.get"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/correspondents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "correspondents.list": {
+        "summary": "List correspondent; native permissions apply",
+        "cli": [
+          "correspondents",
+          "list"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {},
+          "required": []
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "name": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 128
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "paginate-http",
+          "method": "correspondents.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/correspondents/",
+          "query": {
+            "ordering": {
+              "literal": "name"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "correspondents.update": {
+        "summary": "Update correspondent; native permissions apply; read back with correspondents get",
+        "cli": [
+          "correspondents",
+          "update"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "writeOnly": true
+            },
+            "match": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 256,
+              "writeOnly": true
+            },
+            "matchingAlgorithm": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            },
+            "isInsensitive": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "anyOf": [
+            {
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "required": [
+                "match"
+              ]
+            },
+            {
+              "required": [
+                "matchingAlgorithm"
+              ]
+            },
+            {
+              "required": [
+                "isInsensitive"
+              ]
+            }
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "correspondents.update"
+        },
+        "http": {
+          "method": "PATCH",
+          "path": "/api/correspondents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "document_types.create": {
+        "summary": "Create document type; native permissions apply; read back with document-types get",
+        "cli": [
+          "document-types",
+          "create"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "writeOnly": true
+            },
+            "match": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 256,
+              "writeOnly": true
+            },
+            "matchingAlgorithm": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            },
+            "isInsensitive": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "document_types.create"
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/document_types/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              201
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "document_types.get": {
+        "summary": "Get document type; native permissions apply",
+        "cli": [
+          "document-types",
+          "get"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "document_types.get"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/document_types/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "document_types.list": {
+        "summary": "List document type; native permissions apply",
+        "cli": [
+          "document-types",
+          "list"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {},
+          "required": []
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "name": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 128
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "paginate-http",
+          "method": "document_types.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/document_types/",
+          "query": {
+            "ordering": {
+              "literal": "name"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "document_types.update": {
+        "summary": "Update document type; native permissions apply; read back with document-types get",
+        "cli": [
+          "document-types",
+          "update"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "writeOnly": true
+            },
+            "match": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 256,
+              "writeOnly": true
+            },
+            "matchingAlgorithm": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            },
+            "isInsensitive": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "anyOf": [
+            {
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "required": [
+                "match"
+              ]
+            },
+            {
+              "required": [
+                "matchingAlgorithm"
+              ]
+            },
+            {
+              "required": [
+                "isInsensitive"
+              ]
+            }
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "document_types.update"
+        },
+        "http": {
+          "method": "PATCH",
+          "path": "/api/document_types/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "documents.download": {
+        "summary": "Download original bytes to a new local file; report bytes and SHA-256",
+        "cli": [
+          "documents",
+          "download"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "stream",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "output": {
+              "type": "string",
+              "minLength": 1,
+              "writeOnly": true,
+              "maxLength": 4096
+            }
+          },
+          "required": [
+            "id",
+            "output"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 268435456
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "bytes",
+            "sha256"
+          ]
+        },
+        "flow": {
+          "type": "download-file",
+          "method": "documents.download",
+          "outputParam": "output",
+          "maxBytes": 268435456,
+          "contentTypes": [
+            "application/pdf",
+            "image/jpeg",
+            "image/png",
+            "application/octet-stream"
+          ]
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/download/",
+          "query": {
+            "original": {
+              "literal": "true"
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "binary",
+            "maxBytes": 268435456,
+            "contentTypes": [
+              "application/pdf",
+              "image/jpeg",
+              "image/png",
+              "application/octet-stream"
+            ]
+          }
+        }
+      },
+      "documents.get": {
+        "summary": "Read document metadata without OCR or notes",
+        "cli": [
+          "documents",
+          "get"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "title": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 256
+            },
+            "correspondent": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "document_type": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "maxItems": 1000
+            },
+            "owner": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "correspondent",
+            "document_type",
+            "tags",
+            "owner"
+          ]
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "documents.get"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "fields": {
+                "correspondent": "/correspondent",
+                "document_type": "/document_type",
+                "id": "/id",
+                "owner": "/owner",
+                "tags": "/tags",
+                "title": "/title"
+              }
+            }
+          }
+        }
+      },
+      "documents.list": {
+        "summary": "List accessible documents",
+        "cli": [
+          "documents",
+          "list"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "writeOnly": true
+            },
+            "tags": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "correspondent": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "documentType": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": []
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "title": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 256
+              },
+              "content": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 8000
+              },
+              "notes": {
+                "type": "array",
+                "maxItems": 50
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "paginate-http",
+          "method": "documents.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/",
+          "query": {
+            "correspondent__id": {
+              "param": "correspondent"
+            },
+            "document_type__id": {
+              "param": "documentType"
+            },
+            "ordering": {
+              "literal": "id"
+            },
+            "query": {
+              "param": "query"
+            },
+            "tags__id__all": {
+              "param": "tags"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "documents.metadata": {
+        "summary": "Read bounded original and archive file metadata",
+        "cli": [
+          "documents",
+          "metadata"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "resultSchema": {
+          "type": "object"
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "documents.metadata"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/metadata/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "documents.search": {
+        "summary": "Search documents by native full-text query and classification",
+        "cli": [
+          "documents",
+          "search"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "writeOnly": true
+            },
+            "tags": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "correspondent": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "documentType": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "query"
+          ]
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "title": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 256
+              },
+              "content": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 8000
+              },
+              "notes": {
+                "type": "array",
+                "maxItems": 50
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "paginate-http",
+          "method": "documents.search",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/",
+          "query": {
+            "correspondent__id": {
+              "param": "correspondent"
+            },
+            "document_type__id": {
+              "param": "documentType"
+            },
+            "ordering": {
+              "literal": "id"
+            },
+            "query": {
+              "param": "query"
+            },
+            "tags__id__all": {
+              "param": "tags"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "documents.text": {
+        "summary": "Read complete OCR text up to 8000 characters; reject larger text",
+        "cli": [
+          "documents",
+          "text"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "resultSchema": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 8000
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "documents.text"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "pointer": "/content"
+            }
+          }
+        }
+      },
+      "documents.update": {
+        "summary": "Update one document title or classification; read back with documents get",
+        "cli": [
+          "documents",
+          "update"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "writeOnly": true
+            },
+            "correspondent": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "documentType": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "maxItems": 25,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "anyOf": [
+            {
+              "required": [
+                "title"
+              ]
+            },
+            {
+              "required": [
+                "correspondent"
+              ]
+            },
+            {
+              "required": [
+                "documentType"
+              ]
+            },
+            {
+              "required": [
+                "tags"
+              ]
+            }
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "title": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 256
+            },
+            "correspondent": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "document_type": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "maxItems": 1000
+            },
+            "owner": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "correspondent",
+            "document_type",
+            "tags",
+            "owner"
+          ]
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "documents.update"
+        },
+        "http": {
+          "method": "PATCH",
+          "path": "/api/documents/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "correspondent": {
+                "param": "correspondent"
+              },
+              "document_type": {
+                "param": "documentType"
+              },
+              "tags": {
+                "param": "tags"
+              },
+              "title": {
+                "param": "title"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "fields": {
+                "correspondent": "/correspondent",
+                "document_type": "/document_type",
+                "id": "/id",
+                "owner": "/owner",
+                "tags": "/tags",
+                "title": "/title"
+              }
+            }
+          }
+        }
+      },
+      "documents.upload": {
+        "summary": "Upload one document as the native owner; use tasks get with the receipt taskId, then documents get",
+        "cli": [
+          "documents",
+          "upload"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "stream",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "file": {
+              "type": "string",
+              "minLength": 1,
+              "writeOnly": true,
+              "maxLength": 4096
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 256,
+              "writeOnly": true
+            }
+          },
+          "required": [
+            "file"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "taskId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          },
+          "required": [
+            "taskId"
+          ]
+        },
+        "flow": {
+          "type": "upload-http",
+          "method": "documents.upload",
+          "fileParam": "file",
+          "encoding": "multipart",
+          "part": "document",
+          "maxBytes": 268435456,
+          "contentTypes": [
+            "application/pdf",
+            "image/jpeg",
+            "image/png"
+          ]
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/documents/post_document/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "form",
+            "fields": {
+              "title": {
+                "param": "title"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 65536,
+            "contentTypes": [
+              "application/json"
+            ],
+            "project": {
+              "fields": {
+                "taskId": ""
+              }
+            }
+          }
+        }
+      },
+      "notes.add": {
+        "summary": "Add a note; read back with notes list",
+        "cli": [
+          "notes",
+          "add"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000,
+              "writeOnly": true
+            }
+          },
+          "required": [
+            "id",
+            "note"
+          ]
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "note"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "note": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 16000
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "notes.add"
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/documents/{id}/notes/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "note": {
+                "param": "note"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 16000,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "notes.delete": {
+        "summary": "Delete one explicit note; read back with notes list",
+        "cli": [
+          "notes",
+          "delete"
+        ],
+        "effect": "destructive",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "noteId": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id",
+            "noteId"
+          ]
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "note"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "note": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 16000
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "notes.delete"
+        },
+        "http": {
+          "method": "DELETE",
+          "path": "/api/documents/{id}/notes/",
+          "query": {
+            "id": {
+              "param": "noteId"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 16000,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "notes.list": {
+        "summary": "Read notes; reject over 50 notes or 16000 response bytes",
+        "cli": [
+          "notes",
+          "list"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "note"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "note": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 16000
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "notes.list"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/documents/{id}/notes/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 16000,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tags.create": {
+        "summary": "Create tag; native permissions apply; read back with tags get",
+        "cli": [
+          "tags",
+          "create"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "writeOnly": true
+            },
+            "match": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 256,
+              "writeOnly": true
+            },
+            "matchingAlgorithm": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            },
+            "isInsensitive": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            },
+            "isInboxTag": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "tags.create"
+        },
+        "http": {
+          "method": "POST",
+          "path": "/api/tags/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "color": {
+                "param": "color"
+              },
+              "is_inbox_tag": {
+                "param": "isInboxTag"
+              },
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              201
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tags.get": {
+        "summary": "Get tag; native permissions apply",
+        "cli": [
+          "tags",
+          "get"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "tags.get"
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/tags/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tags.list": {
+        "summary": "List tag; native permissions apply",
+        "cli": [
+          "tags",
+          "list"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {},
+          "required": []
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "name": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 128
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "paginate-http",
+          "method": "tags.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/tags/",
+          "query": {
+            "ordering": {
+              "literal": "name"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tags.update": {
+        "summary": "Update tag; native permissions apply; read back with tags get",
+        "cli": [
+          "tags",
+          "update"
+        ],
+        "effect": "write",
+        "permission": "authenticated",
+        "ai": "human-only",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "writeOnly": true
+            },
+            "match": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 256,
+              "writeOnly": true
+            },
+            "matchingAlgorithm": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            },
+            "isInsensitive": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            },
+            "isInboxTag": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "anyOf": [
+            {
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "required": [
+                "match"
+              ]
+            },
+            {
+              "required": [
+                "matchingAlgorithm"
+              ]
+            },
+            {
+              "required": [
+                "isInsensitive"
+              ]
+            },
+            {
+              "required": [
+                "color"
+              ]
+            },
+            {
+              "required": [
+                "isInboxTag"
+              ]
+            }
+          ]
+        },
+        "resultSchema": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            }
+          }
+        },
+        "flow": {
+          "type": "invoke",
+          "method": "tags.update"
+        },
+        "http": {
+          "method": "PATCH",
+          "path": "/api/tags/{id}/",
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "body": {
+            "encoding": "json",
+            "fields": {
+              "color": {
+                "param": "color"
+              },
+              "is_inbox_tag": {
+                "param": "isInboxTag"
+              },
+              "is_insensitive": {
+                "param": "isInsensitive"
+              },
+              "match": {
+                "param": "match"
+              },
+              "matching_algorithm": {
+                "param": "matchingAlgorithm"
+              },
+              "name": {
+                "param": "name"
+              }
+            }
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tasks.get": {
+        "summary": "Find the original upload task UUID and related document IDs",
+        "cli": [
+          "tasks",
+          "get"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "taskId": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          },
+          "required": [
+            "taskId"
+          ]
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "related_document_ids"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 128
+              },
+              "status": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 64
+              },
+              "related_document_ids": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "maxItems": 25
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "paginate-http",
+          "method": "tasks.get",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/tasks/",
+          "query": {
+            "ordering": {
+              "literal": "date_created"
+            },
+            "task_id": {
+              "param": "taskId"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      "tasks.list": {
+        "summary": "List native tasks",
+        "cli": [
+          "tasks",
+          "list"
+        ],
+        "effect": "read",
+        "permission": "authenticated",
+        "ai": "read",
+        "kind": "rpc",
+        "paramsSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {},
+          "required": []
+        },
+        "resultSchema": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "related_document_ids"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 128
+              },
+              "status": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 64
+              },
+              "related_document_ids": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "maxItems": 25
+              }
+            }
+          }
+        },
+        "flow": {
+          "type": "paginate-http",
+          "method": "tasks.list",
+          "pagination": {
+            "mode": "page",
+            "pageParam": "page",
+            "sizeParam": "page_size",
+            "items": "/results",
+            "next": "/next",
+            "pageSize": 25,
+            "maxPages": 40,
+            "maxItems": 1000,
+            "maxBytes": 16777216
+          }
+        },
+        "http": {
+          "method": "GET",
+          "path": "/api/tasks/",
+          "query": {
+            "ordering": {
+              "literal": "date_created"
+            }
+          },
+          "headers": {
+            "Accept": "application/json; version=10"
+          },
+          "response": {
+            "statuses": [
+              200
+            ],
+            "decode": "json",
+            "maxBytes": 1048576,
+            "contentTypes": [
+              "application/json"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "sha256": "0aa82f6bb0727c7a1f80af4c18092fc9a790b4ad4de80a787e0d3eadaecb4c2b"
+}
