@@ -5,3 +5,8 @@ evidence/
 .synopkgland/
 .e2e/
 __pycache__/
+
+# Local secrets (never commit; keep them under synology/)
+.env
+.env.*
+!.env.example
