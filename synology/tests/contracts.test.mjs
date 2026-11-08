@@ -29,8 +29,8 @@ test('CLI accepts the actual three-service plan and enforces nonroot/loopback',(
   }
   assert.equal(services.find(s=>s.service==='webserver').network,'host');
   assert.equal(manifest.identity_gateway.access,'dsm-users');
-  assert.equal(manifest.identity_gateway.sdk,'0.50.7');
-  assert.equal(manifest.compose.sdk,'0.50.7');
+  assert.equal(manifest.identity_gateway.sdk,'0.53.4');
+  assert.equal(manifest.compose.sdk,'0.53.4');
   assert.equal(manifest.identity_gateway.oidc.clients[0].pkce,true);
   for(const s of Object.values(compose.services)) assert.match(s.image,/@sha256:[0-9a-f]{64}$/);
 });
@@ -44,7 +44,7 @@ test('bootstrap/config output is fresh and only the API uses upstream authentica
   assert.equal(compose.services.webserver.environment.PAPERLESS_OCR_LANGUAGE,'eng+chi_tra+chi_sim');
   assert.equal(manifest.identity_gateway.passthrough,undefined);
   assert.equal(manifest.identity_gateway.upstream_access,undefined);
-  assert.deepEqual(manifest.identity_gateway.upstream_auth_paths,['/api']);
+  assert.deepEqual(manifest.identity_gateway.upstream_auth_paths,['/api/profile','/api/documents','/api/tags','/api/correspondents','/api/document_types','/api/tasks']);
 });
 
 test('consume defaults to the dedicated rw share while export stays private',()=>{

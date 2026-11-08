@@ -10,13 +10,14 @@
     "test": "python3 tests/bootstrap_test.py && node --test tests/*.test.mjs",
     "render": "node scripts/render.mjs",
     "e2e:nas": "node tests/e2e/nas.ts",
-    "e2e:smoke": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/e2e/smoke.e2e.ts"
+    "e2e:smoke": "node --env-file-if-exists=.env node_modules/e2e/dist/cli/bin.js run tests/e2e/smoke.e2e.ts",
+    "test:ctl": "node --test tests/ctl/*.test.mjs"
   },
   "devDependencies": {
     "@ai-sdk/openai": "4.0.91",
     "@e2e-dev/web": "0.14.0",
-    "@synopackageland/cli": "0.48.13",
-    "@synopackageland/templates": "0.40.1",
+    "@synopackageland/cli": "0.52.5",
+    "@synopackageland/templates": "0.41.3",
     "ai": "7.0.137",
     "e2e": "0.19.0",
     "playwright": "1.63.0"

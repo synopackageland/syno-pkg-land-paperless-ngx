@@ -1,108 +1,13 @@
 # Paperless-ngx for DSM
 
-## 3.4.0-0009: request-aware OIDC callbacks
+## 3.4.0-0010: personal-token document control
 
-Open the App over either HTTP or HTTPS on DSM's fixed package path. HTTP retains
-the SDK security warning and remains available without a forced HTTPS redirect.
-The loopback identity gateway supplies the forwarded protocol, host and port.
-`PAPERLESS_ACCOUNT_DEFAULT_HTTP_PROTOCOL=http` disables allauth's implicit HTTPS
-override while preserving HTTPS requests through `PAPERLESS_PROXY_SSL_HEADER`.
-Removing the protocol setting would restore upstream's forced HTTPS default.
-
-Upstream remains 3.4.0 with the same official images, SDK 0.50.7 and nonroot
-execution. See [scheme regression checks](docs/e2e.md#oidc-request-scheme-regression)
-and [validation](docs/validation.md) for the bounded acceptance evidence.
-
-## 3.4.0-0005: fixed DSM path ingress
-
-The App declares `/synopkgland/SynoPkgPaperlessNgx/` on DSM's HTTPS origin.
-OIDC, `app-privilege`, role mappings, native API authentication and the dedicated
-consume share remain in place. Only the loopback OIDC issuer port is configurable;
-the public gateway port is removed. The upstream listener stays private.
-
-Paperless uses native `PAPERLESS_FORCE_SCRIPT_NAME` and `PAPERLESS_STATIC_URL`
-settings, with `GRANIAN_URL_PATH_PREFIX` explicitly set to the same namespace.
-Health checks use the prefixed favicon path and allow time for database startup.
-Gateway callback and API exception declarations remain relative to the namespace.
-No upstream source or container image is modified.
-
-CLI 0.47.1, templates 0.38.0 and SDK/App 0.46.1 are pinned to published
-releases. The x86_64 package passes local tests, check, build and inspect.
-Device acceptance for this candidate is recorded in [validation](docs/validation.md).
-Results in the older sections below apply to their original builds.
-
-## 3.4.0-0003: CLI and SDK rebuild
-
-Pins CLI 0.42.2, templates 0.37.0 and SDK/App 0.42.0. The SDK's published
-executor inventory remains executor/v0.39.0. This package uses the unchanged
-upstream Angular UI, so it has no SDK UI dependency to upgrade. All lockfile
-resolved URLs use the public npm registry. Upstream version and image pins stay
-unchanged.
-
-The declared x86_64 architecture passes CLI check, build and inspect with no
-inspection findings. The existing five Python and four Node tests pass. An
-in-place upgrade from 3.4.0-0002 reaches running, retains the consume-share
-selection, selected ports and existing container volume identities, and opens
-the Paperless dashboard for a DSM administrator through the generated menu entry
-`/webman/3rdparty/SynoPkgPaperlessNgx/sso/open.cgi`.
-
-The requested `/synopkgland/SynoPkgPaperlessNgx/` path returns HTTP 404. CLI
-0.42.2 reserves that namespace for `daemon.ingress`; this Compose/OIDC package
-does not declare a daemon ingress, and check requests no entry migration. A
-coordinator must resolve that acceptance mismatch before release. No proxy or
-upstream workaround is included. No full gate or full E2E suite was run.
-Persistent volume identities were compared before and after the upgrade; no
-pre-upgrade document-count baseline was captured.
-
-
-## 3.4.0-0002: SDK and installation settings migration
-
-Pins SDK/App 0.38.2, CLI 0.41.9 and templates 0.35.5 from the public npm
-registry. The App serves the unchanged upstream Angular UI and does not use
-the SDK UI kit. Upstream image pins remain unchanged.
-
-Installation defaults to the dedicated `SynoPkgPaperlessNgx` read/write share.
-DSM creates the share and grants the package account access. The wizard also
-offers validated existing shares. Installer-selected gateway/OIDC ports use
-SDK-managed settings; Paperless's OIDC provider reads the selected issuer port.
-The internal Paperless listener remains on loopback.
-Existing installs retain their saved consume-folder selection on upgrade.
-If that folder no longer grants the package access, use the upgrade wizard's
-change-folder option to select the dedicated App share; this does not change
-the old folder's permissions or move its contents.
-
-`npm run e2e:smoke` uses the CLI's A/N/X helper with the upstream Angular
-dashboard header as its ready marker. The full existing E2E suite is retained.
-
-The x86_64 SPK builds and inspects cleanly with CLI 0.41.9, which fixes the
-installer-port definitions lost during image locking in CLI 0.41.6.
-An in-place upgrade on an x86_64 DSM test device and the A/N/X smoke passed.
-The existing test account was verified non-admin and granted only this App's
-Application Privilege. The full E2E/regression suites were not rerun.
-See `build-proof.json`
-for the current immutable image provenance; older validation/security-rebuild
-records describe their original versions, not this candidate.
-
-
-## 3.3.3-0011: SDK entry-gate migration
-
-Built with SDK/App/templates 0.32.0, CLI 0.34.0 and executor v0.32.0.
-Only `/api` use upstream authentication; all other browser paths retain the DSM entry gate.
-Protected executor payloads changed: administrator approval is required again after upgrading.
-No NAS installation or device acceptance was performed for this rebuild.
-
-## 3.3.3-0008
-
-Improve opening the App from the DSM menu and external access settings. Built with SDK/App 0.30.2 and CLI/templates 0.30.0. No NAS testing was performed for this toolchain rebuild.
-
-改善從 DSM 選單開啟 App 與外網存取設定；使用 SDK/App 0.30.2 和 CLI/templates 0.30.0 重建
-
-This fork keeps the upstream source and UI unchanged. DSM integration lives only
-in `synology/`. Version `3.3.3-0008` references the official Paperless-ngx 3.3.3
-Docker Hub image; its immutable index is identical to the upstream GHCR index.
-The release tag is already an ancestor of this fork's development-history base.
-The fork also retains later upstream development commits; the container executes
-the pinned release, not those later commits.
+Adds 25 bounded native HTTP commands for documents, classification, notes and
+import tracking. Read the [token setup guide](docs/ctl.md) and
+[coverage plan](docs/ctl-plan.md). Published CLI 0.52.5 provides bounded multipart
+upload and original download through SDK 0.53.4 metadata. Writes require a
+redacted dry-run plan and explicit confirmation. Official 3.4.0 images, OIDC
+and app-privilege admission are retained.
 
 ## Runtime
 
@@ -173,34 +78,39 @@ Tika and Gotenberg are optional future extensions and are not included.
 
 ## Mobile API
 
-In the upstream Web UI, open **My Profile** and generate/copy the API token.
-Keep that token private and revoke/regenerate it in Paperless when needed.
-Use the package HTTPS base URL and `Authorization: Token <token>` for native
-API access. The `/api` exception preserves the native token header without a DSM
-cookie; protected `/api` resources return 401 when neither a Paperless session
-nor a token is supplied. Local browser login/signup remain disabled; new Web UI
-sessions redirect through the DSM issuer. Native sessions/tokens remain valid
-independently of DSM logout/deletion; see [account limitations](docs/framework-gaps.md).
-Physical mobile clients are unverified.
+In the upstream Web UI, open the dashboard user menu → **My Profile** →
+**Edit Profile** modal → **API Auth Token** → **Copy**. Reuse an existing token.
+If none exists, create it intentionally in this modal. Regenerating invalidates
+other clients. No automatic token generation or refresh is performed.
+See [native token setup](docs/ctl.md).
+
+Use the package HTTPS base URL and native token authorization. Only the six API prefixes listed in
+`identity_gateway.upstream_auth_paths` delegate authentication to Paperless; native tokens remain independent of DSM
+logout/deletion. Local browser login/signup stay disabled, with OIDC admission
+unchanged. Physical mobile clients are unverified.
 
 ## Build and tests
 
-Dependency pins are CLI 0.43.0, templates 0.38.0 and SDK/App 0.43.1.
-The app serves upstream Angular UI; it adds no Vue UI dependency.
-See `toolchain.json` and `package-lock.json`.
+Published pins are CLI 0.52.5, templates 0.41.3 and SDK/App 0.53.4.
+The upstream Angular UI is retained; UI 0.23.6 is recorded in `toolchain.json`
+without adding an unused Vue bundle. See `package-lock.json`.
 
 ```sh
 cd synology
 npm ci --ignore-scripts
 npm test
-
+npm run test:ctl
+node scripts/render.mjs --check
+npx --no synopkgland ctl generate --check
+npx --no synopkgland check --json
+npx --no synopkgland build --arch x86_64 --json
+npx --no synopkgland inspect dist/SynoPkgPaperlessNgx-3.4.0-0010-x86_64.spk --json
 ```
 
-Build with the pinned released dependencies. No source overrides are used.
-Run all checks and builds on Linux. Record A/N/X acceptance against the final
-installed artifact; older-build results do not validate this migration.
+Release builds use published dependencies and reject source overrides. Run
+checks and builds on Linux. Device evidence must identify the installed artifact;
+older-build results do not validate this release.
 
-The production build command deliberately rejects source overrides.
 Use `python3 synology/scripts/build.py` with `SPL_BUILD_SSH`,
 `SPL_BUILDER_IMAGE`, and an isolated `SPL_BUILD_DIR`. The Linux tool image needs
 Node 24, the CLI's required Go toolchain, Python 3 and Git, plus access to the
