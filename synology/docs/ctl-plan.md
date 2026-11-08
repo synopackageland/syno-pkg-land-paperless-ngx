@@ -1,8 +1,10 @@
 # Paperless native-token ctl plan
 
-This candidate adds 25 v3 native HTTP operations under the `paperless` alias.
+This release adds 25 v3 native HTTP operations under the `paperless` alias.
 Only packaging changes. The official Paperless 3.4.0 image, OIDC setup,
-`app-privilege` entry and `/api` upstream-authentication exception are retained.
+`app-privilege` entry are retained. Native authentication exceptions are limited
+to `/api/profile`, `/api/documents`, `/api/tags`, `/api/correspondents`,
+`/api/document_types` and `/api/tasks`.
 [Source/UI inventory](../ctl-coverage.json) records 144 reviewed surfaces,
 including every registered router, inherited decorated action, explicit URL and
 Angular route. [Generated reference](../generated/operations.md) is the command
@@ -19,8 +21,8 @@ source of truth. Coverage is intentionally incomplete where recorded below.
 | Attributes lists/details/create/edit, `/api/tags/`, `/api/correspondents/`, `/api/document_types/` | `tags`, `correspondents`, `document-types` × `list`, `get`, `create`, `update` | reads / read; writes / human-only | Complete common classification workflow; name and native matching fields, tag color/inbox flag; create returns ID, then matching `get` readback |
 | Tasks page, GET `/api/tasks/` | `tasks list`, `tasks get --task-id UUID` | read / read | v10 page envelope; original Celery UUID query, not task resource PK; native status, owner and related_document_ids retained |
 | Document notes, `/api/documents/{id}/notes/` | `notes list`, `notes add`, `notes delete` | read, write, destructive respectively; mutations human-only | Explicit document/note IDs; add/delete return current notes and require `notes list` readback |
-| Upload button, POST `/api/documents/post_document/` | `documents upload` | write / human-only stream | Direct multipart `document`; no owner override, native uploader owner and JSON task UUID receipt; dependency on CLI file flows |
-| Download original, GET `/api/documents/{id}/download/?original=true` | `documents download` | read / human-only stream | Exact original bytes, explicit local output, completion bytes/SHA-256; dependency on CLI file flows |
+| Upload button, POST `/api/documents/post_document/` | `documents upload` | write / human-only stream | Direct multipart `document`; no owner override, native uploader owner and JSON task UUID receipt; official CLI file flow |
+| Download original, GET `/api/documents/{id}/download/?original=true` | `documents download` | read / human-only stream | Exact original bytes, explicit local output, completion bytes/SHA-256; official CLI file flow |
 
 Every command requires a DSM-authenticated metadata description and the selected
 native token's own model/object permissions. There is no administrator fallback,
@@ -55,11 +57,11 @@ an uncertain mutation inspect state and never automatically replay it.
   25 explicit tag IDs. Future batch document mutations must use at most 25
   explicit document IDs, without filter expansion. Synchronous bulk edit,
   delete-many and inbox-done remain deferred; no invented async layer.
-- Document and classification DELETE are blocked: native DRF responds 204 with
-  no Content-Type. The matching CLI currently requires a valid declared MIME
-  even for empty responses, while the v3 schema does not allow an empty MIME.
-  Do not dispatch a mutation that cannot validate its receipt. Notes DELETE
-  returns JSON 200 and is implemented. Upstream trash semantics are unchanged.
+- Document and classification DELETE remain outside this selected 25-command
+  release. CLI 0.52.5 supports explicitly declared empty native acknowledgements;
+  the previous MIME blocker is resolved. Adding destructive resource deletion
+  still requires a separately reviewed registry and trash/readback workflow.
+  Notes DELETE returns JSON 200 and is implemented.
 - Inbox list requires tag → document composition absent from the fixed flows.
   Use `tags list` and a known tag ID in `documents list --tags ID` separately.
 - Saved views and custom-field CRUD are excluded from this initial workflow;
@@ -102,28 +104,15 @@ readback. They check page exhaustion, OCR/notes refusal, task UUID, selected
 identity projection and mutation non-replay. These fixtures do not prove live
 native role isolation or browser behavior.
 
-Matching SDK metadata v3 and CLI native transport are merged but unreleased.
-Published manifest/lockfile pins stay unchanged; source overrides are for local
-tests only. The candidate is marked `publishable: false` in toolchain metadata.
-The production build script still refuses source overrides. Upgrade to real
-matching published SDK/CLI releases before release. Do not publish this SPK.
-Upload/download are declared against the frozen file-flow interface and fail
-closed on a CLI without C's transfer integration. End-to-end file streaming is
-blocked on that dependency, not claimed by descriptor generation.
+The package pins published CLI 0.52.5, templates 0.41.3 and SDK/App 0.53.4.
+Toolchain metadata records UI 0.23.6; this Compose package uses the upstream UI
+and has no SDK UI bundle. Release builds refuse source overrides. The focused
+file-flow test invokes the published transfer callback, verifies multipart
+content and the original task UUID, then checks downloaded bytes/SHA-256 and
+refusal to overwrite an existing destination.
 
-Final integration owner must verify the merged revisions/artifact once: real
-browser modal and token enrollment, two DSM profiles, two native accounts and
-mutual permission denial, 401/403, retained OIDC/entry, all selected mutation
-readbacks, upload owner → task UUID → OCR document → original download/hash/MIME,
-slow/interrupted transfer and retained upgrade. Never regenerate an existing
-user token merely to test enrollment. No NAS verification belongs to this change.
-
-Reproduce the focused gate with matching built CLI and SDK checkouts supplied
-through `PAPERLESS_CLI_DIR`, `PAPERLESS_TEST_CLI` (CLI executable) and
-`SYNOPKGLAND_SDK_DIR`. Run `npm test`, `npm run test:ctl`,
-`node scripts/render.mjs --check`, `ctl generate --check`, `check`, x86_64
-`build`, and `inspect` from the packaging directory. The released CLI currently
-pinned in package-lock is not a native-v3 test runner. Local source validation
-and immutable artifact identifiers are recorded in [ctl-validation.json](../ctl-validation.json).
-Historical [build proof](../build-proof.json) and device validation describe their
-original package versions and do not validate this candidate.
+Reproduce from the packaging directory with `npm ci`, `npm test`,
+`npm run test:ctl`, `node scripts/render.mjs --check`, `ctl generate --check`,
+`check`, x86_64 `build`, and `inspect`. The focused gate defaults to the installed
+published CLI. Exact artifact identifiers and device acceptance are recorded in
+[ctl-validation.json](../ctl-validation.json).

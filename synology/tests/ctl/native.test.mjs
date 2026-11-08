@@ -1,15 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync,mkdtempSync,rmSync} from 'node:fs';
+import {readFileSync,mkdtempSync,rmSync,writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {resolve,join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {Readable} from 'node:stream';
+import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 
 const root=resolve(import.meta.dirname,'../..');
-const cli=process.env.PAPERLESS_CLI_DIR;
-if(!cli) throw Error('Set PAPERLESS_CLI_DIR to a matching built CLI checkout for the native HTTP focused gate');
+const cli=process.env.PAPERLESS_CLI_DIR??join(root,'node_modules/@synopackageland/cli');
 const module=name=>import(pathToFileURL(join(cli,'dist/ctl',name+'.js')));
 const {validateNativeRegistry}=await module('native-registry');
 const {validateNativeArtifacts}=await module('native-metadata');
@@ -19,7 +19,7 @@ const {enrollNative}=await module('native-protocol');
 const r=JSON.parse(readFileSync(join(root,'operations.json')));
 const d=JSON.parse(readFileSync(join(root,'generated/synopkgland-api.json')));
 const inventory=JSON.parse(readFileSync(join(root,'generated/synopkgland-http-inventory.json')));
-const ctx={basePath:r.nativeHttp.basePath,entry:'app-privilege',upstreamAuthPaths:['/api']};
+const ctx={basePath:r.nativeHttp.basePath,entry:'app-privilege',upstreamAuthPaths:['/api/profile','/api/documents','/api/tags','/api/correspondents','/api/document_types','/api/tasks']};
 const reply=(data,status=200,type='application/json')=>({status,headers:{'content-type':type},body:Readable.from([JSON.stringify(data)])});
 const invoke=(name,params,transport,options)=>executeNative(r.operations[name],params,r.nativeHttp,transport,options);
 const input=(name,value)=>operationInput(r.operations[name],['--input','-'],JSON.stringify(value));
@@ -68,7 +68,7 @@ test('API v10 page mapping is bounded, never follows the upstream next URL, and 
  const taskId='01234567-89ab-4cde-8fab-0123456789ab';
  const tasks=await invoke('tasks.get',{taskId},async request=>{
   assert.equal(request.path,'/api/tasks/');assert.equal(request.query.get('task_id'),taskId);
-  return reply({results:[{task_id:taskId,status:'SUCCESS',related_document_ids:[42],owner:7}],next:null});
+  return reply({results:[{task_id:taskId,status:'success',related_document_ids:[42],owner:7}],next:null});
  });
  assert.deepEqual(tasks.items[0].related_document_ids,[42]);assert.equal(tasks.items[0].owner,7);
 });
@@ -172,10 +172,46 @@ test('official client keeps both profiles separate, dry-run avoids secret reads,
  }finally{rmSync(dir,{recursive:true,force:true});}
 });
 
-test('empty native 204 without Content-Type is a verified CLI blocker for resource delete',async()=>{
+test('published CLI accepts an authored empty native mutation acknowledgement; resource deletion stays excluded',async()=>{
  const deletion=structuredClone(r.operations['documents.get']);
  deletion.effect='destructive';deletion.ai='human-only';deletion.http.method='DELETE';
- deletion.http.response={statuses:[204],decode:'text',maxBytes:1,contentTypes:['application/json']};deletion.resultSchema={type:'string',maxLength:0};
- await assert.rejects(executeNative(deletion,{id:1},r.nativeHttp,async()=>({status:204,headers:{},body:Readable.from([])})),e=>e.code==='CTL_NATIVE_RESPONSE_INVALID');
+ deletion.http.response={statuses:[204],decode:'text',maxBytes:1,contentTypes:['application/json']};deletion.resultSchema={type:'object',properties:{ok:{const:true},status:{const:204}},required:['ok','status'],additionalProperties:false};
+ assert.deepEqual(await executeNative(deletion,{id:1},r.nativeHttp,async()=>({status:204,headers:{},body:Readable.from([])})),{ok:true,status:204});
  assert.ok(!Object.values(r.operations).some(op=>op.http.response.statuses.includes(204)));
+});
+
+
+test('published file-flow callback uploads multipart, retains the UUID and downloads the exact original',async()=>{
+ const {createNativeTransfer}=await module('native-transfers');
+ const dir=mkdtempSync(join(tmpdir(),'paperless-files-'));
+ const original=Buffer.from('%PDF-1.4\nfixture original\n%%EOF\n');
+ const file=join(dir,'source.pdf'),output=join(dir,'original.pdf');
+ const taskId='01234567-89ab-4cde-8fab-0123456789ab';
+ writeFileSync(file,original,{mode:0o600});
+ const transfer=createNativeTransfer();
+ try{
+  const receipt=await invoke('documents.upload',{file,title:'fixture'},async request=>{
+   assert.equal(request.path,'/api/documents/post_document/');
+   assert.match(request.headers['content-type'],/^multipart\/form-data; boundary=/);
+   const chunks=[];for await(const chunk of request.body)chunks.push(chunk);
+   const body=Buffer.concat(chunks);
+   assert.equal(body.length,Number(request.headers['content-length']));
+   assert.ok(body.includes(original));
+   assert.match(body.toString(),/name="document"; filename="source.pdf"/);
+   assert.ok(!body.toString().includes(dir));
+   return reply(taskId);
+  },{transfer});
+  assert.deepEqual(receipt,{taskId});
+  const downloaded=await invoke('documents.download',{id:42,output},async request=>{
+   assert.equal(request.query.get('original'),'true');
+   assert.ok(!request.query.has('output'));
+   return {status:200,headers:{'content-type':'application/pdf','content-length':String(original.length)},body:Readable.from([original])};
+  },{transfer});
+  assert.equal(downloaded.bytes,original.length);
+  assert.equal(downloaded.sha256,createHash('sha256').update(original).digest('hex'));
+  assert.deepEqual(readFileSync(output),original);
+  let calls=0;
+  await assert.rejects(invoke('documents.download',{id:42,output},async()=>{calls++;throw Error('must not overwrite');},{transfer}));
+  assert.equal(calls,0);
+ }finally{rmSync(dir,{recursive:true,force:true});}
 });

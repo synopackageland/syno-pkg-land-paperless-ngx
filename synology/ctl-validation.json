@@ -1,47 +1,204 @@
 {
   "package": "SynoPkgPaperlessNgx",
   "version": "3.4.0-0010",
-  "publishable": false,
-  "validation": "local source-override development build; no device acceptance",
+  "status": "release-ready",
+  "publishable": true,
+  "validation": "Published dependencies, local focused gates and retained-upgrade device acceptance",
+  "toolchain": {
+    "cli": "0.52.5",
+    "templates": "0.41.3",
+    "sdk": "0.53.4",
+    "app": "0.53.4",
+    "ui": "0.23.6",
+    "executorTag": "executor/v0.53.3",
+    "publishable": true,
+    "goToolchain": "go1.26.10",
+    "goSdk": "v0.53.4"
+  },
   "sources": {
     "upstream": "ced3cf9303e08648e6fa80d35b9307d97e32cfd1",
-    "sdk": "0d74b4e52f533c3ca8168c60931cd1769594c3c5",
-    "cli": "79ab9c622747d9015ce39d27e2c4a7b58a4ada46"
+    "sdkModuleVersion": "v0.53.4",
+    "sdkModuleSum": "h1:r2mcSakYeVyK+B34lPeE07d9I+aS6oNsM+rQyNFiZYU=",
+    "cliNpmIntegrity": "sha512-TVIgwIEcQZBOFdBTdKaZI/OFvqN3EUeOFzGWL5nicYAnwnyjjDRUvIGavKYmY86B92F2HZtgrIJCbBZnBz0elA==",
+    "templatesNpmIntegrity": "sha512-lPU6vS1mE0S3J0TSCaJKEslk/rRtJSWJcOfFoMcGkWY/WOLwOh0JHBHg09FeBD1zxY0lQh513KTvGE6YB8PXyw=="
   },
   "spk": "SynoPkgPaperlessNgx-3.4.0-0010-x86_64.spk",
-  "spkSha256": "d377af3a4550511d42ad1af18d7888431a5d68761859d22a9fecf92c5df8232a",
+  "spkBytes": 41932288,
+  "spkSha256": "75da96d1d31268fa5ad76be82f057ae4da6b75dcd43b9c467919763cfe45fed7",
   "images": [
     {
       "source": "docker.io/library/postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382",
       "reference": "docker.io/library/postgres@sha256:7e6103cf85f88f7a0eddb3ec0b1ba8940eba098ed118ade25a729ca9daee5568",
-      "architecture": "amd64"
+      "architecture": "amd64",
+      "config_digest": "sha256:526573c93ea530a230b553cc513075ab9d70b63bfd2300ef5eb5ad1cafbbc595"
     },
     {
       "source": "docker.io/library/redis:8.2.2-alpine3.22@sha256:59b6e694653476de2c992937ebe1c64182af4728e54bb49e9b7a6c26614d8933",
       "reference": "docker.io/library/redis@sha256:3f835dae62fe5012baf5a768293967c93bc09cf9e848d415351dfba04ee87537",
-      "architecture": "amd64"
+      "architecture": "amd64",
+      "config_digest": "sha256:5d79a9ce29f8b3fe50fd5c07ee1bf654b5cec557b895835825bf6825d525e4f2"
     },
     {
       "source": "docker.io/paperlessngx/paperless-ngx:3.4.0@sha256:7c1d98afd200def9e2bad3a377d30829e8d486554b3c818995af5860114ea17f",
       "reference": "docker.io/paperlessngx/paperless-ngx@sha256:39fd4fac06dc928b0bea22bc85abcd724f0f6a83ab33653aa17fc31d3cc522ce",
-      "architecture": "amd64"
+      "architecture": "amd64",
+      "config_digest": "sha256:6323c97edc74bfa80fc1cc30d08460394db60de8c9f6863f396501650fbe3e72"
     }
   ],
-  "descriptorSha256": "0aa82f6bb0727c7a1f80af4c18092fc9a790b4ad4de80a787e0d3eadaecb4c2b",
+  "descriptorSha256": "fb4fb86ccb4cf8b0c6a61c5c64d604dafbdd20aa62646994f96c3ffcae987f99",
   "checks": {
     "generateCheck": true,
-    "check": true,
+    "checkWarnings": [],
     "build": "x86_64",
     "inspectFindings": [],
     "bootstrapTests": 5,
     "packagingContractTests": 6,
-    "nativeCtlTests": 10,
-    "inventorySurfaces": 144
+    "nativeCtlTests": 11,
+    "inventorySurfaces": 144,
+    "sourceOverrides": false
   },
-  "pending": [
-    "Published matching SDK and CLI dependencies",
-    "CLI file-flow integration for actual upload/download",
-    "CLI empty-204 response support before resource delete exposure",
-    "Final merged-artifact device acceptance and retained upgrade"
+  "deviceAcceptance": {
+    "devicesAccepted": 1,
+    "architecture": "x86_64",
+    "dsm": "7.3.2-86009",
+    "upgrade": {
+      "from": "3.4.0-0009",
+      "to": "3.4.0-0010",
+      "baselineSpkSha256": "8f1a76210f8deaded6fc623a1a6c37d93b6d8bf150ed8df31aad17461733bc77",
+      "retainedDocuments": [
+        {
+          "id": 5,
+          "owner": 4,
+          "phase": "baseline",
+          "taskId": "025c9b78-10d2-42ac-97f6-afa8cf933ad1",
+          "bytes": 23615,
+          "sha256": "61cb90c01858d88359c7342c68f9f126ed31d280bf02806b1db64df79040889c",
+          "download": {
+            "bytes": 23615,
+            "sha256": "61cb90c01858d88359c7342c68f9f126ed31d280bf02806b1db64df79040889c"
+          }
+        },
+        {
+          "id": 6,
+          "owner": 5,
+          "phase": "baseline",
+          "taskId": "433bd798-3352-4d05-8cb4-27a465e1fede",
+          "bytes": 20336,
+          "sha256": "5460d0b0f173d5ed852f40422ad6517667321d181a7401fd1cb8fcd46f7a46ed",
+          "download": {
+            "bytes": 20336,
+            "sha256": "5460d0b0f173d5ed852f40422ad6517667321d181a7401fd1cb8fcd46f7a46ed"
+          }
+        }
+      ]
+    },
+    "installedDescriptorMatchesArtifact": true,
+    "nativeAccounts": {
+      "count": 2,
+      "staff": false,
+      "superuser": false,
+      "distinctPersonalTokens": true,
+      "profilesSeparate": true
+    },
+    "crossAccountReadsRefused": [
+      {
+        "caller": 0,
+        "code": "CTL_NATIVE_HTTP_ERROR",
+        "requestCount": 1
+      },
+      {
+        "caller": 1,
+        "code": "CTL_NATIVE_HTTP_ERROR",
+        "requestCount": 1
+      }
+    ],
+    "forbiddenMutation": {
+      "status": 403,
+      "code": "CTL_NATIVE_ACCESS_DENIED",
+      "requestCount": 1,
+      "credentialStillUsable": true,
+      "noFallback": true
+    },
+    "fileFlow": {
+      "taskId": "cba30c45-a4aa-47e0-ba2a-b95e02b054a5",
+      "taskStatus": "success",
+      "documentId": 7,
+      "owner": 4,
+      "upload": {
+        "bytes": 21097,
+        "sha256": "91c5d222b286989721aaf00c2a525e44a9b0a44f696cf11d3b11a46bf307bd4c"
+      },
+      "download": {
+        "bytes": 21097,
+        "sha256": "91c5d222b286989721aaf00c2a525e44a9b0a44f696cf11d3b11a46bf307bd4c"
+      },
+      "dryRunsNonmutating": true,
+      "missingConfirmationRefused": true
+    },
+    "write": {
+      "operation": "documents.update",
+      "documentId": 7,
+      "dryRun": true,
+      "confirmed": true,
+      "readback": true
+    },
+    "commandsExercised": [
+      "documents.list",
+      "documents.search",
+      "documents.metadata",
+      "documents.text",
+      "tasks.list",
+      "tags.create",
+      "tags.get",
+      "tags.list",
+      "tags.update",
+      "correspondents.create",
+      "correspondents.get",
+      "correspondents.list",
+      "correspondents.update",
+      "document_types.create",
+      "document_types.get",
+      "document_types.list",
+      "document_types.update",
+      "notes.add",
+      "notes.list",
+      "notes.delete",
+      "documents.get",
+      "documents.download",
+      "documents.upload",
+      "tasks.get",
+      "documents.update"
+    ],
+    "browser": {
+      "adminDashboard": true,
+      "anonymousPath": "/webman/3rdparty/SynoPkgPaperlessNgx/sso/authorize.cgi",
+      "anonymousDenied": true
+    },
+    "credentialBackend": "Isolated in-memory test secret store with real DSM metadata admission and native HTTP; user OS enrollment UI was not exercised",
+    "cleanup": {
+      "documentsRemoved": 3,
+      "classificationObjectsRemoved": 3,
+      "nativeFixtureUsersRemoved": 2,
+      "tasksAcknowledged": 3,
+      "taskHistory": "Retained by the native application; its API has no task deletion route",
+      "tokensRevoked": true
+    }
+  },
+  "privacy": {
+    "scope": [
+      "synology/ integration files",
+      "SPK artifacts and unpacked payloads"
+    ],
+    "findings": 0
+  },
+  "approval": {
+    "retention": "unknown",
+    "reason": "The baseline comparison has no matching executor inventory; no root executor is requested. The narrower gateway policy changes the native auth contract, requiring personal-token re-enrollment"
+  },
+  "boundaries": [
+    "No merge, tag, publication or catalog update",
+    "Document and classification deletion remain outside the selected 25 commands",
+    "No physical mobile, reboot or other device-platform acceptance is claimed",
+    "Native task history is acknowledged and retained under upstream lifecycle policy"
   ]
 }

@@ -1,15 +1,11 @@
 {
-  "cli": "0.48.13",
-  "templates": "0.40.1",
-  "sdk": "0.50.7",
-  "app": "0.50.7",
-  "ui": null,
-  "executorTag": "executor/v0.49.5",
-  "publishable": false,
+  "cli": "0.52.5",
+  "templates": "0.41.3",
+  "sdk": "0.53.4",
+  "app": "0.53.4",
+  "ui": "0.23.6",
+  "executorTag": "executor/v0.53.3",
+  "publishable": true,
   "goToolchain": "go1.26.10",
-  "nativeHttp": {
-    "status": "requires matching SDK and CLI releases",
-    "registryVersion": 3,
-    "fileFlows": "requires CLI file flow integration"
-  }
+  "goSdk": "v0.53.4"
 }

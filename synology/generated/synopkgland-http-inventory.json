@@ -1,6 +1,11 @@
 {
   "upstreamAuthPaths": [
-    "/api"
+    "/api/profile",
+    "/api/documents",
+    "/api/tags",
+    "/api/correspondents",
+    "/api/document_types",
+    "/api/tasks"
   ],
   "format": "synopkgland.http-inventory",
   "version": 1,
@@ -10,10 +15,10 @@
     "displayName": "Paperless-ngx"
   },
   "entry": "app-privilege",
-  "entryPolicyDigest": "dd2dbaec012e98201e18dc5b8005fc38f8c90d205400b2cba5fef9abef0bdf3a",
+  "entryPolicyDigest": "3e144a62fe61b2b6ce143b4b57380f9d7802e0c9e00f5e929038e3104aba1805",
   "basePath": "/synopkgland/SynoPkgPaperlessNgx/",
   "registrySha256": "11f966d87114c9a954027a85b43154214771dabe912e6755cb4912ef713378d1",
-  "authSha256": "96425b5de9efe17ca3dbd8ec2cb07a9d5806b91fd2a02d10188c77a13fd19db9",
+  "authSha256": "fb6edc89dd8ca566b2b51d3ee4def8b5e21ef90a57bb2ea2676ce7e650b33fd6",
   "bindings": {
     "correspondents.create": {
       "effect": "write",

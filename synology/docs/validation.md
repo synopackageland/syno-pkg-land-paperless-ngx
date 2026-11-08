@@ -1,46 +1,57 @@
 # Validation record: 3.4.0-0010
 
-This native-token ctl candidate has local packaging validation only. It has not
-been installed on a NAS. No release or catalog publication is included.
-[Machine-readable evidence](../ctl-validation.json) records the artifact hash,
-exact development SDK/CLI source revisions, upstream image references and checks.
+Release-ready with published dependencies and device acceptance of the exact
+x86_64 artifact. [Machine-readable evidence](../ctl-validation.json) records
+versions, npm integrity, the Go module sum, image references and SPK SHA-256.
 
 ## Local evidence
 
-- Official Paperless 3.4.0 image and upstream source revision match
-  `ced3cf9303e08648e6fa80d35b9307d97e32cfd1`. The upstream source/UI, Compose image
-  pins, bootstrap, native OIDC and entry policy are unchanged.
-- 5 Python bootstrap tests, 6 packaging contract tests and 10 native ctl tests
-  pass. Coverage drift checks account for 144 UI/API surfaces.
-- Renderer freshness, v3 generation/check, manifest check and x86_64 build pass.
-  SPK inspect returns no findings. Packaged descriptor/inventory match generated
-  metadata, and packaged gateway retains OIDC, `app-privilege` and `/api`.
-- Native tests exercise the actual matching CLI executor/client with local
-  source-shaped fixtures: selected request bindings and readbacks, redacted
-  dry-runs, confirmation, bounded pagination/OCR/notes, original task UUID,
-  selected profile identity, separate DSM profiles, entry denial and non-replay.
-  These fixtures are not live native permission or browser acceptance.
-- Published dependency pins remain unchanged. Local validation uses matching
-  merged SDK/CLI sources with overrides. The candidate is non-publishable until
-  matching versions are actually released and selected.
+- Published CLI 0.52.5, templates 0.41.3 and SDK/App 0.53.4; UI 0.23.6 is
+  recorded without adding an SDK UI bundle to the upstream Angular application
+- 5 bootstrap tests, 6 packaging contract tests and 11 native ctl tests pass
+- Renderer and descriptor freshness pass; check has no warnings and inspect
+  has no findings; all 144 source/UI inventory surfaces are accounted for
+- The official Paperless 3.4.0 image matches upstream source revision
+  `ced3cf9303e08648e6fa80d35b9307d97e32cfd1`; upstream files remain unchanged
+- The published file-flow callback verifies multipart bytes and task UUID,
+  exact original download bytes/SHA-256 and refusal to overwrite a destination
+- No source override is used; the build script includes ctl and freshness gates
 
-## Blocked and pending
+## Device acceptance
 
-- Real multipart upload and original download need CLI file-flow integration;
-  declarations are present and fail closed without that module.
-- Native empty-204 document/classification DELETE cannot currently satisfy the
-  CLI MIME contract. A regression fixture confirms rejection; those mutations
-  are not exposed. Notes DELETE returns 200 JSON and is covered locally.
-- Final merged-artifact verification must cover real profile modal/token UI,
-  native identity/permission isolation, original upload/task/OCR/download and
-  SHA-256/MIME, mutation readbacks, interrupted transfer and retained upgrade.
-- No final lifecycle, rootless runtime, storage, reboot, browser, object-isolation
-  or retained-upgrade result is claimed for this candidate. Older acceptance
-  remains in Git history and applies only to its original artifacts.
-- No baseline SPK was supplied to this development build; approval retention is
-  reported unknown. Resolve the final published artifact's approval comparison
-  during integration/release validation.
+One x86_64 DSM 7.3.2 device ran the 0009 → 0010 upgrade. Two independent,
+nonstaff, nonsuperuser native fixture accounts uploaded their own documents
+before upgrading. Their document owners and original bytes/SHA-256 survived.
 
-See [ctl plan](ctl-plan.md) for command-level scope and exclusions, and
-[token setup](ctl.md) for the user-operated enrollment flow. Do not regenerate
-an existing token as a test or refresh step: that invalidates other clients.
+The official ctl client exercised all 25 commands through real DSM metadata
+admission and native HTTP, using two distinct personal fixture tokens and
+separate local profiles. Cross-account document reads were refused. Removing
+one fixture account's create-tag permission produced a native 403 with exactly
+one request, no credential fallback and a subsequent successful own-document
+read using the same credential.
+
+The release upload returned its native UUID, reached native `success` and
+resolved to the expected owner/document. Original download matched 21097 bytes
+and SHA-256 `91c5d222b286989721aaf00c2a525e44a9b0a44f696cf11d3b11a46bf307bd4c`.
+Upload/download dry-runs performed no native IO or secret reads. Missing write
+confirmation was refused. A confirmed document update was read back, as were
+classification and note operations. The OIDC administrator dashboard opened;
+an anonymous browser remained outside the application.
+
+The fixture secret backend was isolated in memory. This validates ctl execution,
+metadata admission and file transfer, without claiming user-operated OS keychain
+enrollment UX. Existing users' tokens were not generated or rotated.
+
+## Cleanup and boundaries
+
+Three fixture documents, including their trash entries, three classification
+objects and both native fixture accounts were removed. Both personal tokens
+were verified revoked. The three completed native task records were explicitly
+acknowledged; the upstream API has no task deletion route and owns their history
+retention. Existing application objects and DSM accounts were preserved.
+
+The baseline SPK was supplied for comparison. CLI reports executor approval
+retention unknown because there is no matching executor inventory; this package
+requests no root executor. The narrower gateway policy changes the native auth
+contract digest, so existing local personal-token enrollments require enrollment
+again. No merge, tag, publication or catalog update is part of this validation.

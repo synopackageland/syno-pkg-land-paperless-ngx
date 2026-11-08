@@ -1,13 +1,13 @@
 # Paperless-ngx for DSM
 
-## 3.4.0-0010: native-token ctl candidate
+## 3.4.0-0010: personal-token document control
 
 Adds 25 bounded native HTTP commands for documents, classification, notes and
 import tracking. Read the [token setup guide](docs/ctl.md) and
-[coverage plan](docs/ctl-plan.md). Requires matching unreleased SDK/CLI native
-HTTP v3 support; upload/download also depend on CLI file flows. This candidate
-is not publishable and has no new device acceptance. Published dependency pins,
-official 3.4.0 images, OIDC and app-privilege admission remain unchanged.
+[coverage plan](docs/ctl-plan.md). Published CLI 0.52.5 provides bounded multipart
+upload and original download through SDK 0.53.4 metadata. Writes require a
+redacted dry-run plan and explicit confirmation. Official 3.4.0 images, OIDC
+and app-privilege admission are retained.
 
 ## Runtime
 
@@ -84,33 +84,33 @@ If none exists, create it intentionally in this modal. Regenerating invalidates
 other clients. No automatic token generation or refresh is performed.
 See [native token setup](docs/ctl.md).
 
-Use the package HTTPS base URL and native token authorization. Only `/api`
-delegates authentication to Paperless; native tokens remain independent of DSM
+Use the package HTTPS base URL and native token authorization. Only the six API prefixes listed in
+`identity_gateway.upstream_auth_paths` delegate authentication to Paperless; native tokens remain independent of DSM
 logout/deletion. Local browser login/signup stay disabled, with OIDC admission
 unchanged. Physical mobile clients are unverified.
 
 ## Build and tests
 
-Published dependency pins remain CLI 0.48.13, templates 0.40.1 and SDK/App 0.50.7.
-Native ctl requires newer matching releases before production builds.
-The app serves upstream Angular UI; it adds no Vue UI dependency.
-See `toolchain.json` and `package-lock.json`.
+Published pins are CLI 0.52.5, templates 0.41.3 and SDK/App 0.53.4.
+The upstream Angular UI is retained; UI 0.23.6 is recorded in `toolchain.json`
+without adding an unused Vue bundle. See `package-lock.json`.
 
 ```sh
 cd synology
 npm ci --ignore-scripts
 npm test
-
+npm run test:ctl
+node scripts/render.mjs --check
+npx --no synopkgland ctl generate --check
+npx --no synopkgland check --json
+npx --no synopkgland build --arch x86_64 --json
+npx --no synopkgland inspect dist/SynoPkgPaperlessNgx-3.4.0-0010-x86_64.spk --json
 ```
 
-The production build uses pinned released dependencies and rejects source overrides.
-This candidate needs matching unreleased SDK/CLI sources for local verification;
-see [development validation](docs/ctl-plan.md#verification-and-dependencies).
-Run all checks and builds on Linux. Record A/N/X acceptance against the final
-installed artifact; older-build results do not validate this migration.
+Release builds use published dependencies and reject source overrides. Run
+checks and builds on Linux. Device evidence must identify the installed artifact;
+older-build results do not validate this release.
 
-The production build command deliberately rejects source overrides. Native-v3
-local checks require the matching development toolchain described in the ctl plan.
 Use `python3 synology/scripts/build.py` with `SPL_BUILD_SSH`,
 `SPL_BUILDER_IMAGE`, and an isolated `SPL_BUILD_DIR`. The Linux tool image needs
 Node 24, the CLI's required Go toolchain, Python 3 and Git, plus access to the

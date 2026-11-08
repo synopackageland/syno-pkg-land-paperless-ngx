@@ -14,6 +14,8 @@ metadata:
     ko: 기본 토큰 ctl로 문서, 분류, 메모 및 가져오기 추적 지원
     de: Native-Token-ctl für Dokumente, Klassifizierung, Notizen und Importstatus
     fr: ctl avec jeton natif pour documents, classement, notes et suivi des imports
+    es: ctl con token nativo para documentos, clasificación, notas e importaciones
+    it: ctl con token nativo per documenti, classificazione, note e importazioni
   maintainer_url: https://github.com/paperless-ngx/paperless-ngx
   distributor: Syno Package Land
   distributor_url: https://synopkgland.com/
@@ -30,7 +32,7 @@ install:
     key: consume
     permission: rw
 compose:
-  sdk: 0.50.7
+  sdk: 0.53.4
   shares:
     consume:
       select: install
@@ -220,8 +222,13 @@ compose:
     egress: internet
 identity_gateway:
   upstream_auth_paths:
-    - /api
-  sdk: 0.50.7
+    - /api/profile
+    - /api/documents
+    - /api/tags
+    - /api/correspondents
+    - /api/document_types
+    - /api/tasks
+  sdk: 0.53.4
   mode: oidc
   access: dsm-users
   ingress:

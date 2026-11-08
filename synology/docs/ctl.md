@@ -1,8 +1,8 @@
 # Control Paperless with your native API token
 
-Requires a matching SDK v3 package and CLI release with native HTTP support.
-This development candidate is not publishable. Upload/download also require
-the CLI native file-flow module. See [coverage and dependencies](ctl-plan.md).
+Requires CLI 0.52.5 and this package's SDK 0.53.4 metadata. The release
+includes bounded upload/download through the official CLI file-flow callback.
+See [coverage and limits](ctl-plan.md).
 
 Open `/synopkgland/SynoPkgPaperlessNgx/dashboard` on the registered DSM origin,
 sign in through the existing DSM entry, then open the user menu → **My Profile**
@@ -47,7 +47,7 @@ and `notes delete --id ID --note-id NOTE_ID`, followed by `notes list --id ID`.
 For sensitive text prefer a private input file or terminal input rather than
 shell history. See [generated commands](../generated/operations.md).
 
-With a CLI including file flows:
+Upload and download originals:
 
 ```sh
 synopkgland ctl paperless documents upload --file invoice.pdf --dry-run --host <profile>

@@ -2,9 +2,9 @@
 
 ## 3.4.0-0010
 
-- Add 25 native-token ctl operations for document discovery/editing, classification, notes and task tracking
-- Declare human-only multipart upload and original download against the CLI file-flow interface
-- Guide users through dashboard → My Profile → API Auth Token without automatic token generation
-- Record source/UI coverage, bounded reads, confirmation/readback and explicit dependency blockers
-- Preserve the official 3.4.0 images, existing OIDC and app-privilege entry
-- Development candidate only: matching SDK/CLI releases and final device acceptance remain pending
+- Add 25 personal-token commands for documents, classification, notes and import tasks
+- Complete bounded multipart upload and original download with byte count and SHA-256 receipts
+- Preserve native task UUIDs and require explicit confirmation for writes
+- Pin published CLI 0.52.5, templates 0.41.3 and SDK/App 0.53.4
+- Narrow native-auth exceptions while retaining OIDC and app-privilege entry
+- Keep the official 3.4.0 images and upstream source unchanged

@@ -64,10 +64,10 @@
       "upload-http-v1",
       "download-file-v1"
     ],
-    "entryPolicyDigest": "dd2dbaec012e98201e18dc5b8005fc38f8c90d205400b2cba5fef9abef0bdf3a",
+    "entryPolicyDigest": "3e144a62fe61b2b6ce143b4b57380f9d7802e0c9e00f5e929038e3104aba1805",
     "registrySha256": "11f966d87114c9a954027a85b43154214771dabe912e6755cb4912ef713378d1",
-    "inventorySha256": "cb1dac815323eaf21bfe36686fcc94401a95dd076aadbfc52426c4f57aa94134",
-    "authSha256": "96425b5de9efe17ca3dbd8ec2cb07a9d5806b91fd2a02d10188c77a13fd19db9",
+    "inventorySha256": "4fc68b2a1dd493aa4583f24946a524e2271ffc796f8d7fd321f540a5a2cd5533",
+    "authSha256": "fb6edc89dd8ca566b2b51d3ee4def8b5e21ef90a57bb2ea2676ce7e650b33fd6",
     "bindings": {
       "correspondents.create": {
         "effect": "write",
@@ -3422,5 +3422,5 @@
       }
     }
   },
-  "sha256": "0aa82f6bb0727c7a1f80af4c18092fc9a790b4ad4de80a787e0d3eadaecb4c2b"
+  "sha256": "fb4fb86ccb4cf8b0c6a61c5c64d604dafbdd20aa62646994f96c3ffcae987f99"
 }
