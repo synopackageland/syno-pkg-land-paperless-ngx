@@ -1,36 +1,27 @@
-## 3.4.0-0006
-
-Install wizard: port conflicts only warn; shared folder selection fixed
-
-Rebuilt with CLI 0.47.4; SDK/UI pins retained. No tests, NAS installs or live checks were run
-Approval retention is unknown because the current inspector rejects the previous release’s legacy wizard baseline
-
 # Release notes
 
-## 3.4.0-0009
+## 3.4.0-0010: personal-token document control
 
-OIDC sign-in callbacks preserve the HTTP or HTTPS scheme used to open the App.
-The loopback identity gateway supplies the trusted forwarded protocol.
-HTTP remains available with the existing security warning; no HTTPS redirect is forced.
-Upstream remains 3.4.0, with the same pinned official images and nonroot execution.
+Adds 25 bounded native HTTP commands for document discovery and editing,
+classification, notes and import task tracking. Original upload returns the
+native task UUID; original download reports verified byte count and SHA-256.
+Writes require a redacted dry-run plan and explicit confirmation. File transfers
+are human-only and retain the 256 MiB limit, without a productive-stream total
+deadline, automatic retry, overwrite or fabricated OCR completion.
 
-## 3.4.0-0003: CLI and SDK rebuild candidate
+Use your own existing API token from dashboard → My Profile → Edit Profile →
+API Auth Token. Regeneration invalidates other clients. The CLI never generates
+or rotates user tokens, substitutes an administrator credential or treats a 403
+as an authentication refresh. Native permissions and token revocation remain
+upstream behavior, independent of DSM logout or local credential removal.
 
-Built with CLI 0.42.2, SDK/App 0.42.0 and templates 0.37.0; the published SDK
-uses executor/v0.39.0. Upstream remains 3.4.0. Local x86_64 checks and an
-in-place upgrade pass. DSM administrator access through the generated menu
-entry works; the requested daemon-ingress path returns 404 for this Compose
-package and needs coordinator review before release. No release was published.
+Pins published CLI 0.52.5, templates 0.41.3 and SDK/App 0.53.4, with UI 0.23.6
+recorded in the toolchain. The Compose package retains the official upstream UI,
+images, OIDC and app-privilege entry. Native-auth exceptions now name only the
+six API areas used by these commands. Existing credentials require re-enrollment
+because that narrower gateway policy changes the native auth contract digest.
+Document/classification deletion, bulk operations and public share creation
+remain outside this release's selected scope.
 
-
-## 3.3.3-0011: SDK entry-gate migration
-
-Built with SDK/App/templates 0.32.0, CLI 0.34.0 and executor v0.32.0.
-Only `/api` use upstream authentication; all other browser paths retain the DSM entry gate.
-Protected executor payloads changed: administrator approval is required again after upgrading.
-No NAS installation or device acceptance was performed for this rebuild.
-
-## 3.3.3-0010 — Redesigned DSM menu launch page
-
-- The page shown when an App can't be opened from the DSM menu is redesigned and now explains when the App's port isn't reachable from outside
-- 重新設計從 DSM 選單無法開啟 App 時顯示的頁面，並說明 App 的連接埠無法從外部連線的情況
+See [setup](ctl.md), [coverage](ctl-plan.md) and the exact release validation
+record in [ctl-validation.json](../ctl-validation.json).

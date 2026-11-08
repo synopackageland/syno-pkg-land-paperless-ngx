@@ -34,7 +34,9 @@ mkdir -p evidence
 npm ci --ignore-scripts --registry=https://registry.npmjs.org
 python3 tests/bootstrap_test.py > evidence/bootstrap.txt 2>&1
 node --test tests/*.test.mjs > evidence/contracts.txt 2>&1
+node --test tests/ctl/*.test.mjs > evidence/native-ctl.txt 2>&1
 node scripts/render.mjs --check
+node_modules/.bin/synopkgland ctl generate --check --json > evidence/generate-check.json
 node_modules/.bin/synopkgland check --json > evidence/check.json
 node_modules/.bin/synopkgland build --arch x86_64 --json > evidence/build.json
 spk=$(node --input-type=module -e "import fs from 'node:fs';import {parse} from 'yaml';const m=parse(fs.readFileSync('dsm-package.yaml','utf8'));console.log('dist/'+m.package+'-'+m.version+'-'+String(m.build).padStart(4,'0')+'-x86_64.spk')")
