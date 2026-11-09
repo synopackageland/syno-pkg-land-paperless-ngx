@@ -4,8 +4,6 @@
     "commit": "ced3cf9303e08648e6fa80d35b9307d97e32cfd1",
     "source": "https://github.com/paperless-ngx/paperless-ngx"
   },
-  "spk": "SynoPkgPaperlessNgx-3.4.0-0010-x86_64.spk",
-  "spk_sha256": "75da96d1d31268fa5ad76be82f057ae4da6b75dcd43b9c467919763cfe45fed7",
   "images": [
     {
       "source": "docker.io/library/postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382",
@@ -26,15 +24,41 @@
       "config_digest": "sha256:6323c97edc74bfa80fc1cc30d08460394db60de8c9f6863f396501650fbe3e72"
     }
   ],
+  "previous_release": {
+    "spk": "SynoPkgPaperlessNgx-3.4.0-0010-x86_64.spk",
+    "spk_sha256": "75da96d1d31268fa5ad76be82f057ae4da6b75dcd43b9c467919763cfe45fed7",
+    "toolchain": {
+      "cli": "0.52.5",
+      "templates": "0.41.3",
+      "sdk": "0.53.4",
+      "app": "0.53.4",
+      "ui": "0.23.6",
+      "executorTag": "executor/v0.53.3",
+      "publishable": true,
+      "goToolchain": "go1.26.10",
+      "goSdk": "v0.53.4"
+    }
+  },
+  "spk": "SynoPkgPaperlessNgx-3.4.0-0011-x86_64.spk",
+  "spk_sha256": "1155464b7861bd9172df1b7cd08051a71820882320e69d9cebb49c29fa2a00a1",
   "toolchain": {
-    "cli": "0.52.5",
+    "cli": "0.52.14",
     "templates": "0.41.3",
-    "sdk": "0.53.4",
-    "app": "0.53.4",
+    "sdk": "0.53.22",
+    "app": "0.53.22",
     "ui": "0.23.6",
-    "executorTag": "executor/v0.53.3",
+    "executorTag": "executor/v0.53.5",
     "publishable": true,
     "goToolchain": "go1.26.10",
-    "goSdk": "v0.53.4"
+    "goSdk": "v0.53.22"
+  },
+  "validation": {
+    "check": "passed",
+    "build_without_baseline": "passed",
+    "inspect_without_baseline": "passed, findings empty",
+    "baseline": "blocked: CLI 0.52.14 rejects official previous wizard",
+    "upgrade_wizard": "blocked: CLI 0.52.14 clears legacy share selection",
+    "merge_ready": false,
+    "silent_upgrade": "failed: incoming preinst COMPOSE_SHARE_INVALID; old payload removed, data retained"
   }
 }

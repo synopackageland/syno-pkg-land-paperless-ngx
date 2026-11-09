@@ -29,8 +29,8 @@ test('CLI accepts the actual three-service plan and enforces nonroot/loopback',(
   }
   assert.equal(services.find(s=>s.service==='webserver').network,'host');
   assert.equal(manifest.identity_gateway.access,'dsm-users');
-  assert.equal(manifest.identity_gateway.sdk,'0.53.4');
-  assert.equal(manifest.compose.sdk,'0.53.4');
+  assert.equal(manifest.identity_gateway.sdk,'0.53.22');
+  assert.equal(manifest.compose.sdk,'0.53.22');
   assert.equal(manifest.identity_gateway.oidc.clients[0].pkce,true);
   for(const s of Object.values(compose.services)) assert.match(s.image,/@sha256:[0-9a-f]{64}$/);
 });
@@ -47,13 +47,13 @@ test('bootstrap/config output is fresh and only the API uses upstream authentica
   assert.deepEqual(manifest.identity_gateway.upstream_auth_paths,['/api/profile','/api/documents','/api/tags','/api/correspondents','/api/document_types','/api/tasks']);
 });
 
-test('consume defaults to the dedicated rw share while export stays private',()=>{
-  assert.deepEqual(manifest.install.sharedFolder,{mode:'dedicated',name:'SynoPkgPaperlessNgx',key:'consume',permission:'rw'});
+test('consume uses the published folder picker while export stays private',()=>{
+  assert.deepEqual(manifest.install.sharedFolder,{mode:'select',key:'consume',permission:'rw',picker:'folder'});
   assert.equal(manifest.install.ports,true);
   assert.deepEqual(manifest.compose.services.webserver.storage_init.runtime.environment.OIDC_ISSUER_PORT,{port:'oidc_issuer'});
   assert.equal(manifest.capabilities.composeMounts,true);
   assert.deepEqual(manifest.compose.shares,{
-    consume:{select:'install',permission:'rw',mounts:[{service:'webserver',target:'/consume'}]},
+    consume:{select:'install',picker:'folder',permission:'rw',mounts:[{service:'webserver',target:'/consume'}]},
   });
   assert.equal(compose.services.webserver.environment.PAPERLESS_CONSUMPTION_DIR,'/consume');
   assert.equal(compose.services.webserver.environment.PAPERLESS_CONSUMER_POLLING,'5');

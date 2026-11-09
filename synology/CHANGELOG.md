@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.4.0-0011
+
+- Select an existing NAS folder at any depth for the read/write document consumption mount
+- Add regression coverage for legacy share-root upgrades and retained subfolders
+- Use published CLI 0.52.14 and SDK/App 0.53.22 with the native chooser and older DSM fallback
+- Keep all services running as the package account with unchanged privileges
+
 ## 3.4.0-0010
 
 - Add 25 personal-token commands for documents, classification, notes and import tasks

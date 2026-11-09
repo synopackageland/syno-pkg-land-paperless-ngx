@@ -1,21 +1,21 @@
 schema: 2
 package: SynoPkgPaperlessNgx
 version: 3.4.0
-build: 10
+build: 11
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Paperless-ngx
 metadata:
   changelog:
-    en: Add native-token ctl for documents, classification, notes and import tracking
-    zh-TW: 新增原生 token ctl，支援文件、分類、筆記與匯入追蹤
-    zh-CN: 新增原生 token ctl，支持文档、分类、笔记与导入跟踪
-    ja: ネイティブトークン ctl で文書、分類、メモ、インポートを操作
-    ko: 기본 토큰 ctl로 문서, 분류, 메모 및 가져오기 추적 지원
-    de: Native-Token-ctl für Dokumente, Klassifizierung, Notizen und Importstatus
-    fr: ctl avec jeton natif pour documents, classement, notes et suivi des imports
-    es: ctl con token nativo para documentos, clasificación, notas e importaciones
-    it: ctl con token nativo per documenti, classificazione, note e importazioni
+    en: Choose an existing NAS subfolder for document consumption
+    zh-TW: 支援選擇既有 NAS 子資料夾作為文件匯入目錄
+    zh-CN: 支持选择现有 NAS 子文件夹作为文档导入目录
+    ja: 文書の取り込みに既存の NAS サブフォルダーを選択
+    ko: 문서 가져오기에 기존 NAS 하위 폴더 선택
+    de: Vorhandenen NAS-Unterordner für den Dokumentimport wählen
+    fr: Choisir un sous-dossier NAS existant pour importer les documents
+    es: Elegir una subcarpeta existente del NAS para importar documentos
+    it: Scegliere una sottocartella NAS esistente per importare documenti
   maintainer_url: https://github.com/paperless-ngx/paperless-ngx
   distributor: Syno Package Land
   distributor_url: https://synopkgland.com/
@@ -27,12 +27,12 @@ capabilities:
 install:
   ports: true
   sharedFolder:
-    mode: dedicated
-    name: SynoPkgPaperlessNgx
+    mode: select
     key: consume
     permission: rw
+    picker: folder
 compose:
-  sdk: 0.53.4
+  sdk: 0.53.22
   shares:
     consume:
       select: install
@@ -40,6 +40,7 @@ compose:
       mounts:
         - service: webserver
           target: /consume
+      picker: folder
   files:
     - compose.yaml
   services:
@@ -228,7 +229,7 @@ identity_gateway:
     - /api/correspondents
     - /api/document_types
     - /api/tasks
-  sdk: 0.53.4
+  sdk: 0.53.22
   mode: oidc
   access: dsm-users
   ingress:
