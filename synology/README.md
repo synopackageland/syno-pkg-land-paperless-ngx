@@ -4,8 +4,8 @@
 
 Adds 25 bounded native HTTP commands for documents, classification, notes and
 import tracking. Read the [token setup guide](docs/ctl.md) and
-[coverage plan](docs/ctl-plan.md). Published CLI 0.52.5 provides bounded multipart
-upload and original download through SDK 0.53.4 metadata. Writes require a
+[coverage plan](docs/ctl-plan.md). Native HTTP metadata provides bounded multipart
+upload and original download. Writes require a
 redacted dry-run plan and explicit confirmation. Official 3.4.0 images, OIDC
 and app-privilege admission are retained.
 
@@ -29,15 +29,21 @@ Containers do not inherit a signed-in user's DSM filesystem ACL. Back up the
 entire volume with the package stopped, including PostgreSQL and media together.
 
 Private named volumes plus `storage_init` are the supported platform model.
-At installation, accept the dedicated **SynoPkgPaperlessNgx** Shared Folder for
-**consume**. DSM creates it with package-account **Read/Write** permission.
-The wizard validates an optional existing folder for supported local storage;
-DSM grants the declared package-account Read/Write access without a prior grant.
-The nonroot container mounts it at `/consume`; the native consumer polls every
-five seconds for reliable host-folder changes. Imported files are removed, so
-use a dedicated inbox and keep backups. Files must grant the package account
-read/write access too. Export remains in the private volume: the current native
-install contract supports one selected share. No broad filesystem grant is used.
+At installation, select an existing local NAS folder for **consume**, including
+subfolders at any depth. DSM 7.2.2 and newer use the native folder chooser;
+older supported DSM versions use a share dropdown and relative subfolder field.
+DSM grants package-account **Read/Write** permission to the entire selected share;
+selecting a subtree does not narrow that share grant. The nonroot container mounts
+only the selected folder at `/consume`. The native consumer polls every five
+seconds, then removes imported files, so use a dedicated inbox and keep backups.
+Export remains in the private volume. Missing package-account folder access does
+not fail installation: startup shows the SDK permission Dialog and Retry action.
+
+Upgrades retain the saved share and folder path. A legacy share-only record keeps
+its original share, with an absent subpath interpreted as the share root. Both
+the Package Center wizard and silent upgrades use this published SDK contract;
+users do not need to re-pick the folder. The native wizard introduction follows
+the Package Center language. No App-specific migration or ACL workaround is used.
 
 ## DSM sign-in
 
@@ -91,7 +97,7 @@ unchanged. Physical mobile clients are unverified.
 
 ## Build and tests
 
-Published pins are CLI 0.52.5, templates 0.41.3 and SDK/App 0.53.4.
+Published pins are CLI 0.52.15, templates 0.41.3 and SDK/App 0.53.23.
 The upstream Angular UI is retained; UI 0.23.6 is recorded in `toolchain.json`
 without adding an unused Vue bundle. See `package-lock.json`.
 
