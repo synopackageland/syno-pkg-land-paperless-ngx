@@ -1,5 +1,19 @@
 # Paperless-ngx for DSM
 
+## 3.4.0-0012: temporary files on disk
+
+Every Compose tmpfs moves to SDK disk scratch: a package-UID-owned mode-0700
+directory per path on the package volume, emptied at every container start.
+Paperless uses scratch for `/run` (s6-overlay runtime, which must be writable and
+executable), `/tmp` (with `TMPDIR=/tmp`) and the image's unused
+`/usr/src/paperless/{data,media,consume,export}` placeholders. PostgreSQL uses it
+for `/tmp`, its secondary socket directory `/run/postgresql` (the image links
+`/var/run` to `/run`; scratch refuses symlinked targets) and
+`/var/lib/postgresql`; Redis for `/tmp`. Unix sockets and lock files work on disk
+(the primary sockets were already on the named volume), so no memory tmpfs remains.
+Published pins are CLI 0.52.16, templates 0.41.3 and SDK/App 0.53.25 (executor
+0.53.6). Official images and upstream source are unchanged.
+
 ## 3.4.0-0010: personal-token document control
 
 Adds 25 bounded native HTTP commands for documents, classification, notes and
@@ -97,7 +111,7 @@ unchanged. Physical mobile clients are unverified.
 
 ## Build and tests
 
-Published pins are CLI 0.52.15, templates 0.41.3 and SDK/App 0.53.23.
+Published pins are CLI 0.52.16, templates 0.41.3 and SDK/App 0.53.25.
 The upstream Angular UI is retained; UI 0.23.6 is recorded in `toolchain.json`
 without adding an unused Vue bundle. See `package-lock.json`.
 

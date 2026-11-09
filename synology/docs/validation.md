@@ -1,4 +1,26 @@
-# Validation record: 3.4.0-0010
+# Validation record: 3.4.0-0012
+
+Every Compose tmpfs moves to SDK disk scratch: a package-UID-owned mode-0700
+directory per path on the package volume, emptied at every container start.
+Paperless uses scratch for `/run` (s6-overlay runtime, which must be writable and
+executable), `/tmp` (with `TMPDIR=/tmp`) and the image's unused
+`/usr/src/paperless/{data,media,consume,export}` placeholders. PostgreSQL uses it
+for `/tmp`, its secondary socket directory `/run/postgresql` (the image links
+`/var/run` to `/run`; scratch refuses symlinked targets) and
+`/var/lib/postgresql`; Redis for `/tmp`. Unix sockets and lock files work on disk
+(the primary sockets were already on the named volume), so no memory tmpfs remains.
+Published pins are CLI 0.52.16, templates 0.41.3 and SDK/App 0.53.25 (executor
+0.53.6). Official images and upstream source are unchanged.
+
+Validation: 5 bootstrap tests and 12 packaging contract tests, renderer freshness,
+check, build, inspect comparison with 3.4.0-0011 and leak scans. Device: upgraded
+from 3.4.0-0011 on an x86_64 DSM 7.3 NAS; all three containers started healthy
+with no tmpfs mounted. Every scratch path was a btrfs bind owned by the package
+UID; the SDK sets 0700 and s6-overlay then sets `/run` to 0755 and the PostgreSQL
+entrypoint sets `/run/postgresql` to 3775, as they did on tmpfs. PostgreSQL's
+socket and lock file worked from disk, and the main page loaded through DSM sign-in.
+
+# Validation record: 3.4.0-0010 (historical)
 
 Release-ready with published dependencies and device acceptance of the exact
 x86_64 artifact. [Machine-readable evidence](../ctl-validation.json) records

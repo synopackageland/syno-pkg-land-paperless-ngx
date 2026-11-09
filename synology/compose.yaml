@@ -40,15 +40,9 @@ services:
       PAPERLESS_TIME_ZONE: UTC
       HOME: /var/tmp/paperless
       USER: paperless
+      TMPDIR: /tmp
     volumes:
       - state:/var/tmp
-    tmpfs:
-      - /run:mode=1777,exec
-      - /tmp:mode=1777
-      - /usr/src/paperless/data:mode=1777
-      - /usr/src/paperless/media:mode=1777
-      - /usr/src/paperless/consume:mode=1777
-      - /usr/src/paperless/export:mode=1777
     depends_on:
       - db
       - broker
@@ -70,7 +64,7 @@ services:
       - -c
       - listen_addresses=
       - -c
-      - unix_socket_directories=/var/tmp/ipc/postgres,/var/run/postgresql
+      - unix_socket_directories=/var/tmp/ipc/postgres,/run/postgresql
       - -c
       - unix_socket_permissions=0700
     environment:
@@ -81,10 +75,6 @@ services:
       POSTGRES_INITDB_ARGS: --auth-local=trust --auth-host=reject
     volumes:
       - state:/var/tmp
-    tmpfs:
-      - /tmp:mode=1777
-      - /var/run/postgresql:mode=1777
-      - /var/lib/postgresql:mode=1777
     read_only: true
     restart: unless-stopped
     stop_grace_period: 60s
@@ -97,8 +87,6 @@ services:
       - /var/tmp/redis/redis.conf
     volumes:
       - state:/var/tmp
-    tmpfs:
-      - /tmp:mode=1777
     read_only: true
     restart: unless-stopped
 volumes:

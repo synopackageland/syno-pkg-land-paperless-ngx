@@ -1,21 +1,21 @@
 schema: 2
 package: SynoPkgPaperlessNgx
 version: 3.4.0
-build: 11
+build: 12
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Paperless-ngx
 metadata:
   changelog:
-    en: Choose an existing NAS subfolder for document consumption
-    zh-TW: 支援選擇既有 NAS 子資料夾作為文件匯入目錄
-    zh-CN: 支持选择现有 NAS 子文件夹作为文档导入目录
-    ja: 文書の取り込みに既存の NAS サブフォルダーを選択
-    ko: 문서 가져오기에 기존 NAS 하위 폴더 선택
-    de: Vorhandenen NAS-Unterordner für den Dokumentimport wählen
-    fr: Choisir un sous-dossier NAS existant pour importer les documents
-    es: Elegir una subcarpeta existente del NAS para importar documentos
-    it: Scegliere una sottocartella NAS esistente per importare documenti
+    en: Store temporary and runtime files on disk instead of memory
+    zh-TW: 暫存與執行期檔案改存於磁碟而非記憶體
+    zh-CN: 临时与运行时文件改存于磁盘而非内存
+    ja: 一時ファイルと実行時ファイルをメモリではなくディスクに保存
+    ko: 임시 및 런타임 파일을 메모리 대신 디스크에 저장
+    de: Temporäre und Laufzeitdateien auf der Festplatte statt im Arbeitsspeicher speichern
+    fr: Stocker les fichiers temporaires et d’exécution sur le disque plutôt qu’en mémoire
+    es: Guardar los archivos temporales y de ejecución en el disco en lugar de en la memoria
+    it: Salvare i file temporanei e di runtime su disco invece che in memoria
   maintainer_url: https://github.com/paperless-ngx/paperless-ngx
   distributor: Syno Package Land
   distributor_url: https://synopkgland.com/
@@ -32,7 +32,7 @@ install:
     permission: rw
     picker: folder
 compose:
-  sdk: 0.53.23
+  sdk: 0.53.25
   shares:
     consume:
       select: install
@@ -46,6 +46,13 @@ compose:
   services:
     webserver:
       network: host
+      scratch:
+        - /run
+        - /tmp
+        - /usr/src/paperless/data
+        - /usr/src/paperless/media
+        - /usr/src/paperless/consume
+        - /usr/src/paperless/export
       listener:
         env: PAPERLESS_BIND_ADDR
         format: host
@@ -185,6 +192,10 @@ compose:
                         # SDK runtime values and upstream exceptions may contain credentials.
                         raise SystemExit('Paperless initialization failed; verify private storage, SDK secrets and OCR model connectivity') from None
     db:
+      scratch:
+        - /tmp
+        - /run/postgresql
+        - /var/lib/postgresql
       storage_init:
         directories:
           - base: /var/tmp
@@ -196,6 +207,8 @@ compose:
             POSTGRES_PASSWORD:
               secret: postgres
     broker:
+      scratch:
+        - /tmp
       storage_init:
         directories:
           - base: /var/tmp
@@ -229,7 +242,7 @@ identity_gateway:
     - /api/correspondents
     - /api/document_types
     - /api/tasks
-  sdk: 0.53.23
+  sdk: 0.53.25
   mode: oidc
   access: dsm-users
   ingress:

@@ -4,7 +4,7 @@
   "payload": {
     "package": {
       "id": "SynoPkgPaperlessNgx",
-      "version": "3.4.0-0011",
+      "version": "3.4.0-0012",
       "displayName": "Paperless-ngx"
     },
     "aliases": [
@@ -66,7 +66,7 @@
     ],
     "entryPolicyDigest": "3e144a62fe61b2b6ce143b4b57380f9d7802e0c9e00f5e929038e3104aba1805",
     "registrySha256": "11f966d87114c9a954027a85b43154214771dabe912e6755cb4912ef713378d1",
-    "inventorySha256": "b893684a5a385d0bdf320b4bd08a15b6a11c7c512fb0d8795c44f06ed991ffc9",
+    "inventorySha256": "2dd2b1eac1f9faecd6b65b605e792bf4a09cb6305bd2dfd4f6df61b17d4038a3",
     "authSha256": "fb6edc89dd8ca566b2b51d3ee4def8b5e21ef90a57bb2ea2676ce7e650b33fd6",
     "bindings": {
       "correspondents.create": {
@@ -3422,5 +3422,5 @@
       }
     }
   },
-  "sha256": "809d9397eb5557f7da49cf72c62ffda386c402b26fef2de1a71baa21574ecd13"
+  "sha256": "fb2289e71f25851463f578370a139fb4479442019be1b17b13485306da1b56e3"
 }

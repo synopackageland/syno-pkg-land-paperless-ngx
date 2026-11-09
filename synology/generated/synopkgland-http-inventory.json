@@ -11,7 +11,7 @@
   "version": 1,
   "package": {
     "id": "SynoPkgPaperlessNgx",
-    "version": "3.4.0-0011",
+    "version": "3.4.0-0012",
     "displayName": "Paperless-ngx"
   },
   "entry": "app-privilege",

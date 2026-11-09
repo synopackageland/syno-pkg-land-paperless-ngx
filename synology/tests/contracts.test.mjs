@@ -29,10 +29,20 @@ test('CLI accepts the actual three-service plan and enforces nonroot/loopback',(
   }
   assert.equal(services.find(s=>s.service==='webserver').network,'host');
   assert.equal(manifest.identity_gateway.access,'dsm-users');
-  assert.equal(manifest.identity_gateway.sdk,'0.53.23');
-  assert.equal(manifest.compose.sdk,'0.53.23');
+  assert.equal(manifest.identity_gateway.sdk,'0.53.25');
+  assert.equal(manifest.compose.sdk,'0.53.25');
   assert.equal(manifest.identity_gateway.oidc.clients[0].pkce,true);
   for(const s of Object.values(compose.services)) assert.match(s.image,/@sha256:[0-9a-f]{64}$/);
+});
+
+test('temporary and runtime files use disk scratch, never a memory tmpfs',()=>{
+  for (const [name,s] of Object.entries(compose.services)) {
+    assert.equal(s.tmpfs,undefined,name);
+    assert.equal(manifest.compose.services[name].tmpfs,undefined,name);
+    assert.ok(manifest.compose.services[name].scratch.includes('/tmp'),name);
+  }
+  assert.ok(manifest.compose.services.webserver.scratch.includes('/run'));
+  assert.equal(compose.services.webserver.environment.TMPDIR,'/tmp');
 });
 
 test('bootstrap/config output is fresh and only the API uses upstream authentication',()=>{
