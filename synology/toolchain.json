@@ -1,11 +1,11 @@
 {
-  "cli": "0.52.15",
+  "cli": "0.52.16",
   "templates": "0.41.3",
-  "sdk": "0.53.23",
-  "app": "0.53.23",
+  "sdk": "0.53.25",
+  "app": "0.53.25",
   "ui": "0.23.6",
-  "executorTag": "executor/v0.53.5",
+  "executorTag": "executor/v0.53.6",
   "publishable": true,
   "goToolchain": "go1.26.10",
-  "goSdk": "v0.53.23"
+  "goSdk": "v0.53.25"
 }
