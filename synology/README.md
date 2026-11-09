@@ -4,8 +4,8 @@
 
 Adds 25 bounded native HTTP commands for documents, classification, notes and
 import tracking. Read the [token setup guide](docs/ctl.md) and
-[coverage plan](docs/ctl-plan.md). Published CLI 0.52.5 provides bounded multipart
-upload and original download through SDK 0.53.22 metadata. Writes require a
+[coverage plan](docs/ctl-plan.md). Native HTTP metadata provides bounded multipart
+upload and original download. Writes require a
 redacted dry-run plan and explicit confirmation. Official 3.4.0 images, OIDC
 and app-privilege admission are retained.
 
@@ -39,11 +39,11 @@ seconds, then removes imported files, so use a dedicated inbox and keep backups.
 Export remains in the private volume. Missing package-account folder access does
 not fail installation: startup shows the SDK permission Dialog and Retry action.
 
-The intended upgrade contract retains the saved share, treating an absent subpath
-as the share root. CLI 0.52.14 currently clears the legacy share in the rendered
-upgrade wizard. The regression test in `tests/folder-picker.test.mjs` reproduces
-this upstream blocker; this candidate must not be merged until a published CLI
-preserves the old selection. No App-specific migration or ACL workaround is used.
+Upgrades retain the saved share and folder path. A legacy share-only record keeps
+its original share, with an absent subpath interpreted as the share root. Both
+the Package Center wizard and silent upgrades use this published SDK contract;
+users do not need to re-pick the folder. The native wizard introduction follows
+the Package Center language. No App-specific migration or ACL workaround is used.
 
 ## DSM sign-in
 
@@ -97,7 +97,7 @@ unchanged. Physical mobile clients are unverified.
 
 ## Build and tests
 
-Published pins are CLI 0.52.14, templates 0.41.3 and SDK/App 0.53.22.
+Published pins are CLI 0.52.15, templates 0.41.3 and SDK/App 0.53.23.
 The upstream Angular UI is retained; UI 0.23.6 is recorded in `toolchain.json`
 without adding an unused Vue bundle. See `package-lock.json`.
 

@@ -44,3 +44,7 @@ test('upgrade preserves a selected folder two levels deep',()=>{
 test('modern DSM upgrade renders the native folder chooser with the retained subtree',()=>{
  assert.deepEqual(renderUpgrade({schema:1,shared_folders:{consume:'Documents'},shared_folder_paths:{consume:'Incoming/Scans'}},{major:7,minor:3,micro:2}),{share:'Documents',subpath:'Incoming/Scans'});
 });
+
+test('modern DSM upgrade preserves a legacy share-only record without re-selection',()=>{
+ assert.deepEqual(renderUpgrade({schema:1,shared_folders:{consume:'Documents'}},{major:7,minor:3,micro:2}),{share:'Documents',subpath:''});
+});

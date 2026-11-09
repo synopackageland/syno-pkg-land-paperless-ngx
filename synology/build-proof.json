@@ -40,25 +40,25 @@
     }
   },
   "spk": "SynoPkgPaperlessNgx-3.4.0-0011-x86_64.spk",
-  "spk_sha256": "1155464b7861bd9172df1b7cd08051a71820882320e69d9cebb49c29fa2a00a1",
+  "spk_sha256": "6f3667058c18ce1bb5ab70019868b6b1ee64393bd0c25473f154e324cc1758a9",
   "toolchain": {
-    "cli": "0.52.14",
+    "cli": "0.52.15",
     "templates": "0.41.3",
-    "sdk": "0.53.22",
-    "app": "0.53.22",
+    "sdk": "0.53.23",
+    "app": "0.53.23",
     "ui": "0.23.6",
     "executorTag": "executor/v0.53.5",
     "publishable": true,
     "goToolchain": "go1.26.10",
-    "goSdk": "v0.53.22"
+    "goSdk": "v0.53.23"
   },
   "validation": {
     "check": "passed",
-    "build_without_baseline": "passed",
-    "inspect_without_baseline": "passed, findings empty",
-    "baseline": "blocked: CLI 0.52.14 rejects official previous wizard",
-    "upgrade_wizard": "blocked: CLI 0.52.14 clears legacy share selection",
-    "merge_ready": false,
-    "silent_upgrade": "failed: incoming preinst COMPOSE_SHARE_INVALID; old payload removed, data retained"
+    "build_with_official_baseline": "passed",
+    "inspect_with_official_baseline": "passed, findings empty",
+    "privileges": "identical, run-as package",
+    "legacy_wizard_regressions": "5 passed",
+    "device_upgrades": "official 0010 to final 0011 passed independently through wizard and silent paths",
+    "merge_ready": true
   }
 }

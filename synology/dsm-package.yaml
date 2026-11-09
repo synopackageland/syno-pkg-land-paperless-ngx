@@ -32,7 +32,7 @@ install:
     permission: rw
     picker: folder
 compose:
-  sdk: 0.53.22
+  sdk: 0.53.23
   shares:
     consume:
       select: install
@@ -229,7 +229,7 @@ identity_gateway:
     - /api/correspondents
     - /api/document_types
     - /api/tasks
-  sdk: 0.53.22
+  sdk: 0.53.23
   mode: oidc
   access: dsm-users
   ingress:

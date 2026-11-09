@@ -1,17 +1,19 @@
 {
   "version": "3.4.0-0011",
   "toolchain": {
-    "cli": "0.52.14",
-    "sdk": "0.53.22"
+    "cli": "0.52.15",
+    "sdk": "0.53.23",
+    "app": "0.53.23",
+    "goSdk": "v0.53.23"
   },
-  "merge_ready": false,
+  "merge_ready": true,
   "check": true,
   "build_x86_64": true,
-  "standalone_inspect_findings": [],
   "baseline": {
-    "ok": false,
-    "code": "APPROVAL_BASELINE_INVALID",
-    "cause": "Official 0010 legacy wizard rejected by CLI"
+    "ok": true,
+    "official_version": "3.4.0-0010",
+    "privileges_equal": true,
+    "executor_approval_retention": "unknown, matching inventory not supplied; no root executor requested"
   },
   "tests": {
     "bootstrap": {
@@ -23,18 +25,22 @@
       "fail": 0
     },
     "folder_picker": {
-      "pass": 3,
-      "fail": 1
+      "pass": 5,
+      "fail": 0
     }
   },
   "device": {
     "dsm": "7.3.2",
-    "fresh_nested_folder_rw": "passed as nonzero package UID before changelog-only correction",
-    "legacy_upgrade_wizard": "failed: saved share cleared",
-    "silent_0010_to_0011_upgrade": "failed in incoming preinst: COMPOSE_SHARE_INVALID, folder selection missing",
-    "old_payload_after_failed_upgrade": "removed by DSM; private data retained",
-    "cleanup": "passed: package absent, three containers, seven volumes, private data and test share removed; native retained account unchanged"
+    "wizard_upgrade": "passed, original share root retained without re-selection",
+    "silent_upgrade": "passed with no selection parameters; original share root retained",
+    "connection": "direct",
+    "wizard_heading_and_intro": "English, follows Package Center language",
+    "read_write": "passed after both upgrades as the same nonzero package UID",
+    "original_marker": "identical SHA-256 before and after both upgrades",
+    "cleanup": "passed: package, containers, seven volumes, private data and test share absent; native account unchanged",
+    "webserver_health": "healthy after both upgrades"
   },
   "scope": "synology only; upstream unchanged",
-  "app_workaround": false
+  "app_workaround": false,
+  "inspect_with_baseline_findings": []
 }

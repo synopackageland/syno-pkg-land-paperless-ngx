@@ -14,25 +14,18 @@ An empty subpath selects the share root. All services use the package UID.
 DSM grants read/write on the whole share even when only a subtree is mounted.
 The folder must already exist. No App code creates it, writes ACLs or takes root.
 
-## Published toolchain blockers
+## Upgrade behavior
 
-CLI 0.52.14's generated upgrade wizard accepts a saved record only when it already
-has `shared_folder_paths`. Official 0010 writes only `shared_folders`, so the new
-wizard clears the recorded share. `tests/folder-picker.test.mjs` has a failing
-regression for that legacy record and a passing regression for a two-level path.
-Do not merge until a published CLI preserves legacy selections without re-picking.
+Published CLI 0.52.15 and SDK 0.53.23 retain legacy share-only selections. An absent
+`shared_folder_paths` value means the share root; existing subfolder selections
+retain their relative path. Both the upgrade wizard and silent upgrade use this
+contract without an App migration, new permission or forced re-selection.
 
-CLI 0.52.14 also rejects the unmodified official 0010 SPK's wizard during baseline
-inspection (`APPROVAL_BASELINE_INVALID`, underlying `COMPOSE_ARTIFACT_INVALID`).
-The required baseline gate remains blocked; a direct privilege comparison is
-supporting evidence only. Neither defect is patched in this App.
+The regression tests cover legacy records in the standard and native wizards,
+existing two-level paths and the older DSM fallback. The native chooser's heading
+and introduction follow the Package Center language.
 
-The native DSM 7.3.2 upgrade wizard also reproduces the cleared legacy selection.
-A fresh device install selected a folder two levels deep and verified read/write
-as the package UID; all three containers retained their nonroot identity.
-
-A silent official-0010 to candidate-0011 upgrade with all selection parameters
-omitted also fails: incoming preinst exits 1 with `COMPOSE_SHARE_INVALID`,
-"folder selection missing; select a folder in the upgrade wizard". DSM has
-already removed the old payload at that point; the legacy configuration and
-private data remain. This is a release blocker, not only a wizard inconvenience.
+Build and inspection compare the unchanged official 0010 SPK with the candidate.
+The package continues to run as its own account, with no root helper or additional
+container capabilities. Validation results are recorded in
+`folder-picker-validation.json`.
