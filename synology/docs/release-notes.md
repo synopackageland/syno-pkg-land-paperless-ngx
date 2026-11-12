@@ -1,5 +1,23 @@
 # Release notes
 
+## 3.4.0-0013: installation reliability
+
+Rebuilt with CLI 0.53.16. The ingress, gateway and Portal nginx reload is now
+declared only for package start and stop: INFO keeps
+`startstop_restart_services="nginx.service"` and no longer sets
+`instuninst_restart_services`. The install-time reload could collide with DSM
+`API.Info` and make Package Center show a `t.indexOf` error after installing.
+SDK, App runtime, upstream version and image are unchanged.
+
+This rebuild runs check, build, inspect comparison with 3.4.0-0012 and privacy
+scans; unit, browser, container-runtime and device acceptance tests were not run.
+
+Offline comparison with 3.4.0-0012: the only INFO change besides version and
+changelog is the removed `instuninst_restart_services`. Root programs and policy
+changes are empty and the payload differs only in the versioned UI host script.
+Approval retention reports `unknown`, as it did for 3.4.0-0012: the CLI cannot
+match a baseline and executor inventory for this package.
+
 ## 3.4.0-0012: temporary files on disk
 
 Every Compose tmpfs moves to SDK disk scratch: a package-UID-owned mode-0700

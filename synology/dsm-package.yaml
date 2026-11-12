@@ -1,21 +1,21 @@
 schema: 2
 package: SynoPkgPaperlessNgx
 version: 3.4.0
-build: 12
+build: 13
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Paperless-ngx
 metadata:
   changelog:
-    en: Store temporary and runtime files on disk instead of memory
-    zh-TW: 暫存與執行期檔案改存於磁碟而非記憶體
-    zh-CN: 临时与运行时文件改存于磁盘而非内存
-    ja: 一時ファイルと実行時ファイルをメモリではなくディスクに保存
-    ko: 임시 및 런타임 파일을 메모리 대신 디스크에 저장
-    de: Temporäre und Laufzeitdateien auf der Festplatte statt im Arbeitsspeicher speichern
-    fr: Stocker les fichiers temporaires et d’exécution sur le disque plutôt qu’en mémoire
-    es: Guardar los archivos temporales y de ejecución en el disco en lugar de en la memoria
-    it: Salvare i file temporanei e di runtime su disco invece che in memoria
+    en: Improve installation reliability in Package Center
+    zh-TW: 提升在套件中心安裝的穩定性
+    zh-CN: 提升在套件中心安装的稳定性
+    ja: パッケージセンターでのインストールの安定性を向上
+    ko: 패키지 센터에서의 설치 안정성 향상
+    de: Zuverlässigkeit der Installation im Paket-Zentrum verbessern
+    fr: Améliorer la fiabilité de l’installation dans le Centre de paquets
+    es: Mejorar la fiabilidad de la instalación en el Centro de paquetes
+    it: Migliorare l’affidabilità dell’installazione nel Centro pacchetti
   maintainer_url: https://github.com/paperless-ngx/paperless-ngx
   distributor: Syno Package Land
   distributor_url: https://synopkgland.com/
