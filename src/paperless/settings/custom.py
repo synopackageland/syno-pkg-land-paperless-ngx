@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Any
 
 from celery.schedules import crontab
-from dateparser.languages.loader import LocaleDataLoader
 
 from paperless.settings.parsers import get_choice_from_env
 from paperless.settings.parsers import get_int_from_env
@@ -161,6 +160,17 @@ def parse_beat_schedule() -> dict:
             # Default daily at 02:00
             "env_default": "0 2 * * *",
             "task": "documents.tasks.cleanup_expired_share_link_bundles",
+            "options": {
+                # 1 hour before default schedule sends again
+                "expires": 23.0 * 60.0 * 60.0,
+            },
+        },
+        {
+            "name": "Clear expired sessions",
+            "env_key": "PAPERLESS_SESSION_CLEANUP_TASK_CRON",
+            # Default daily at 03:00
+            "env_default": "0 3 * * *",
+            "task": "documents.tasks.clear_expired_sessions",
             "options": {
                 # 1 hour before default schedule sends again
                 "expires": 23.0 * 60.0 * 60.0,
@@ -351,6 +361,8 @@ def parse_dateparser_languages(languages: str | None) -> list[str]:
                 f' some dates with this locale, so Chinese ("zh") will be used as a fallback.',
             )
             language_list.append("zh")
+
+    from dateparser.languages.loader import LocaleDataLoader
 
     return list(LocaleDataLoader().get_locale_map(locales=language_list))
 

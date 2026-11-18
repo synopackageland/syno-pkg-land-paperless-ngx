@@ -169,9 +169,9 @@ class TagMailAction(BaseMailAction):
         # The custom tag should look like "apple:<color>"
         if "apple:" in parameter.lower():
             _, self.color = parameter.split(":")
-            self.color = self.color.strip()
+            self.color = self.color.strip().lower()
 
-            if self.color.lower() not in APPLE_MAIL_TAG_COLORS:
+            if self.color not in APPLE_MAIL_TAG_COLORS:
                 raise MailError("Not a valid AppleMail tag color.")
 
             self.keyword = None
@@ -1159,7 +1159,13 @@ class MailAccountHandler(LoggingMixin):
                 new_headers += message.obj._headers
                 message.obj._headers = new_headers
 
-            f.write(message.obj.as_bytes())
+            # RFC 5322 requires CRLF; the default compat32 policy writes bare LF,
+            # which Outlook misreads as literal "=" in quoted-printable soft breaks
+            f.write(
+                message.obj.as_bytes(
+                    policy=message.obj.policy.clone(linesep="\r\n"),
+                ),
+            )
 
         correspondent = self._get_correspondent(message, rule)
 

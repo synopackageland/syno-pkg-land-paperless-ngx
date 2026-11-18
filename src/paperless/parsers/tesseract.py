@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 import importlib.resources
 import logging
 import os
@@ -16,10 +17,12 @@ from django.conf import settings
 from PIL import Image
 
 from documents.parsers import ParseError
+from documents.parsers import encode_thumbnail_webp
 from documents.parsers import make_thumbnail_from_pdf
 from documents.utils import copy_file_with_basic_stats
 from documents.utils import maybe_override_pixel_limit
 from documents.utils import remove_alpha_channel
+from paperless.config import OCR_RESERVED_USER_ARGS
 from paperless.config import OcrConfig
 from paperless.models import CleanChoices
 from paperless.models import ModeChoices
@@ -39,9 +42,12 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger("paperless.parsing.tesseract")
 
-_SRGB_ICC_DATA: Final[bytes] = (
-    importlib.resources.files("ocrmypdf.data").joinpath("sRGB.icc").read_bytes()
-)
+
+@functools.cache
+def _srgb_icc_data() -> bytes:
+    # Read on first use, importing ocrmypdf.data pulls in the whole ocrmypdf package
+    return importlib.resources.files("ocrmypdf.data").joinpath("sRGB.icc").read_bytes()
+
 
 _SUPPORTED_MIME_TYPES: Final[dict[str, str]] = {
     "application/pdf": ".pdf",
@@ -157,6 +163,10 @@ class RasterisedDocumentParser:
     # ------------------------------------------------------------------
 
     def get_thumbnail(self, document_path: Path, mime_type: str) -> Path:
+        if self.archive_path is None and self.is_image(mime_type):
+            thumbnail_path = self.tempdir / "convert.webp"
+            encode_thumbnail_webp(Path(document_path), thumbnail_path)
+            return thumbnail_path
         return make_thumbnail_from_pdf(
             self.archive_path or Path(document_path),
             self.tempdir,
@@ -347,7 +357,22 @@ class RasterisedDocumentParser:
 
         if self.settings.user_args is not None:
             try:
-                ocrmypdf_args = {**ocrmypdf_args, **self.settings.user_args}
+                reserved = sorted(
+                    OCR_RESERVED_USER_ARGS & self.settings.user_args.keys(),
+                )
+                if reserved:
+                    self.log.warning(
+                        f"Ignoring OCR user arguments managed by paperless: "
+                        f"{', '.join(reserved)}",
+                    )
+                ocrmypdf_args = {
+                    **ocrmypdf_args,
+                    **{
+                        k: v
+                        for k, v in self.settings.user_args.items()
+                        if k not in OCR_RESERVED_USER_ARGS
+                    },
+                }
             except Exception as e:
                 self.log.warning(
                     f"There is an issue with PAPERLESS_OCR_USER_ARGS, so "
@@ -403,7 +428,7 @@ class RasterisedDocumentParser:
         pdfa_path = Path(self.tempdir) / "archive.pdf"
         try:
             with pikepdf.open(plain_pdf_path) as pdf:
-                cs = pdf.make_stream(_SRGB_ICC_DATA)
+                cs = pdf.make_stream(_srgb_icc_data())
                 cs["/N"] = 3
                 output_intent = pikepdf.Dictionary(
                     Type=pikepdf.Name("/OutputIntent"),

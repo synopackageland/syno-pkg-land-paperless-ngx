@@ -22,7 +22,6 @@ import {
   NgbModal,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { DeviceDetectorService } from 'ngx-device-detector'
 import { Subject, of, throwError } from 'rxjs'
 import { routes } from 'src/app/app-routing.module'
@@ -152,11 +151,7 @@ describe('DocumentDetailComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        DocumentDetailComponent,
-        RouterModule.forRoot(routes),
-        NgxBootstrapIconsModule.pick(allIcons),
-      ],
+      imports: [DocumentDetailComponent, RouterModule.forRoot(routes)],
       providers: [
         DocumentTitlePipe,
         {
@@ -890,31 +885,31 @@ describe('DocumentDetailComponent', () => {
     fixture.detectChanges()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save')
     ).not.toBeUndefined()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save & close')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save & close')
     ).not.toBeUndefined()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save & next')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save & next')
     ).toBeUndefined()
     nextSpy.mockReturnValue(true)
     component.networkActive.set(true)
     fixture.detectChanges()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save & close')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save & close')
     ).toBeUndefined()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save & next')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save & next')
     ).not.toBeUndefined()
   })
 
@@ -943,6 +938,20 @@ describe('DocumentDetailComponent', () => {
     const navigateSpy = jest.spyOn(router, 'navigate')
     component.close()
     expect(navigateSpy).toHaveBeenCalledWith(['view', 77])
+  })
+
+  it('should close back to the dashboard even if a saved view is active', () => {
+    initNormally()
+    jest
+      .spyOn(componentRouterService, 'getComponentURLBefore')
+      .mockReturnValue('dashboard')
+    jest
+      .spyOn(documentListViewService, 'activeSavedViewId', 'get')
+      .mockReturnValue(77)
+    const navigateSpy = jest.spyOn(router, 'navigate')
+    component.close()
+    expect(navigateSpy).toHaveBeenCalledWith(['dashboard'])
+    expect(navigateSpy).not.toHaveBeenCalledWith(['view', 77])
   })
 
   it('should not close if e.g. user-cancelled', () => {
@@ -1004,27 +1013,85 @@ describe('DocumentDetailComponent', () => {
     ])
   })
 
-  it('should support reprocess, confirm and close modal after started', () => {
+  it('should queue reprocess, show the task link and close the modal', () => {
+    jest.useFakeTimers()
     initNormally()
     const reprocessSpy = jest.spyOn(documentService, 'reprocessDocuments')
-    reprocessSpy.mockReturnValue(of(true))
+    reprocessSpy.mockReturnValue(of({ result: 'OK', task_id: 'reprocess-1' }))
     let openModal: NgbModalRef
     modalService.activeInstances.subscribe((modal) => (openModal = modal[0]))
     const modalSpy = jest.spyOn(modalService, 'open')
-    const toastSpy = jest.spyOn(toastService, 'showInfo')
+    const toastSpy = jest.spyOn(toastService, 'show')
     component.reprocess()
     const modalCloseSpy = jest.spyOn(openModal, 'close')
     openModal.componentInstance.confirmClicked.next()
     expect(reprocessSpy).toHaveBeenCalledWith({ documents: [doc.id] }, false)
     expect(modalSpy).toHaveBeenCalled()
-    expect(toastSpy).toHaveBeenCalled()
+    expect(toastSpy).not.toHaveBeenCalled()
     expect(modalCloseSpy).toHaveBeenCalled()
+    jest.advanceTimersByTime(400)
+    expect(toastSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        content: 'Document reprocessing queued.',
+        actionName: 'View task',
+      })
+    )
+    toastSpy.mock.calls.at(-1)[0].action()
+    expect(router.navigate).toHaveBeenCalledWith(['/tasks'], {
+      queryParams: { task_id: 'reprocess-1' },
+    })
+    expect(modalCloseSpy).toHaveBeenCalled()
+    jest.useRealTimers()
+  })
+
+  it('should run a workflow on the document, confirm and close modal', () => {
+    jest.useFakeTimers()
+    initNormally()
+    const bulkEditSpy = jest.spyOn(documentService, 'bulkEdit')
+    bulkEditSpy.mockReturnValue(of({ result: 'OK', task_id: 'workflow-1' }))
+    let openModal: NgbModalRef
+    modalService.activeInstances.subscribe((modal) => (openModal = modal[0]))
+    const toastSpy = jest.spyOn(toastService, 'show')
+    component.runWorkflow()
+    expect(openModal.componentInstance.singleDocument).toBe(true)
+    expect(openModal.componentInstance.force).toBe(true)
+    const modalCloseSpy = jest.spyOn(openModal, 'close')
+    openModal.componentInstance.workflowId = 5
+    openModal.componentInstance.confirmClicked.next()
+    expect(bulkEditSpy).toHaveBeenCalledWith(
+      { documents: [doc.id] },
+      'run_workflow',
+      { workflow: 5, filter_documents: false }
+    )
+    jest.advanceTimersByTime(400)
+    expect(toastSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ content: 'Workflow queued.' })
+    )
+    expect(modalCloseSpy).toHaveBeenCalled()
+    jest.useRealTimers()
+  })
+
+  it('should apply workflow filters when the single-document checkbox is cleared', () => {
+    initNormally()
+    const bulkEditSpy = jest.spyOn(documentService, 'bulkEdit')
+    bulkEditSpy.mockReturnValue(of({ result: 'OK', task_id: 'workflow-2' }))
+    let openModal: NgbModalRef
+    modalService.activeInstances.subscribe((modal) => (openModal = modal[0]))
+    component.runWorkflow()
+    openModal.componentInstance.workflowId = 5
+    openModal.componentInstance.force = false
+    openModal.componentInstance.confirmClicked.next()
+    expect(bulkEditSpy).toHaveBeenCalledWith(
+      { documents: [doc.id] },
+      'run_workflow',
+      { workflow: 5, filter_documents: true }
+    )
   })
 
   it('should pass remote OCR choice when reprocessing', () => {
     initNormally()
     const reprocessSpy = jest.spyOn(documentService, 'reprocessDocuments')
-    reprocessSpy.mockReturnValue(of(true))
+    reprocessSpy.mockReturnValue(of({ result: 'OK', task_id: 'reprocess-2' }))
     let openModal: NgbModalRef
     modalService.activeInstances.subscribe((modal) => (openModal = modal[0]))
     component.reprocess()
@@ -1953,10 +2020,12 @@ describe('DocumentDetailComponent', () => {
   })
 
   it('should support pdf editor, handle error', () => {
+    jest.useFakeTimers()
     let modal: NgbModalRef
     modalService.activeInstances.subscribe((m) => (modal = m[0]))
     const closeSpy = jest.spyOn(openDocumentsService, 'closeDocument')
     const errorSpy = jest.spyOn(toastService, 'showError')
+    const queuedToastSpy = jest.spyOn(toastService, 'show')
     initNormally()
     component.selectedVersionId.set(10)
     component.editPdf()
@@ -1975,6 +2044,7 @@ describe('DocumentDetailComponent', () => {
       update_document: false,
       include_metadata: true,
       source_mode: 'explicit_selection',
+      from_webui: true,
     })
     req.error(new ErrorEvent('failed'))
     expect(errorSpy).toHaveBeenCalled()
@@ -1987,13 +2057,21 @@ describe('DocumentDetailComponent', () => {
     req = httpTestingController.expectOne(
       `${environment.apiBaseUrl}documents/edit_pdf/`
     )
-    req.flush(true)
-    expect(closeSpy).toHaveBeenCalled()
+    req.flush({ result: 'OK', task_id: 'edit-pdf-1' })
+    jest.advanceTimersByTime(400)
+    expect(closeSpy).not.toHaveBeenCalled()
+    expect(queuedToastSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ content: 'PDF edit queued.' })
+    )
+    jest.useRealTimers()
   })
 
   it('should support removing password protection from pdfs', () => {
+    jest.useFakeTimers()
     let modal: NgbModalRef
     modalService.activeInstances.subscribe((m) => (modal = m[0]))
+    const closeSpy = jest.spyOn(openDocumentsService, 'closeDocument')
+    const queuedToastSpy = jest.spyOn(toastService, 'show')
     initNormally()
     component.selectedVersionId.set(10)
     component.password = 'secret'
@@ -2014,8 +2092,15 @@ describe('DocumentDetailComponent', () => {
       include_metadata: false,
       delete_original: true,
       source_mode: 'explicit_selection',
+      from_webui: true,
     })
-    req.flush(true)
+    req.flush({ result: 'OK', task_id: 'remove-password-1' })
+    jest.advanceTimersByTime(400)
+    expect(closeSpy).not.toHaveBeenCalled()
+    expect(queuedToastSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ content: 'Password removal queued.' })
+    )
+    jest.useRealTimers()
   })
 
   it('should require the current password before removing it', () => {
@@ -2067,9 +2152,9 @@ describe('DocumentDetailComponent', () => {
     const req = httpTestingController.expectOne(
       `${environment.apiBaseUrl}documents/remove_password/`
     )
-    req.flush(true)
+    req.flush({ result: 'OK', task_id: 'remove-password-2' })
 
-    expect(refreshSpy).toHaveBeenCalledWith(doc.id)
+    expect(refreshSpy).not.toHaveBeenCalled()
   })
 
   it('should support keyboard shortcuts', () => {
