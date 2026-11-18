@@ -1,12 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync,mkdtempSync,rmSync,writeFileSync} from 'node:fs';
+import {readFileSync,mkdtempSync,rmSync,writeFileSync,existsSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {resolve,join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {Readable} from 'node:stream';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
+import {parse} from 'yaml';
 
 const root=resolve(import.meta.dirname,'../..');
 const cli=process.env.PAPERLESS_CLI_DIR??join(root,'node_modules/@synopackageland/cli');
@@ -27,7 +28,8 @@ const input=(name,value)=>operationInput(r.operations[name],['--input','-'],JSON
 test('SDK metadata and HTTP inventory match all 25 selected operations and original admission',()=>{
  validateNativeRegistry(r,ctx);validateNativeArtifacts(d,inventory);
  assert.equal(Object.keys(r.operations).length,25);
- assert.equal(d.payload.package.version,'3.4.0-0010');
+ const manifest=parse(readFileSync(join(root,'dsm-package.yaml'),'utf8'));
+ assert.equal(d.payload.package.version,manifest.version+'-'+String(manifest.build).padStart(4,'0'));
  assert.equal(d.payload.entry,'app-privilege');
  assert.deepEqual(d.payload.execution.auth,r.nativeHttp.auth);
  assert.deepEqual(Object.keys(inventory.bindings).sort(),Object.keys(r.operations).sort());
@@ -132,7 +134,9 @@ test('upload/download are human-only client file flows and remain closed without
  assert.equal(r.operations['documents.download'].http.query.original.literal,'true');
 });
 
-test('inventory remains tied to every upstream router, explicit URL, decorated action and UI route',()=>{
+// The isolated package build copies only synology/; run this next to the upstream source tree.
+const upstreamSource=existsSync(join(root,'../src/paperless/urls.py'));
+test('inventory remains tied to every upstream router, explicit URL, decorated action and UI route',{skip:!upstreamSource&&'upstream source tree is not present'},()=>{
  const result=spawnSync('python3',[join(root,'tests/ctl/inventory_test.py')],{encoding:'utf8'});
  assert.equal(result.status,0,result.stdout+result.stderr);
 });

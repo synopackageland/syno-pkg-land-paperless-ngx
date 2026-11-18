@@ -1,5 +1,22 @@
 # Release notes
 
+## 3.5.0-0001: Paperless-ngx 3.5.0
+
+Upgrades the official Paperless-ngx image from 3.4.0 to 3.5.0 (pinned by
+multi-platform index digest). Upstream 3.5.0 adds manual workflow triggers,
+Markdown rendering for document notes, background (async) bulk edits and
+automatic session cleanup, plus many fixes. PostgreSQL, Redis, CLI 0.53.16,
+SDK/App 0.53.25 and the DSM sign-in, storage and privilege policy are unchanged.
+The package does not set `PAPERLESS_URL` or `PAPERLESS_ALLOWED_HOSTS`, so the
+upstream 3.5.0 allowed-hosts change keeps its previous default.
+
+The personal-token ctl inventory was re-reviewed against the 3.5.0 source: every
+router, explicit URL, decorated action and UI route still has a coverage
+decision and the 25 selected operations are unchanged.
+
+Validation: package unit/contract tests, check, build and inspect, plus privacy
+scans. Browser, container-runtime and device acceptance tests were not run.
+
 ## 3.4.0-0013: installation reliability
 
 Rebuilt with CLI 0.53.16. The ingress, gateway and Portal nginx reload is now

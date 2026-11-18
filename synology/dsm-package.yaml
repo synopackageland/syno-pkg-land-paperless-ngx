@@ -1,21 +1,21 @@
 schema: 2
 package: SynoPkgPaperlessNgx
-version: 3.4.0
-build: 13
+version: 3.5.0
+build: 1
 displayname: Paperless-ngx
 description: Scan, organize and search your documents with automatic text recognition
 maintainer: Paperless-ngx
 metadata:
   changelog:
-    en: Improve installation reliability in Package Center
-    zh-TW: 提升在套件中心安裝的穩定性
-    zh-CN: 提升在套件中心安装的稳定性
-    ja: パッケージセンターでのインストールの安定性を向上
-    ko: 패키지 센터에서의 설치 안정성 향상
-    de: Zuverlässigkeit der Installation im Paket-Zentrum verbessern
-    fr: Améliorer la fiabilité de l’installation dans le Centre de paquets
-    es: Mejorar la fiabilidad de la instalación en el Centro de paquetes
-    it: Migliorare l’affidabilità dell’installazione nel Centro pacchetti
+    en: Update Paperless-ngx to 3.5.0 with manual workflow triggers, Markdown notes and background bulk edits
+    zh-TW: Paperless-ngx 更新至 3.5.0，新增手動觸發工作流程、Markdown 備註與背景批次編輯
+    zh-CN: Paperless-ngx 更新至 3.5.0，新增手动触发工作流、Markdown 备注与后台批量编辑
+    ja: Paperless-ngx を 3.5.0 に更新し、ワークフローの手動実行、Markdown メモ、バックグラウンド一括編集に対応
+    ko: Paperless-ngx 3.5.0으로 업데이트하여 워크플로 수동 실행, Markdown 메모, 백그라운드 일괄 편집 지원
+    de: Paperless-ngx auf 3.5.0 aktualisieren mit manuell auslösbaren Workflows, Markdown-Notizen und Massenbearbeitung im Hintergrund
+    fr: Mettre à jour Paperless-ngx vers 3.5.0 avec déclenchement manuel des workflows, notes Markdown et modifications groupées en arrière-plan
+    es: Actualizar Paperless-ngx a 3.5.0 con activación manual de flujos de trabajo, notas en Markdown y ediciones masivas en segundo plano
+    it: Aggiornare Paperless-ngx alla 3.5.0 con attivazione manuale dei flussi di lavoro, note in Markdown e modifiche di massa in background
   maintainer_url: https://github.com/paperless-ngx/paperless-ngx
   distributor: Syno Package Land
   distributor_url: https://synopkgland.com/
