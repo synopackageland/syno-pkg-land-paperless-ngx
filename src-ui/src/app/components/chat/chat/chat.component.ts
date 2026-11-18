@@ -9,11 +9,12 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NavigationEnd, Router, RouterModule } from '@angular/router'
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { filter, map, Subscription } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { MarkdownPipe } from 'src/app/pipes/markdown.pipe'
 import {
   ChatMessage,
+  ChatReference,
   ChatService,
   parseChatResponse,
 } from 'src/app/services/chat.service'
@@ -27,7 +28,7 @@ const SLOW_RESPONSE_DELAY_MS = 8000
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
     NgbDropdownModule,
     MarkdownPipe,
   ],
@@ -40,7 +41,28 @@ export class ChatComponent implements OnInit {
   readonly input = signal('')
   readonly documentId = signal<number>(undefined)
   readonly slowResponse = signal(false)
+  readonly expandedReferences = signal<Set<ChatMessage>>(new Set())
   public popperOptions = pngxPopperOptions
+
+  static readonly COLLAPSED_REFERENCE_COUNT = 2
+
+  public visibleReferences(message: ChatMessage): ChatReference[] {
+    if (this.expandedReferences().has(message)) {
+      return message.references
+    }
+    return message.references.slice(0, ChatComponent.COLLAPSED_REFERENCE_COUNT)
+  }
+
+  public hiddenReferenceCount(message: ChatMessage): number {
+    return Math.max(
+      0,
+      message.references.length - ChatComponent.COLLAPSED_REFERENCE_COUNT
+    )
+  }
+
+  public expandReferences(message: ChatMessage): void {
+    this.expandedReferences.update((expanded) => new Set(expanded).add(message))
+  }
 
   private chatService: ChatService = inject(ChatService)
   private router: Router = inject(Router)

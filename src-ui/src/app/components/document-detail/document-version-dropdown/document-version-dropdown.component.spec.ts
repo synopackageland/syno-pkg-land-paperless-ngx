@@ -2,14 +2,14 @@ import { DatePipe } from '@angular/common'
 import { SimpleChange, signal } from '@angular/core'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { By } from '@angular/platform-browser'
+import { Router } from '@angular/router'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { Subject, of, throwError } from 'rxjs'
 import { DocumentVersionInfo } from 'src/app/data/document'
 import {
   PermissionAction,
-  PermissionsService,
   PermissionType,
+  PermissionsService,
 } from 'src/app/services/permissions.service'
 import { DocumentService } from 'src/app/services/rest/document.service'
 import { SettingsService } from 'src/app/services/settings.service'
@@ -34,7 +34,7 @@ describe('DocumentVersionDropdownComponent', () => {
     >
   >
   let toastService: jest.Mocked<
-    Pick<ToastService, 'showError' | 'showInfo' | 'showSuccess'>
+    Pick<ToastService, 'show' | 'showError' | 'showInfo' | 'showSuccess'>
   >
   let finished$: Subject<{ taskId: string }>
   let failed$: Subject<{ taskId: string; message?: string }>
@@ -55,6 +55,7 @@ describe('DocumentVersionDropdownComponent', () => {
     }
     modalService = { open: jest.fn() }
     toastService = {
+      show: jest.fn(),
       showError: jest.fn(),
       showInfo: jest.fn(),
       showSuccess: jest.fn(),
@@ -64,10 +65,7 @@ describe('DocumentVersionDropdownComponent', () => {
     }
 
     await TestBed.configureTestingModule({
-      imports: [
-        DocumentVersionDropdownComponent,
-        NgxBootstrapIconsModule.pick(allIcons),
-      ],
+      imports: [DocumentVersionDropdownComponent],
       providers: [
         DatePipe,
         {
@@ -91,6 +89,10 @@ describe('DocumentVersionDropdownComponent', () => {
         {
           provide: PermissionsService,
           useValue: permissionsService,
+        },
+        {
+          provide: Router,
+          useValue: { navigate: jest.fn() },
         },
         {
           provide: WebsocketStatusService,
@@ -381,7 +383,8 @@ describe('DocumentVersionDropdownComponent', () => {
     expect(component.versionLabelDraft).toEqual('')
   })
 
-  it('addExistingDocumentAsVersion should merge with a label and refresh versions', () => {
+  it('addExistingDocumentAsVersion should queue with a label and wait to refresh versions', () => {
+    jest.useFakeTimers()
     const confirmClicked = new Subject<number>()
     const modal = {
       componentInstance: {
@@ -392,14 +395,9 @@ describe('DocumentVersionDropdownComponent', () => {
       close: jest.fn(),
     }
     modalService.open.mockReturnValue(modal as any)
-    documentService.mergeDocumentsAsVersions.mockReturnValue(of({} as any))
-    // Newest first, as the API returns them. The merged document has a lower id
-    // than the root, which is the whole point of merging an existing document.
-    const versions: DocumentVersionInfo[] = [
-      { id: 2, is_root: false, checksum: 'cccc' },
-      { id: 3, is_root: true, checksum: 'aaaa' },
-    ]
-    documentService.getVersions.mockReturnValue(of({ id: 3, versions } as any))
+    documentService.mergeDocumentsAsVersions.mockReturnValue(
+      of({ result: 'OK', task_id: 'versions-1' })
+    )
     component.newVersionLabel = '  Imported  '
     const versionsEmitSpy = jest.spyOn(component.versionsUpdated, 'emit')
     const selectedEmitSpy = jest.spyOn(component.versionSelected, 'emit')
@@ -414,11 +412,18 @@ describe('DocumentVersionDropdownComponent', () => {
       'Imported'
     )
     expect(documentService.updateVersionLabel).not.toHaveBeenCalled()
-    expect(documentService.getVersions).toHaveBeenCalledWith(3)
-    expect(versionsEmitSpy).toHaveBeenCalledWith(versions)
-    expect(selectedEmitSpy).toHaveBeenCalledWith(2)
+    expect(documentService.getVersions).not.toHaveBeenCalled()
+    expect(versionsEmitSpy).not.toHaveBeenCalled()
+    expect(selectedEmitSpy).not.toHaveBeenCalled()
     expect(component.newVersionLabel).toEqual('')
     expect(modal.close).toHaveBeenCalled()
-    expect(toastService.showSuccess).toHaveBeenCalled()
+    jest.advanceTimersByTime(400)
+    expect(toastService.show).toHaveBeenCalledWith(
+      expect.objectContaining({
+        content: 'Existing document queued to be added as a version.',
+        actionName: 'View task',
+      })
+    )
+    jest.useRealTimers()
   })
 })

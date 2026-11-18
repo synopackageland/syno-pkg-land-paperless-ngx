@@ -2,7 +2,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { By } from '@angular/platform-browser'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { Subject } from 'rxjs'
 import { Toast, ToastService } from 'src/app/services/toast.service'
 import { MAX_VISIBLE_TOASTS, ToastsComponent } from './toasts.component'
@@ -27,7 +26,7 @@ describe('ToastsComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [ToastsComponent, NgxBootstrapIconsModule.pick(allIcons)],
+      imports: [ToastsComponent],
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
@@ -69,9 +68,9 @@ describe('ToastsComponent', () => {
     toasts.forEach((t) => toastSubject.next(t))
     expect(component.toasts().map((t) => t.id)).toEqual(['3', '2', '1'])
 
-    // showing a visible toast again moves it to the top without duplicating
+    // Updating a visible toast preserves its position without duplicating it.
     toastSubject.next(toasts[1])
-    expect(component.toasts().map((t) => t.id)).toEqual(['1', '3', '2'])
+    expect(component.toasts().map((t) => t.id)).toEqual(['3', '2', '1'])
   })
 
   it('should remove a popup when it hides without closing it', () => {

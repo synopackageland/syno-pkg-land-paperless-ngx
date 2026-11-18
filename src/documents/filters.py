@@ -11,7 +11,6 @@ from decimal import InvalidOperation
 from typing import TYPE_CHECKING
 from typing import Any
 
-import dateparser
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Case
@@ -36,6 +35,7 @@ from django_filters.rest_framework import DateTimeFilter
 from django_filters.rest_framework import Filter
 from django_filters.rest_framework import FilterSet
 from django_filters.rest_framework import MultipleChoiceFilter
+from django_filters.rest_framework import NumberFilter
 from drf_spectacular.utils import extend_schema_field
 from guardian.utils import get_group_obj_perms_model
 from guardian.utils import get_user_obj_perms_model
@@ -53,6 +53,7 @@ from documents.models import ShareLink
 from documents.models import ShareLinkBundle
 from documents.models import StoragePath
 from documents.models import Tag
+from documents.models import Workflow
 from documents.permissions import annotate_authorizing_fields
 from documents.permissions import permitted_document_ids
 from documents.permissions import permitted_object_ids
@@ -250,6 +251,17 @@ class CustomFieldFilterSet(FilterSet):
         }
 
 
+class WorkflowFilterSet(FilterSet):
+    trigger_type = NumberFilter(field_name="triggers__type", distinct=True)
+
+    class Meta:
+        model = Workflow
+        fields = {
+            "id": ID_KWARGS,
+            "enabled": ["exact"],
+        }
+
+
 @extend_schema_field(serializers.CharField)
 class CustomFieldsFilter(Filter):
     def filter(self, qs, value):
@@ -349,6 +361,8 @@ class DateQueryField(serializers.DateField):
         except serializers.ValidationError:
             if not isinstance(value, str):
                 raise
+
+        import dateparser
 
         try:
             parsed = dateparser.parse(

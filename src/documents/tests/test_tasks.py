@@ -5,8 +5,11 @@ from unittest import mock
 
 import pytest
 from django.conf import settings
+from django.contrib.sessions.models import Session
+from django.db import connection
 from django.test import TestCase
 from django.test import override_settings
+from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
 
 from documents import tasks
@@ -322,7 +325,7 @@ class TestUpdateContent(DirectoriesMixin, TestCase):
         )
 
     @override_settings(AI_ENABLED=True, LLM_EMBEDDING_BACKEND="huggingface")
-    @mock.patch("documents.tasks.llm_index_add_or_update_document")
+    @mock.patch("paperless_ai.indexing.llm_index_add_or_update_document")
     @mock.patch("documents.search.get_backend")
     def test_update_content_version_updates_llm_index(
         self,
@@ -450,7 +453,7 @@ class TestAIIndex(DirectoriesMixin, TestCase):
             checksum="wow",
         )
         with mock.patch(
-            "documents.tasks.llm_index_add_or_update_document",
+            "paperless_ai.indexing.llm_index_add_or_update_document",
         ) as llm_index_add_or_update_document:
             tasks.update_document_in_llm_index(doc)
             llm_index_add_or_update_document.assert_called_once_with(doc)
@@ -470,7 +473,7 @@ class TestAIIndex(DirectoriesMixin, TestCase):
             checksum="wow",
         )
         with mock.patch(
-            "documents.tasks.llm_index_remove_document",
+            "paperless_ai.indexing.llm_index_remove_document",
         ) as llm_index_remove_document:
             tasks.remove_document_from_llm_index(doc)
             llm_index_remove_document.assert_called_once_with(doc)
@@ -495,7 +498,7 @@ class TestAIIndex(DirectoriesMixin, TestCase):
                 "documents.tasks.update_document_in_llm_index",
             ) as update_document_in_llm_index,
             mock.patch(
-                "documents.tasks.update_llm_index",
+                "paperless_ai.indexing.update_llm_index",
             ) as update_llm_index,
         ):
             doc_ids = [doc.pk for doc in docs]
@@ -612,3 +615,36 @@ class TestApplyAISuggestionsTask(DirectoriesMixin, TestCase):
 
         apply_suggestions.assert_not_called()
         self.assertIn("no longer exists", "".join(cm.output))
+
+
+@pytest.mark.django_db
+class TestClearExpiredSessions:
+    def test_clears_only_expired_sessions_in_batches(self) -> None:
+        """
+        GIVEN:
+            - More than one batch of expired sessions and one still-valid session
+        WHEN:
+            - The clear_expired_sessions task runs
+        THEN:
+            - Only expired sessions are removed, using multiple deletes
+        """
+        now = timezone.now()
+        Session.objects.bulk_create(
+            Session(
+                session_key=f"expired-{i}",
+                session_data="",
+                expire_date=now - timedelta(days=1),
+            )
+            for i in range(501)
+        )
+        Session.objects.create(
+            session_key="valid",
+            session_data="",
+            expire_date=now + timedelta(days=1),
+        )
+
+        with CaptureQueriesContext(connection) as queries:
+            tasks.clear_expired_sessions()
+
+        assert set(Session.objects.values_list("session_key", flat=True)) == {"valid"}
+        assert sum(query["sql"].startswith("DELETE FROM") for query in queries) == 2

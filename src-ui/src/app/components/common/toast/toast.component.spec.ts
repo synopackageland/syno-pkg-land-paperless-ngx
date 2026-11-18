@@ -4,7 +4,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
 import { Clipboard } from '@angular/cdk/clipboard'
-import { allIcons, NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { ToastLevel } from 'src/app/services/toast.service'
 import { ToastComponent } from './toast.component'
 
@@ -33,7 +32,7 @@ describe('ToastComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ToastComponent, NgxBootstrapIconsModule.pick(allIcons)],
+      imports: [ToastComponent],
       providers: [
         DatePipe,
         provideHttpClient(withInterceptorsFromDi()),
@@ -64,6 +63,36 @@ describe('ToastComponent', () => {
     component.toast = { content: 'Info', delay: 3000 }
     fixture.detectChanges()
     expect(component.delayRemaining()).toEqual(3000)
+  })
+
+  it('updates its color and icon in place and restarts the countdown', () => {
+    jest.useFakeTimers()
+    fixture.componentRef.setInput('toast', {
+      id: 'task-1',
+      content: 'Queued',
+      delay: 5000,
+    })
+    fixture.detectChanges()
+    component.onShown(component.toast)
+    jest.advanceTimersByTime(4500)
+    const element = fixture.nativeElement.querySelector('ngb-toast')
+    fixture.componentRef.setInput('toast', {
+      id: 'task-1',
+      content: 'Completed',
+      delay: 5000,
+      level: ToastLevel.Success,
+    })
+    fixture.detectChanges()
+    expect(fixture.nativeElement.querySelector('ngb-toast')).toBe(element)
+    expect(element.classList).toContain('toast-success')
+    expect(element.querySelector('[name="check-circle"]')).not.toBeNull()
+    expect(component.delayRemaining()).toBe(5000)
+    const hide = jest.spyOn(component.ngbToast, 'hide')
+    jest.advanceTimersByTime(1000)
+    expect(hide).not.toHaveBeenCalled()
+    jest.advanceTimersByTime(4200)
+    expect(hide).toHaveBeenCalled()
+    jest.useRealTimers()
   })
 
   it('should hide the toast when the countdown ends', () => {
@@ -140,7 +169,7 @@ describe('ToastComponent', () => {
     }
     fixture.detectChanges()
     const el: HTMLElement = fixture.nativeElement
-    expect(el.querySelector('i-bs[name="check-circle"]')).not.toBeNull()
+    expect(el.querySelector('pngx-bs-icon[name="check-circle"]')).not.toBeNull()
     expect(el.querySelector('ngb-toast').classList).not.toContain('toast-error')
 
     fixture = TestBed.createComponent(ToastComponent)
@@ -152,7 +181,7 @@ describe('ToastComponent', () => {
     fixture.detectChanges()
     const errorEl: HTMLElement = fixture.nativeElement
     expect(
-      errorEl.querySelector('i-bs[name="exclamation-triangle"]')
+      errorEl.querySelector('pngx-bs-icon[name="exclamation-triangle"]')
     ).not.toBeNull()
     expect(errorEl.querySelector('ngb-toast').classList).toContain(
       'toast-error'
@@ -162,7 +191,7 @@ describe('ToastComponent', () => {
     fixture.componentInstance.toast = { content: 'Started', delay: 5000 }
     fixture.detectChanges()
     expect(
-      fixture.nativeElement.querySelector('i-bs[name="info-circle"]')
+      fixture.nativeElement.querySelector('pngx-bs-icon[name="info-circle"]')
     ).not.toBeNull()
   })
 

@@ -1,6 +1,6 @@
 services:
   webserver:
-    image: docker.io/paperlessngx/paperless-ngx:3.4.0@sha256:7c1d98afd200def9e2bad3a377d30829e8d486554b3c818995af5860114ea17f
+    image: docker.io/paperlessngx/paperless-ngx:3.5.0@sha256:8c1e2c4e0abb50576c7a09f062ed581e2d955e298a302e1e196a35338639005e
     entrypoint:
       - /usr/local/bin/python3
       - /var/tmp/paperless/bootstrap.py

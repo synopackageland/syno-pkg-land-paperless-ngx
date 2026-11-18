@@ -5,8 +5,10 @@ import {
   DestroyRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
   inject,
   signal,
@@ -17,8 +19,8 @@ import {
   NgbToast,
   NgbToastModule,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { Subscription, interval, takeWhile } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe'
 import { Toast, ToastLevel } from 'src/app/services/toast.service'
 
@@ -28,16 +30,16 @@ import { Toast, ToastLevel } from 'src/app/services/toast.service'
     DecimalPipe,
     NgbToastModule,
     NgbProgressbarModule,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
   ],
   templateUrl: './toast.component.html',
   styleUrl: './toast.component.scss',
   providers: [DatePipe, CustomDatePipe],
 })
-export class ToastComponent implements OnInit {
-  private clipboard = inject(Clipboard)
-  private customDatePipe = inject(CustomDatePipe)
-  private destroyRef = inject(DestroyRef)
+export class ToastComponent implements OnInit, OnChanges {
+  private readonly clipboard = inject(Clipboard)
+  private readonly customDatePipe = inject(CustomDatePipe)
+  private readonly destroyRef = inject(DestroyRef)
   readonly copied = signal(false)
   readonly ToastLevel = ToastLevel
   readonly delayRemaining = signal<number>(null)
@@ -67,6 +69,12 @@ export class ToastComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.autohide) this.delayRemaining.set(this.toast.delay)
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.toast && !changes.toast.firstChange && this.autohide) {
+      this.onShown(this.toast)
+    }
   }
 
   get relativeTimestamp(): string {

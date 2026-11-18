@@ -30,6 +30,7 @@ from documents.permissions import PaperlessObjectPermissions
 from documents.permissions import has_perms_owner_aware
 from documents.permissions import permitted_object_ids
 from documents.views import PassUserMixin
+from paperless.fields import is_obfuscated_password
 from paperless.views import StandardPagination
 from paperless_mail.filters import ProcessedMailFilterSet
 from paperless_mail.mail import MailError
@@ -126,9 +127,8 @@ class MailAccountViewSet(PassUserMixin, ModelViewSet[MailAccount]):
                 return HttpResponseForbidden("Insufficient permissions")
 
         # account exists, use the password from there instead of ***
-        if (
-            len(serializer.validated_data.get("password").replace("*", "")) == 0
-            and existing_account is not None
+        if existing_account is not None and is_obfuscated_password(
+            serializer.validated_data.get("password"),
         ):
             serializer.validated_data["password"] = existing_account.password
             serializer.validated_data["account_type"] = existing_account.account_type
@@ -318,6 +318,14 @@ class OauthCallbackView(GenericAPIView[Any]):
                 }
 
                 result = oauth_manager.get_outlook_access_token(code)
+
+            else:
+                logger.error(
+                    f"Invalid oauth callback request: unrecognized scope {scope!r}",
+                )
+                return HttpResponseBadRequest(
+                    "Invalid request, see logs for more detail",
+                )
 
             access_token = result["access_token"]
             refresh_token = result["refresh_token"]
